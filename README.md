@@ -39,8 +39,8 @@ Clone o repositório:
 
 ```
 bash
-git clone https://github.com/Erickx00/ProjetoPOO-PetShop
-cd Petshop-IFPB
+git clone https://github.com/Erickx00/PetShop-POO
+cd PetShop-POO
 ```
 
 ### ☕ Usando (Como Rodar)
