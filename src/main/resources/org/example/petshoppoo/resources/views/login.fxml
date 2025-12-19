@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox alignment="CENTER" layoutX="40.0" layoutY="8.0" spacing="20.0" AnchorPane.bottomAnchor="-8.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="8.0">
+            <children>
+                <Label prefHeight="93.0" prefWidth="61.0" text="🐾" textFill="#ffb300">
+                    <font>
+                        <Font size="56.0" />
+                    </font>
+                </Label>
+            <Pane prefHeight="35.0" prefWidth="320.0">
+               <children>
+                  <Label layoutY="-22.0" prefHeight="73.0" prefWidth="320.0" text="BEM VINDO A GOLDEN PET" textAlignment="JUSTIFY" textFill="#ffb300" textOverrun="CENTER_ELLIPSIS">
+                     <font>
+                        <Font name="Javanese Text" size="23.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+
+                <VBox alignment="CENTER" spacing="5.0" />
+                  <VBox spacing="5.0">
+                      <children>
+                          <Label prefHeight="8.0" prefWidth="34.0" text="E-mail" textFill="#424242" />
+                          <TextField fx:id="txtEmail" prefHeight="40.0" promptText="Digite seu e-mail" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
+                      </children>
+                  </VBox>
+                  <VBox spacing="5.0">
+                      <children>
+                          <Label text="Senha" textFill="#424242" />
+                          <PasswordField fx:id="txtSenha" prefHeight="40.0" promptText="Digite sua senha" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
+                      </children>
+                  </VBox>
+
+                <VBox prefHeight="63.0" prefWidth="320.0" spacing="15.0">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+               <children>
+      
+                      <Button fx:id="btnLogin" maxWidth="Infinity" mnemonicParsing="false" prefHeight="45.0" style="-fx-background-color: #FFB300; -fx-background-radius: 10; -fx-font-weight: bold; -fx-cursor: hand;" text="ENTRAR" textFill="WHITE">
+                          <font>
+                              <Font size="14.0" />
+                          </font>
+                          <VBox.margin>
+                              <Insets top="10.0" />
+                          </VBox.margin>
+                      </Button>
+               </children>
+                </VBox>
+
+                <VBox alignment="CENTER" spacing="5.0">
+                    <children>
+                        <HBox alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+                            <children>
+                                <Label text="Não tem uma conta?" textFill="#424242" />
+                                <Hyperlink style="-fx-font-weight: bold;" text="Cadastre-se aqui" textFill="#ffb300" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
