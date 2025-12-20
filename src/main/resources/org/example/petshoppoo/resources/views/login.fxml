@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="org.example.petshoppoo.controllers.LoginController" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <VBox alignment="CENTER" layoutX="40.0" layoutY="8.0" spacing="20.0" AnchorPane.bottomAnchor="-8.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="8.0">
             <children>
@@ -44,7 +44,7 @@
                     </VBox.margin>
                <children>
       
-                      <Button fx:id="btnLogin" maxWidth="Infinity" mnemonicParsing="false" prefHeight="45.0" style="-fx-background-color: #FFB300; -fx-background-radius: 10; -fx-font-weight: bold; -fx-cursor: hand;" text="ENTRAR" textFill="WHITE">
+                      <Button fx:id="btnLogin" maxWidth="Infinity" mnemonicParsing="false" prefHeight="45.0" style="-fx-background-color: #FFB300; -fx-background-radius: 10; -fx-font-weight:  bold; -fx-cursor: hand;" text="ENTRAR" textFill="WHITE">
                           <font>
                               <Font size="14.0" />
                           </font>
