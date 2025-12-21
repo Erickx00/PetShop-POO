@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="org.example.petshoppoo.controllers.LoginController" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.LoginController">
     <children>
         <VBox alignment="CENTER" layoutX="40.0" layoutY="8.0" spacing="20.0" AnchorPane.bottomAnchor="-8.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="8.0">
             <children>
@@ -16,7 +16,7 @@
                 </Label>
             <Pane prefHeight="35.0" prefWidth="320.0">
                <children>
-                  <Label layoutY="-22.0" prefHeight="73.0" prefWidth="320.0" text="BEM VINDO A GOLDEN PET" textAlignment="JUSTIFY" textFill="#ffb300" textOverrun="CENTER_ELLIPSIS">
+                  <Label layoutX="7.0" layoutY="-19.0" prefHeight="73.0" prefWidth="320.0" text="BEM VIND À GOLDEN PET" textAlignment="JUSTIFY" textFill="#ffb300" textOverrun="CENTER_ELLIPSIS">
                      <font>
                         <Font name="Javanese Text" size="23.0" />
                      </font>
@@ -44,7 +44,7 @@
                     </VBox.margin>
                <children>
       
-                      <Button fx:id="btnLogin" maxWidth="Infinity" mnemonicParsing="false" prefHeight="45.0" style="-fx-background-color: #FFB300; -fx-background-radius: 10; -fx-font-weight:  bold; -fx-cursor: hand;" text="ENTRAR" textFill="WHITE">
+                      <Button fx:id="btnEntrar" maxWidth="Infinity" mnemonicParsing="false" onAction="#HandleAcessar" prefHeight="45.0" style="-fx-background-color: #FFB300; -fx-background-radius: 10; -fx-font-weight:  bold; -fx-cursor: hand;" text="ENTRAR" textFill="WHITE">
                           <font>
                               <Font size="14.0" />
                           </font>
@@ -60,7 +60,7 @@
                         <HBox alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
                             <children>
                                 <Label text="Não tem uma conta?" textFill="#424242" />
-                                <Hyperlink style="-fx-font-weight: bold;" text="Cadastre-se aqui" textFill="#ffb300" />
+                                <Hyperlink fx:id="btnCadastrar" onAction="#HandleCadastrar" style="-fx-font-weight: bold;" text="Cadastre-se aqui" textFill="#ffb300" />
                             </children>
                         </HBox>
                     </children>
