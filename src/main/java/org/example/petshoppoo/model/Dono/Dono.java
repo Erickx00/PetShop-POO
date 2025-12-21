@@ -1,4 +1,4 @@
-package org.example.petshoppoo.model.dono;
+package org.example.petshoppoo.model.Dono;
 
 import java.io.Serializable;
 import java.util.ArrayList;

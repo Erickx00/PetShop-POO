@@ -1,4 +1,4 @@
-package org.example.petshoppoo.model.servico;
+package org.example.petshoppoo.model.Servico;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

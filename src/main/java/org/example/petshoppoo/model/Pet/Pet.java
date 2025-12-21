@@ -1,4 +1,4 @@
-package org.example.petshoppoo.model.pet;
+package org.example.petshoppoo.model.Pet;
 
 import java.io.Serializable;
 import java.time.LocalDate;

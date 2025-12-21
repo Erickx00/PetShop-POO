@@ -1,4 +1,4 @@
-package org.example.petshoppoo.model.servico;
+package org.example.petshoppoo.model.Servico;
 
 public enum TipoServico {
     BANHO("Banho", 40.0, 30, "Banho completo com shampoo e condicionador"),
