@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Agendamento implements Serializable {
+public class Agendamento {
     private UUID id;
     private UUID idPet;
     private UUID idServico;

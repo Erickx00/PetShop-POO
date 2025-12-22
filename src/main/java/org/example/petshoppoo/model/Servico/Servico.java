@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Servico implements Serializable {
+public class Servico{
     private UUID id;
     private TipoServico tipo;
     private double preco;

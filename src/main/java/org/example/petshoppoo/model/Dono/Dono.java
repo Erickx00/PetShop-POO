@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Dono implements Serializable {
+public class Dono  {
     private UUID id;
     private String nome;
     private String telefone;
