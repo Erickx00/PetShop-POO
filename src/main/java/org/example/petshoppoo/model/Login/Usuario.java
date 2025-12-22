@@ -1,5 +1,7 @@
 package org.example.petshoppoo.model.Login;
 
+import org.example.petshoppoo.model.Login.exceptions.EmailInvalidoException;
+
 import java.util.UUID;
 
 public class Usuario {
@@ -8,11 +10,22 @@ public class Usuario {
         private String email;
         private String senha;
 
-        public Usuario(String usuario, String email, String senha) {
+        public Usuario(){
             this.id = UUID.randomUUID();
+        }
+
+        public Usuario(UUID id,String usuario, String email, String senha) {
+            validarEmail(email);
+            this.id = id == null ? UUID.randomUUID() : id;
             this.usuario = usuario;
             this.email = email;
             this.senha = senha;
+        }
+
+        public void validarEmail(String email) throws EmailInvalidoException {
+            if(!email.endsWith("@gmail.com")){
+                throw new EmailInvalidoException("Email Invalido");
+            }
         }
 
         public UUID getId() {
