@@ -27,18 +27,25 @@ public class UsuarioRepository {
             return;
         }
         try {
-            this.usuarios = objectMapper.readValue(arquivo, new TypeReference<List<Usuario>>() {
-            });
+            this.usuarios = objectMapper.readValue(arquivo, new TypeReference<List<Usuario>>() {});
         } catch (IOException e) {
             this.usuarios = new ArrayList<>();
         }
     }
 
     public void adicionar(Usuario usuario) {
-        usuarios.add(usuario);
+        this.usuarios.add(usuario);
         salvarNoArquivo();
     }
 
+    public Usuario buscarPorEmail(String email) {
+        for (Usuario u : usuarios) {
+            if (u.getEmail().equalsIgnoreCase(email)) {
+                return u;
+            }
+        }
+        return null;
+    }
 
     private void salvarNoArquivo() {
         try {
@@ -47,5 +54,4 @@ public class UsuarioRepository {
             System.err.println("Erro ao salvar!");
         }
     }
-
 }
