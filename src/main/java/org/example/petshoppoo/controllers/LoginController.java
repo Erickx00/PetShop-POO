@@ -34,11 +34,11 @@ public class LoginController {
 
     @FXML
     private void HandleCadastrar() {
-        carregarTela("/org/example/petshoppoo/resources/views/cadastro.fxml", "Golden Pet");
+        carregarTela("/views/CriarContaView.fxml", "Golden Pet");
     }
 
     private void irParaMenu() {
-        carregarTela("/org/example/petshoppoo/resources/views/menu.fxml", "Golden Pet");
+        carregarTela("/views/MainView.fxml", "Golden Pet");
     }
 
     private void carregarTela(String fxmlPath, String titulo) {

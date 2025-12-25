@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.example.petshoppoo.model.Login.Usuario;
 
 public class UsuarioRepository {
-    private static final String CAMINHO_ARQUIVO = "usuarios.json";
+    private static final String CAMINHO_ARQUIVO = "src/main/resources/data/usuarios.json";
     private final ObjectMapper objectMapper;
     private List<Usuario> usuarios;
 

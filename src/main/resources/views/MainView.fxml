@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="500" prefWidth="400" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.MenuController">
+
+    <top>
+        <VBox alignment="CENTER" spacing="5" style="-fx-background-color: #FFD700;">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="15" />
+            </padding>
+            <Text fill="white" style="-fx-font-size: 22; -fx-font-weight: bold;" text="GOLDEN PET" />
+            <Text fill="white" style="-fx-font-size: 12;" text="Bem-vindo ao sistema" />
+        </VBox>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" spacing="15">
+            <padding>
+                <Insets bottom="20" left="30" right="30" top="20" />
+            </padding>
+
+            <Button onAction="#handleCadastrarPet" style="-fx-font-size: 14; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-min-width: 200; -fx-min-height: 40;" text="🐾 Cadastrar Pet" />
+
+            <Button onAction="#handleListarPets" style="-fx-font-size: 14; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-min-width: 200; -fx-min-height: 40;" text="📋 Listar Pets" />
+
+            <Button onAction="#handleServicos" style="-fx-font-size: 14; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-min-width: 200; -fx-min-height: 40;" text="🔧 Serviços" />
+
+            <Button onAction="#handleAgendamentos" style="-fx-font-size: 14; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-min-width: 200; -fx-min-height: 40;" text="📅 Agendamentos" />
+
+            <Button onAction="#handleAIDiagnostico" style="-fx-font-size: 14; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-min-width: 200; -fx-min-height: 40;" text="🤖 AI Diagnóstico" />
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #f0f0f0;">
+            <padding>
+                <Insets bottom="10" left="15" right="15" top="10" />
+            </padding>
+            <Button onAction="#handleSair" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-min-width: 80;" text="Sair" />
+        </HBox>
+    </bottom>
+</BorderPane>

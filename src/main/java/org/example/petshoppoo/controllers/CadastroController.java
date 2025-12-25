@@ -56,7 +56,7 @@ public class CadastroController {
 
     private void irParaLogin() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/petshoppoo/resources/views/login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/LoginView.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) txtNome.getScene().getWindow();
             stage.setScene(new Scene(root));
