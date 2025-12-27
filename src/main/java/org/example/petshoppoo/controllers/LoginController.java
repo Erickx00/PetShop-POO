@@ -38,7 +38,7 @@ public class LoginController {
     }
 
     private void irParaMenu() {
-        carregarTela("/views/MainView.fxml", "Golden Pet");
+        carregarTela("/views/MenuView.fxml", "Golden Pet");
     }
 
     private void carregarTela(String fxmlPath, String titulo) {

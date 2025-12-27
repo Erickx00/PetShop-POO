@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="516.0" prefWidth="944.0" style="-fx-background-color: #F5F5DC; -fx-border-color: #8B7D6B; -fx-border-width: 8px;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.MenuController">
+    <children>
+        <Pane layoutX="4.0" layoutY="14.0" prefHeight="516.0" prefWidth="936.0">
+            <children>
+                <HBox layoutX="228.0" prefHeight="69.0" prefWidth="503.0">
+                    <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="71.0" prefWidth="508.0" text="GOLDEN PET  🐾" textFill="#ffb300">
+                            <font>
+                                <Font name="Serif Bold" size="61.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+
+                <VBox layoutX="14.0" layoutY="136.0" spacing="15.0">
+                    <children>
+                        <Button fx:id="CadastroPet" alignment="CENTER" mnemonicParsing="false" onAction="#handleCadastrarPet" prefHeight="70.0" prefWidth="210.0" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #EFEBE9; -fx-cursor: hand;" text="🐾 Cadastrar Pet" textFill="#ffb300">
+                            <font><Font name="MS Gothic" size="21.0" /></font>
+                        </Button>
+                        <Button fx:id="ListaPets" alignment="CENTER" mnemonicParsing="false" onAction="#handleListarPets" prefHeight="70.0" prefWidth="210.0" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #EFEBE9; -fx-cursor: hand;" text="📋 Listar Pets" textFill="#ffb300">
+                            <font><Font name="MS Gothic" size="23.0" /></font>
+                        </Button>
+                        <Button fx:id="Servicos" alignment="CENTER" mnemonicParsing="false" onAction="#handleServicos" prefHeight="70.0" prefWidth="210.0" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #EFEBE9; -fx-cursor: hand;" text="🔧 Serviços" textFill="#ffb300">
+                            <font><Font size="28.0" /></font>
+                        </Button>
+                        <Button fx:id="Agendamento" mnemonicParsing="false" onAction="#handleAgendamentos" prefHeight="70.0" prefWidth="210.0" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #EFEBE9; -fx-cursor: hand;" text="📅 Agendamentos" textFill="#ffb300">
+                            <font><Font size="21.0" /></font>
+                        </Button>
+                    </children>
+                </VBox>
+            <HBox layoutX="685.0" layoutY="272.0" prefHeight="221.0" prefWidth="246.0">
+               <children>
+      
+                      <ImageView fitHeight="229.0" fitWidth="273.0" preserveRatio="true">
+                          <image>
+                              <Image url="@../images/AnimalMenu.png" />
+                          </image>
+                      </ImageView>
+               </children></HBox>
+            </children>
+        </Pane>
+
+        <Button fx:id="btnMenu" layoutX="860.0" layoutY="30.0" mnemonicParsing="false" onAction="#toggleMenu" style="-fx-background-color: #ffb300; -fx-cursor: hand; -fx-background-radius: 5;" text="☰" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font>
+        </Button>
+
+        <VBox fx:id="menuLateral" layoutX="937.0" prefHeight="516.0" prefWidth="210.0" style="-fx-background-color: white; -fx-border-color: #8B7D6B; -fx-border-width: 0 0 0 8;">
+            <children>
+                <HBox alignment="TOP_RIGHT" prefWidth="200.0">
+                    <children>
+                        <Button fx:id="Volta" mnemonicParsing="false" onAction="#handleVoltar" prefHeight="25.0" prefWidth="35.0" style="-fx-background-radius: 5; -fx-border-color: #E0E0E0; -fx-border-radius: 5; -fx-background-color: #EFEBE9; -fx-cursor: hand;" text="⏎" textFill="#faaf00">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Button>
+                    </children>
+                    <VBox.margin>
+                        <Insets right="10.0" top="10.0" />
+                    </VBox.margin>
+                </HBox>
+
+                <Label alignment="CENTER" prefHeight="40.0" prefWidth="200.0" text="MENU" textFill="#ffb300">
+                    <font><Font name="System Bold" size="22.0" /></font>
+                    <VBox.margin><Insets bottom="10.0" /></VBox.margin>
+                </Label>
+
+                <Button fx:id="Perfil" mnemonicParsing="false" onAction="#handlePerfil" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="👤 Meu Perfil" textFill="#555555">
+                    <font><Font size="15.0" /></font>
+                </Button>
+
+                <Button fx:id="Suporte" mnemonicParsing="false" onAction="#handleSuporte" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="🛠 Suporte" textFill="#555555">
+                    <font><Font size="15.0" /></font>
+                </Button>
+
+                <Separator prefWidth="200.0">
+                    <VBox.margin><Insets bottom="10.0" top="10.0" /></VBox.margin>
+                </Separator>
+
+                <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #EFEBE9; -fx-text-fill: #ffb300; -fx-cursor: hand; -fx-background-radius: 8;" text="🚪 Sair da Conta">
+                    <font><Font name="System Bold" size="14.0" /></font>
+                    <VBox.margin><Insets left="12.0" /></VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

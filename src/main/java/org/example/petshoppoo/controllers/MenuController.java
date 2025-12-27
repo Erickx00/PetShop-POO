@@ -1,25 +1,119 @@
 package org.example.petshoppoo.controllers;
 
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import java.io.IOException;
 
 public class MenuController {
 
-    public void handleCadastrarPet(ActionEvent actionEvent) {
-        
+    @FXML private Button CadastroPet;
+    @FXML private Button ListaPets;
+    @FXML private Button Servicos;
+    @FXML private Button Agendamento;
+    @FXML private VBox menuLateral;
+    @FXML private Button btnMenu;
+
+    private boolean isMenuOpen = false;
+
+    @FXML
+    void toggleMenu(ActionEvent event) {
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(0.3), menuLateral);
+        if (!isMenuOpen) {
+            transition.setToX(-200);
+            isMenuOpen = true;
+        } else {
+            transition.setToX(0);
+            isMenuOpen = false;
+        }
+        transition.play();
     }
 
-    public void handleListarPets(ActionEvent actionEvent) {
+    @FXML
+    void handleVoltar(ActionEvent event) {
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(0.3), menuLateral);
+        transition.setToX(0);
+        transition.play();
+        isMenuOpen = false;
     }
 
-    public void handleServicos(ActionEvent actionEvent) {
+    @FXML
+    public void handleCadastrarPet(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/views/PetCadastroView.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void handleAgendamentos(ActionEvent actionEvent) {
+    @FXML
+    public void handleListarPets(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/views/PetListaView.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void handleAIDiagnostico(ActionEvent actionEvent) {
+    @FXML
+    public void handleServicos(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/views/ServicoListaView.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void handleSair(ActionEvent actionEvent) {
+    @FXML
+    public void handleAgendamentos(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/views/Agendamento.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handlePerfil(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(""));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleSuporte(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(""));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
