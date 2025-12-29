@@ -1,57 +1,68 @@
 package org.example.petshoppoo.repository;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import org.example.petshoppoo.exceptions.PersistenciaException;
+import org.example.petshoppoo.model.Dono.Dono;
 import org.example.petshoppoo.model.Login.Usuario;
+import org.example.petshoppoo.utils.FilePaths;
+
+import java.util.List;
+import java.util.UUID;
+
+import static org.example.petshoppoo.model.Usuario.Perfil.CLIENTE;
 
 public class UsuarioRepository {
-    private static final String CAMINHO_ARQUIVO = "src/main/resources/data/usuarios.json";
-    private final ObjectMapper objectMapper;
     private List<Usuario> usuarios;
+    private DonoRepository donoRepository; // Adicione esta referência
 
-    public UsuarioRepository() {
-        this.objectMapper = new ObjectMapper();
-        this.objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+    public UsuarioRepository() throws PersistenciaException {
+        this.donoRepository = new DonoRepository(); // Inicialize o repositório
         carregarUsuarios();
     }
 
-    private void carregarUsuarios() {
-        File arquivo = new File(CAMINHO_ARQUIVO);
-        if (!arquivo.exists()) {
-            this.usuarios = new ArrayList<>();
-            return;
-        }
-        try {
-            this.usuarios = objectMapper.readValue(arquivo, new TypeReference<List<Usuario>>() {});
-        } catch (IOException e) {
-            this.usuarios = new ArrayList<>();
+    private void carregarUsuarios() throws PersistenciaException {
+        this.usuarios = JsonFileManager.carregar(FilePaths.USUARIOS_JSON, Usuario.class);
+    }
+
+    public void adicionar(Usuario usuario) throws PersistenciaException {
+        usuarios.add(usuario);
+        salvarUsuarios();
+
+        // Se o usuário é um CLIENTE, cria um Dono automaticamente
+        if (usuario.getPerfil() == CLIENTE) {
+            criarDonoParaUsuario(usuario);
         }
     }
 
-    public void adicionar(Usuario usuario) {
-        this.usuarios.add(usuario);
-        salvarNoArquivo();
+    private void criarDonoParaUsuario(Usuario usuario) throws PersistenciaException {
+        // Cria um novo Dono com os dados do usuário
+        Dono dono = new Dono(
+                UUID.randomUUID(), // Gera um novo ID para o dono
+                usuario.getNome(),
+                "", // Telefone vazio por enquanto (o usuário pode atualizar depois)
+                usuario.getEmail()
+        );
+
+        // Salva o dono
+        donoRepository.adicionar(dono);
+
+        // Atualiza o usuário com o ID do dono
+        usuario.setIdDono(dono.getId());
+        salvarUsuarios(); // Salva novamente com o idDono atualizado
     }
 
     public Usuario buscarPorEmail(String email) {
-        for (Usuario u : usuarios) {
-            if (u.getEmail().equalsIgnoreCase(email)) {
-                return u;
-            }
-        }
-        return null;
+        return usuarios.stream()
+                .filter(u -> u.getEmail().equalsIgnoreCase(email))
+                .findFirst()
+                .orElse(null);
     }
 
-    private void salvarNoArquivo() {
-        try {
-            objectMapper.writeValue(new File(CAMINHO_ARQUIVO), usuarios);
-        } catch (IOException e) {
-            System.err.println("Erro ao salvar!");
-        }
+    public boolean emailExiste(String email) {
+        return usuarios.stream()
+                .anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
+    }
+
+    private void salvarUsuarios() throws PersistenciaException {
+        JsonFileManager.salvar(FilePaths.USUARIOS_JSON, usuarios);
     }
 }
