@@ -5,50 +5,40 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Cao extends Pet implements Vacinavel{
-
+public class Cao extends Pet implements Vacinavel {
     private boolean adestrado;
     private List<Vacina> vacinas;
 
-    public Cao(){
+    public Cao() {
         super();
+        this.tipo = "Cachorro";
         this.vacinas = new ArrayList<>();
-
     }
 
-    public Cao(UUID id, String nome, LocalDate dataNascimento, String raca, double peso, UUID idDono, boolean adestrado, List<Vacina> vacinas) {
-        super(id, nome, dataNascimento, raca, peso, idDono);
+    public Cao(UUID id, String nome, LocalDate dataNascimento, String raca,
+               double peso, UUID idDono, boolean adestrado) {
+        super(id, nome, dataNascimento, raca, peso, idDono, "Cachorro");
         this.adestrado = adestrado;
-        this.vacinas = vacinas;
+        this.vacinas = new ArrayList<>();
     }
 
     @Override
-    public String getTipo() {
-        return "Cao";
-    }
-
-    public void adicionarVacina(String nomeVacina, LocalDate dataAplicacao){
+    public void adicionarVacina(String nomeVacina, LocalDate dataAplicacao) {
         vacinas.add(new Vacina(nomeVacina, dataAplicacao));
-
     }
 
-    public void adicionarVacina(Vacina vacina){
-        if(vacina != null){
-            vacinas.add(vacina);
-        }
-    }
-
-    public List<Vacina> getVacinas(){
+    @Override
+    public List<Vacina> getVacinas() {
         return new ArrayList<>(vacinas);
     }
 
-
+    @Override
     public boolean isVacinado(String nomeVacina) {
         return vacinas.stream()
                 .anyMatch(v -> v.getNome().equalsIgnoreCase(nomeVacina));
     }
 
-
+    @Override
     public LocalDate getDataUltimaVacina() {
         return vacinas.stream()
                 .map(Vacina::getDataAplicacao)
@@ -56,28 +46,6 @@ public class Cao extends Pet implements Vacinavel{
                 .orElse(null);
     }
 
-
-    public void setVacinas(List<Vacina> vacinas) {
-        this.vacinas = vacinas != null ? vacinas : new ArrayList<>();
-    }
-
-
-    public boolean isAdestrado() {
-        return adestrado;
-    }
-
-    public void setAdestrado(boolean adestrado) {
-        this.adestrado = adestrado;
-    }
-
-    @Override
-    public String toString() {
-        return "Cao{" +
-                "nome='" + nome + '\'' +
-                ", raca='" + raca + '\'' +
-                ", adestrado=" + adestrado +
-                ", dataNascimento=" + calcularIdade() + "anos" +
-                ", vacinas=" + vacinas.size() +
-                '}';
-    }
+    public boolean isAdestrado() { return adestrado; }
+    public void setAdestrado(boolean adestrado) { this.adestrado = adestrado; }
 }

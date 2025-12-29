@@ -5,9 +5,7 @@ import java.util.List;
 
 public interface Vacinavel {
     void adicionarVacina(String nomeVacina, LocalDate dataAplicacao);
-    void adicionarVacina(Vacina vacina);
     List<Vacina> getVacinas();
-    boolean isVacinado(String string);
+    boolean isVacinado(String nomeVacina);
     LocalDate getDataUltimaVacina();
 }
-

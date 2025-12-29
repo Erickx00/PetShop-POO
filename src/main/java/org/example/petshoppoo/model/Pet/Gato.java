@@ -5,37 +5,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Gato extends Pet implements Vacinavel{
+public class Gato extends Pet implements Vacinavel {
     private boolean castrado;
     private List<Vacina> vacinas;
 
-    public Gato(){
+    public Gato() {
         super();
+        this.tipo = "Gato";
         this.vacinas = new ArrayList<>();
     }
 
-    public Gato(UUID id, String nome, LocalDate dataNascimento, String raca, double peso, UUID idDono, boolean castrado, List<Vacina> vacinas) {
-        super(id, nome, dataNascimento, raca, peso, idDono);
+    public Gato(UUID id, String nome, LocalDate dataNascimento, String raca,
+                double peso, UUID idDono, boolean castrado) {
+        super(id, nome, dataNascimento, raca, peso, idDono, "Gato");
         this.castrado = castrado;
-        this.vacinas = vacinas;
-    }
-
-    @Override
-    public String getTipo() {
-        return "Gato";
+        this.vacinas = new ArrayList<>();
     }
 
     @Override
     public void adicionarVacina(String nomeVacina, LocalDate dataAplicacao) {
         vacinas.add(new Vacina(nomeVacina, dataAplicacao));
-    }
-
-    @Override
-    public void adicionarVacina(Vacina vacina) {
-        if(vacina != null){
-            vacinas.add(vacina);
-        }
-
     }
 
     @Override
@@ -57,26 +46,6 @@ public class Gato extends Pet implements Vacinavel{
                 .orElse(null);
     }
 
-    public boolean isCastrado() {
-        return castrado;
-    }
-
-    public void setCastrado(boolean castrado) {
-        this.castrado = castrado;
-    }
-
-    public void setVacinas(List<Vacina> vacinas) {
-        this.vacinas = vacinas != null ? vacinas : new ArrayList<>();
-    }
-
-    @Override
-    public String toString() {
-        return "Gato{" +
-                "castrado=" + castrado +
-                ", vacinas=" + vacinas +
-                ", nome='" + nome + '\'' +
-                ", raca='" + raca + '\'' +
-                ", dataNascimento=" + calcularIdade() + "anos" +
-                '}';
-    }
+    public boolean isCastrado() { return castrado; }
+    public void setCastrado(boolean castrado) { this.castrado = castrado; }
 }
