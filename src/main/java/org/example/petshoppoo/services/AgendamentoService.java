@@ -27,7 +27,6 @@ public class AgendamentoService {
             throw new PersistenciaException("Serviço não encontrado");
         }
 
-        // Verificar conflito de horário
         if (agendamentoRepository.existeConflitoHorario(dataHora, servico.getDuracaoMinutos())) {
             throw new PersistenciaException("Horário indisponível. Escolha outro horário.");
         }
@@ -44,6 +43,6 @@ public class AgendamentoService {
     }
 
     public void cancelarAgendamento(UUID idAgendamento) throws PersistenciaException {
-        // Implementar lógica de cancelamento
+
     }
 }

@@ -1,34 +1,29 @@
 package org.example.petshoppoo.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import org.example.petshoppoo.exceptions.PersistenciaException;
-import org.example.petshoppoo.model.Login.Usuario;
-import org.example.petshoppoo.repository.UsuarioRepository;
 import org.example.petshoppoo.services.AuthService;
 import org.example.petshoppoo.utils.AlertUtils;
-import org.example.petshoppoo.utils.SessionManager;
-
+import org.example.petshoppoo.utils.ViewLoader;
 import java.io.IOException;
 
 public class LoginController {
 
     @FXML private TextField txtEmail;
     @FXML private PasswordField txtSenha;
+    @FXML private Button btnEntrar;
+    @FXML private Hyperlink btnCadastrar;
 
     private AuthService authService;
 
     public LoginController() {
         try {
             this.authService = new AuthService();
-        } catch (PersistenciaException e) {
-            AlertUtils.showError("Erro", "Erro ao inicializar sistema: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -38,53 +33,21 @@ public class LoginController {
         String senha = txtSenha.getText();
 
         if (email.isEmpty() || senha.isEmpty()) {
-            AlertUtils.showError("Erro", "Preencha todos os campos");
+            AlertUtils.showWarning("Aviso", "Preencha tudo!");
             return;
         }
 
         try {
-            if (authService.login(email, senha)) {
-                // Configurar sessão
-                SessionManager.login(
-                        AuthService.getUsuarioLogado(),
-                        AuthService.getDonoLogado()
-                );
-
-                System.out.println("Sessão configurada. Dono ID: " +
-                        (AuthService.getDonoLogado() != null ? AuthService.getDonoLogado().getId() : "null"));
-
-                carregarMainView();
-            } else {
-                AlertUtils.showError("Erro", "Email ou senha incorretos");
-            }
-        } catch (PersistenciaException e) {
-            AlertUtils.showError("Erro", "Falha na autenticação: " + e.getMessage());
-            e.printStackTrace();
+            authService.login(email, senha);
+            // Isso vai chamar a tela de menu com o tamanho automático
+            ViewLoader.changeScene(btnEntrar, "/views/MenuView.fxml", "Menu Principal");
+        } catch (Exception e) {
+            AlertUtils.showError("Erro", e.getMessage());
         }
     }
 
     @FXML
-    private void handleCadastrar() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/CriarContaView.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) txtEmail.getScene().getWindow();
-            stage.setScene(new Scene(root, 400, 500));
-            stage.setTitle("Criar Conta");
-        } catch (Exception e) {
-            AlertUtils.showError("Erro", "Não foi possível carregar a tela de cadastro");
-        }
-    }
-
-    private void carregarMainView() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MenuView.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) txtEmail.getScene().getWindow();
-            stage.setScene(new Scene(root, 400, 500));
-            stage.setTitle("Golden Pet");
-        } catch (Exception e) {
-            AlertUtils.showError("Erro", "Não foi possível carregar a tela principal");
-        }
+    private void handleCadastrar() throws IOException {
+        ViewLoader.changeScene(btnCadastrar, "/views/CriarContaView.fxml", "Cadastro");
     }
 }
