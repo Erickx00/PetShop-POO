@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="449.0" prefWidth="395.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.CadastroController">
+<AnchorPane prefHeight="455.0" prefWidth="395.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.CadastroController">
    <children>
       <VBox layoutX="29.0" layoutY="89.0" prefHeight="366.0" prefWidth="341.0">
          <children>
@@ -28,11 +28,16 @@
                      <font>
                         <Font name="System Italic" size="12.0" />
                      </font></PasswordField>
-                  <PasswordField fx:id="txtSenhaConfirmada" layoutX="1.0" layoutY="209.0" prefHeight="30.0" prefWidth="334.0" promptText="Digite novamente a senha" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;">
+                  <PasswordField fx:id="txtConfirmarSenha" layoutX="1.0" layoutY="209.0" prefHeight="30.0" prefWidth="334.0" promptText="Digite novamente a senha" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;">
                      <font>
                         <Font name="System Italic" size="12.0" />
                      </font></PasswordField>
-                  <Button fx:id="btnFinalizar" layoutX="26.0" layoutY="266.0" mnemonicParsing="false" onAction="#handleCadastrar" prefHeight="53.0" prefWidth="261.0" style="-fx-background-color: #FFB300; -fx-background-radius: 10; -fx-font-weight:  bold; -fx-cursor: hand;" text="FINALIZAR" textFill="WHITE">
+                  <Button fx:id="btnFinalizar" layoutX="190.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleCadastrar" prefHeight="53.0" prefWidth="139.0" style="-fx-background-color: #FFB300; -fx-background-radius: 10; -fx-font-weight:  bold; -fx-cursor: hand;" text="FINALIZAR" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnFinalizar1" layoutX="14.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleCancelar" prefHeight="53.0" prefWidth="139.0" style="-fx-background-color: #FF0000; -fx-background-radius: 10; -fx-font-weight: bold; -fx-cursor: hand;" text="VOLTAR" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>

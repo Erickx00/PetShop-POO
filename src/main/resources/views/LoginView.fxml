@@ -44,7 +44,7 @@
                     </VBox.margin>
                <children>
       
-                      <Button fx:id="btnEntrar" maxWidth="Infinity" mnemonicParsing="false" onAction="#HandleAcessar" prefHeight="45.0" style="-fx-background-color: #FFB300; -fx-background-radius: 10; -fx-font-weight:  bold; -fx-cursor: hand;" text="ENTRAR" textFill="WHITE">
+                      <Button fx:id="btnEntrar" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleLogin" prefHeight="45.0" style="-fx-background-color: #FFB300; -fx-background-radius: 10; -fx-font-weight:  bold; -fx-cursor: hand;" text="ENTRAR" textFill="WHITE">
                           <font>
                               <Font size="14.0" />
                           </font>
@@ -60,7 +60,7 @@
                         <HBox alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
                             <children>
                                 <Label text="Não tem uma conta?" textFill="#424242" />
-                                <Hyperlink fx:id="btnCadastrar" onAction="#HandleCadastrar" style="-fx-font-weight: bold;" text="Cadastre-se aqui" textFill="#ffb300" />
+                                <Hyperlink fx:id="btnCadastrar" onAction="#handleCadastrar" style="-fx-font-weight: bold;" text="Cadastre-se aqui" textFill="#ffb300" />
                             </children>
                         </HBox>
                     </children>
