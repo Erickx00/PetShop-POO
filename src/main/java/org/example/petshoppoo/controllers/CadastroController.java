@@ -8,70 +8,110 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Login.Usuario;
 import org.example.petshoppoo.model.Login.exceptions.EmailInvalidoException;
 import org.example.petshoppoo.repository.UsuarioRepository;
+import org.example.petshoppoo.services.AuthService;
+import org.example.petshoppoo.services.DonoService;
+import org.example.petshoppoo.utils.AlertUtils;
+import org.example.petshoppoo.utils.SessionManager;
+import org.example.petshoppoo.utils.ViewLoader;
+
 import java.io.IOException;
 
 public class CadastroController {
+
     @FXML private TextField txtNome;
     @FXML private TextField txtEmail;
     @FXML private PasswordField txtSenha;
-    @FXML private PasswordField txtSenhaConfirmada;
+    @FXML private PasswordField txtConfirmarSenha;
 
-    private final UsuarioRepository usuarioRepository = new UsuarioRepository();
+    private AuthService authService;
+    private DonoService donoService;
+
+    public CadastroController() {
+        try {
+            this.authService = new AuthService();
+            this.donoService = new DonoService();
+        } catch (Exception e) {
+            AlertUtils.showError("Erro", "Erro ao inicializar serviços: " + e.getMessage());
+        }
+    }
 
     @FXML
     private void handleCadastrar() {
         String nome = txtNome.getText();
         String email = txtEmail.getText();
         String senha = txtSenha.getText();
-        String confirmacao = txtSenhaConfirmada.getText();
+        String confirmarSenha = txtConfirmarSenha.getText();
 
-        if (nome.isEmpty() || email.isEmpty() || senha.isEmpty()) {
-            exibirAlerta(Alert.AlertType.ERROR, "Erro", "Preencha todos os campos!");
-            return;
-        }
-
-        if (!senha.equals(confirmacao)) {
-            exibirAlerta(Alert.AlertType.ERROR, "Erro", "As senhas nao coincidem!");
+        if (!validarCampos(nome, email, senha, confirmarSenha)) {
             return;
         }
 
         try {
-            Usuario novoUsuario = new Usuario(nome, email, senha);
-            novoUsuario.validarEmail(email);
+            boolean sucesso = authService.registrar(nome, email, senha);
 
-            usuarioRepository.adicionar(novoUsuario);
-            exibirAlerta(Alert.AlertType.INFORMATION, "Sucesso", "Cadastro realizado!");
-            irParaLogin();
+            if (sucesso) {
+                AlertUtils.showInfo("Sucesso", "Cadastro realizado com sucesso!");
 
+                // Configurar sessão
+                SessionManager.login(
+                        AuthService.getUsuarioLogado(),
+                        AuthService.getDonoLogado()
+                );
+
+                // Ir para tela principal
+                irParaMainView();
+            }
         } catch (EmailInvalidoException e) {
-            exibirAlerta(Alert.AlertType.WARNING, "E-mail Invalido", e.getMessage());
+            AlertUtils.showError("Email Inválido", e.getMessage());
         } catch (Exception e) {
-            exibirAlerta(Alert.AlertType.ERROR, "Erro", "Falha ao processar cadastro.");
+            AlertUtils.showError("Erro", "Falha no cadastro: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private void irParaLogin() {
+    private void irParaMainView() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/LoginView.fxml"));
-            Parent root = loader.load();
             Stage stage = (Stage) txtNome.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Golden Pet");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+            ViewLoader.loadView(stage, "/views/MenuView.fxml", "Golden Pet", 936, 516);
+        } catch (Exception e) {
+            AlertUtils.showError("Erro", "Não foi possível carregar a tela principal");
         }
     }
 
-    private void exibirAlerta(Alert.AlertType tipo, String titulo, String msg) {
-        Alert alert = new Alert(tipo);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(msg);
-        alert.showAndWait();
+    @FXML
+    private void handleCancelar() {
+        voltarParaLogin();
+    }
+
+    private boolean validarCampos(String nome, String email, String senha, String confirmarSenha) {
+        if (nome.isEmpty() || email.isEmpty() || senha.isEmpty() || confirmarSenha.isEmpty()) {
+            AlertUtils.showError("Erro", "Preencha todos os campos");
+            return false;
+        }
+
+        if (!senha.equals(confirmarSenha)) {
+            AlertUtils.showError("Erro", "As senhas não coincidem");
+            return false;
+        }
+
+        if (senha.length() < 6) {
+            AlertUtils.showError("Erro", "A senha deve ter pelo menos 6 caracteres");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void voltarParaLogin() {
+        try {
+            Stage stage = (Stage) txtNome.getScene().getWindow();
+            ViewLoader.loadView(stage, "views/LoginView.fxml", "Login", 400, 500);
+        } catch (Exception e) {
+            AlertUtils.showError("Erro", "Não foi possível voltar para login");
+        }
     }
 }
