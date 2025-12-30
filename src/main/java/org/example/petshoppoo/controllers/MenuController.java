@@ -96,7 +96,7 @@ public class MenuController {
     @FXML
     public void handlePerfil(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource(""));
+            Parent root = FXMLLoader.load(getClass().getResource("org/example/petshoppoo/views/perfil.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
@@ -115,5 +115,9 @@ public class MenuController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    @FXML
+    public void handleSairDaConta(ActionEvent event){
+
     }
 }

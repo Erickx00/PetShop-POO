@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="516.0" prefWidth="944.0" style="-fx-background-color: #F5F5DC; -fx-border-color: #8B7D6B; -fx-border-width: 8px;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.MenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="516.0" prefWidth="944.0" style="-fx-background-color: #F5F5DC; -fx-border-color: #8B7D6B; -fx-border-width: 8px;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.MenuController">
     <children>
         <Pane layoutX="4.0" layoutY="14.0" prefHeight="516.0" prefWidth="936.0">
             <children>
@@ -86,7 +92,7 @@
                     <VBox.margin><Insets bottom="10.0" top="10.0" /></VBox.margin>
                 </Separator>
 
-                <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #EFEBE9; -fx-text-fill: #ffb300; -fx-cursor: hand; -fx-background-radius: 8;" text="🚪 Sair da Conta">
+                <Button fx:id="SairDaConta" mnemonicParsing="false" onAction="#handleSairDaConta" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #EFEBE9; -fx-text-fill: #ffb300; -fx-cursor: hand; -fx-background-radius: 8;" text="🚪 Sair da Conta">
                     <font><Font name="System Bold" size="14.0" /></font>
                     <VBox.margin><Insets left="12.0" /></VBox.margin>
                 </Button>
