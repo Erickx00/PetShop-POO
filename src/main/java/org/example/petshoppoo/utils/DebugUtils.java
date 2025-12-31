@@ -10,7 +10,6 @@ public class DebugUtils {
 
         String[] arquivos = {
                 FilePaths.USUARIOS_JSON,
-                FilePaths.DONOS_JSON,
                 FilePaths.PETS_JSON,
                 FilePaths.SERVICOS_JSON,
                 FilePaths.AGENDAMENTOS_JSON

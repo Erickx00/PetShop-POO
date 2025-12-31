@@ -38,6 +38,7 @@ public class LoginController {
         }
 
         try {
+            // Autentica e seta o usuário na sessão
             authService.login(email, senha);
             // Isso vai chamar a tela de menu com o tamanho automático
             ViewLoader.changeScene(btnEntrar, "/views/MenuView.fxml", "Menu Principal");

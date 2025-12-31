@@ -10,7 +10,6 @@ module org.example.petshoppoo {
     opens org.example.petshoppoo.controllers to javafx.fxml;
     opens org.example.petshoppoo.model.Login to com.fasterxml.jackson.databind;
     opens org.example.petshoppoo.model.Pet to com.fasterxml.jackson.databind;
-    opens org.example.petshoppoo.model.DTO to com.fasterxml.jackson.databind;
     exports org.example.petshoppoo;
     exports org.example.petshoppoo.controllers;
     exports org.example.petshoppoo.services;

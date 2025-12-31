@@ -26,4 +26,5 @@ public class ViewLoader {
         Stage stage = (Stage) node.getScene().getWindow();
         loadView(stage, fxmlPath, title);
     }
+
 }

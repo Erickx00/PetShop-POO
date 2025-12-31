@@ -11,7 +11,15 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.petshoppoo.model.Login.Usuario;
+import org.example.petshoppoo.services.AuthService;
+import org.example.petshoppoo.utils.AlertUtils;
+import org.example.petshoppoo.utils.SessionManager;
+import org.example.petshoppoo.utils.ViewLoader;
+
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class MenuController {
 
@@ -21,6 +29,17 @@ public class MenuController {
     @FXML private Button Agendamento;
     @FXML private VBox menuLateral;
     @FXML private Button btnMenu;
+
+    private AuthService authService;
+
+    public MenuController() {
+        try {
+            this.authService = new AuthService();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private boolean isMenuOpen = false;
 
@@ -117,7 +136,18 @@ public class MenuController {
         }
     }
     @FXML
-    public void handleSairDaConta(ActionEvent event){
+    public void handleSairDaConta(ActionEvent event) {
+        authService.logout();
 
+        try {
+            ViewLoader.changeScene(
+                    (Node) event.getSource(),
+                    "/views/LoginView.fxml",
+                    "Login"
+            );
+        } catch (IOException e) {
+            AlertUtils.showError("Erro", "Não foi possível sair da conta");
+        }
     }
+
 }

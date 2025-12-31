@@ -4,61 +4,81 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Login.Usuario;
+import org.example.petshoppoo.utils.FilePaths;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class UsuarioRepository {
-    private final File arquivo = new File("src/main/resources/data/usuarios.json");
-    private final ObjectMapper mapper;
+    private final File arquivo = new File("/data/usuarios.json");
 
-    public UsuarioRepository() {
-        this.mapper = new ObjectMapper();
-        this.mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        this.mapper.registerModule(new JavaTimeModule());
+    private List<Usuario> usuarios;
 
-        if (!arquivo.exists()) {
-            try {
-                File parent = arquivo.getParentFile();
-                if (parent != null && !parent.exists()) {
-                    parent.mkdirs();
-                }
-                arquivo.createNewFile();
-                mapper.writeValue(arquivo, new ArrayList<Usuario>());
-            } catch (IOException e) {
-                System.err.println("Erro ao criar arquivo: " + e.getMessage());
+    public UsuarioRepository() throws PersistenciaException {
+        this.usuarios = JsonFileManager.carregar(FilePaths.USUARIOS_JSON, Usuario.class);
+    }
+
+    public void adicionar(Usuario usuario) throws PersistenciaException {
+        usuarios.add(usuario);
+        salvarUsuarios();
+    }
+
+    public void atualizar(Usuario usuarioAtualizado) throws PersistenciaException {
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getId().equals(usuarioAtualizado.getId())) {
+                usuarios.set(i, usuarioAtualizado);
+                salvarUsuarios();
+                return;
             }
         }
     }
 
-    public List<Usuario> listarTodos() {
-        try {
-            if (!arquivo.exists() || arquivo.length() == 0) return new ArrayList<>();
-            return mapper.readValue(arquivo, new TypeReference<List<Usuario>>() {});
-        } catch (IOException e) {
-            return new ArrayList<>();
-        }
+    public Usuario buscarPorId(UUID id) {
+        return usuarios.stream()
+                .filter(u -> u.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
-    public void salvar(Usuario usuario) {
-        List<Usuario> usuarios = listarTodos();
-        // Evita duplicados baseado no ID se você atualizar o usuário
-        usuarios.removeIf(u -> u.getId().equals(usuario.getId()));
-        usuarios.add(usuario);
-        try {
-            mapper.writeValue(arquivo, usuarios);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Optional<Usuario> buscarPorEmail(String email) {
-        return listarTodos().stream()
+    public Usuario buscarPorEmail(String email) {
+        return usuarios.stream()
                 .filter(u -> u.getEmail().equalsIgnoreCase(email))
-                .findFirst();
+                .findFirst()
+                .orElse(null);
+    }
+
+    public boolean emailExiste(String email) {
+        return usuarios.stream()
+                .anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
+    }
+
+    public List<Usuario> listarTodos() {
+        return new ArrayList<>(usuarios);
+    }
+
+    public void adicionarPetAoUsuario(UUID idUsuario, UUID idPet) throws PersistenciaException {
+        Usuario usuario = buscarPorId(idUsuario);
+        if (usuario != null) {
+            usuario.adicionarPet(idPet);
+            atualizar(usuario);
+        }
+    }
+
+    public void removerPetDoUsuario(UUID idUsuario, UUID idPet) throws PersistenciaException {
+        Usuario usuario = buscarPorId(idUsuario);
+        if (usuario != null) {
+            usuario.removerPet(idPet);
+            atualizar(usuario);
+        }
+    }
+
+    private void salvarUsuarios() throws PersistenciaException {
+        JsonFileManager.salvar(FilePaths.USUARIOS_JSON, usuarios);
     }
 }
