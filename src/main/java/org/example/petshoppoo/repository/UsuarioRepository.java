@@ -53,6 +53,11 @@ public class UsuarioRepository {
                 .orElse(null);
     }
 
+    public boolean telefoneExiste(String telefone){
+        return usuarios.stream()
+                .anyMatch(u -> u.getTelefone().equalsIgnoreCase(telefone));
+    }
+
     public boolean emailExiste(String email) {
         return usuarios.stream()
                 .anyMatch(u -> u.getEmail().equalsIgnoreCase(email));

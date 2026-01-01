@@ -40,6 +40,11 @@ public class CadastroController {
             return;
         }
 
+        if (!senha.equals(confirmarSenha)) {
+            AlertUtils.showWarning("Aviso", "As senhas não coincidem!");
+            return;
+        }
+
         try {
             authService.registrar(nome, email, telefone, senha);
             AlertUtils.showInfo("Sucesso", "Cadastro realizado!");

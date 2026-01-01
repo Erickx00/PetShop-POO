@@ -23,11 +23,15 @@ public class AuthService {
         }
 
         if (telLimpo.length() != 11) {
-            throw new Exception("Telefone invalido! Use DDD(2) + Numero(9). Ex: 83912345678");
+            throw new Exception("Telefone invalido! Use DDD(2) + Numeros(9). Ex: 83912345678");
         }
 
         if (usuarioRepository.emailExiste(email)) {
             throw new PersistenciaException("Email ja cadastrado!");
+        }
+
+        if(usuarioRepository.telefoneExiste(telefone)){
+            throw new PersistenciaException("Telefone ja cadastrado");
         }
 
         Usuario novoUsuario = new Usuario(nome, email, telLimpo, senha);
