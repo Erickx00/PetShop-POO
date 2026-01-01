@@ -1,11 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="515.0" prefWidth="401.0" style="-fx-background-color: #FFF8E1;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.PetCadastroController">
     <children>
-        <Button layoutX="220.0" layoutY="158.0" mnemonicParsing="false" text="Button" />
+        <VBox alignment="TOP_CENTER" layoutX="40.0" layoutY="30.0" prefWidth="320.0" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+            <children>
+                <VBox alignment="CENTER" spacing="5.0">
+                    <children>
+                        <Label text="🐾" textFill="#ffb703">
+                            <font>
+                                <Font size="30.0" />
+                            </font>
+                        </Label>
+                        <Label text="CADASTRAR NOVO PET" textFill="#ffb703">
+                            <font>
+                                <Font name="System Bold" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <padding>
+                        <Insets top="10.0" />
+                    </padding>
+                </VBox>
+
+                <VBox spacing="8.0">
+                    <children>
+                        <Label text="Nome do Pet" textFill="#555555">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                        <TextField promptText="Ex: Totó" style="-fx-background-radius: 10; -fx-border-color: #EEEEEE; -fx-border-radius: 10;" />
+
+                        <Label text="Espécie (Cão, Gato...)" textFill="#555555">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                        <TextField promptText="Ex: Cachorro" style="-fx-background-radius: 10; -fx-border-color: #EEEEEE; -fx-border-radius: 10;" />
+
+                        <Label text="Raça" textFill="#555555">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                        <TextField promptText="Ex: Golden Retriever" style="-fx-background-radius: 10; -fx-border-color: #EEEEEE; -fx-border-radius: 10;" />
+
+                        <HBox spacing="10.0">
+                            <children>
+                                <VBox HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="Idade" textFill="#555555">
+                                            <font>
+                                                <Font name="System Bold" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <TextField promptText="Anos" style="-fx-background-radius: 10; -fx-border-color: #EEEEEE; -fx-border-radius: 10;" />
+                                    </children>
+                                </VBox>
+                                <VBox HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="Peso (kg)" textFill="#555555">
+                                            <font>
+                                                <Font name="System Bold" size="12.0" />
+                                            </font>
+                                        </Label>
+                                        <TextField promptText="Ex: 10.5" style="-fx-background-radius: 10; -fx-border-color: #EEEEEE; -fx-border-radius: 10;" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets left="20.0" right="20.0" />
+                    </padding>
+                </VBox>
+
+                <VBox alignment="CENTER" spacing="10.0">
+                    <children>
+                        <Button fx:id="btnCadastrar" mnemonicParsing="false" onAction="#handleCadastrarPet" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #ffb703; -fx-background-radius: 15; -fx-text-fill: white; -fx-cursor: hand;" text="CADASTRAR">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#handleVoltar" style="-fx-background-color: transparent; -fx-text-fill: #999999; -fx-cursor: hand;" text="Voltar ao menu">
+                            <font>
+                                <Font size="12.0" />
+                            </font>
+                        </Button>
+                    </children>
+                    <padding>
+                        <Insets bottom="20.0" top="10.0" />
+                    </padding>
+                </VBox>
+            </children>
+        </VBox>
     </children>
-</Pane>
+</AnchorPane>
