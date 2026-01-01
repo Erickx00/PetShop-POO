@@ -115,7 +115,7 @@ public class MenuController {
     @FXML
     public void handlePerfil(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("org/example/petshoppoo/views/perfil.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/views/PerfilView.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
