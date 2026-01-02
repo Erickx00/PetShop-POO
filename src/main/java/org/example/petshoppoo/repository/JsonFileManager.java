@@ -38,11 +38,6 @@ public class JsonFileManager {
     public static <T> void salvar(String caminhoArquivo, List<T> dados) throws PersistenciaException {
         try {
             File arquivo = new File(caminhoArquivo);
-            File diretorio = arquivo.getParentFile();
-
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
 
             objectMapper.writeValue(arquivo, dados);
             System.out.println("Arquivo salvo com sucesso: " + caminhoArquivo);
@@ -54,11 +49,6 @@ public class JsonFileManager {
     public static <T> void salvar(String caminhoArquivo, T objeto) throws PersistenciaException {
         try {
             File arquivo = new File(caminhoArquivo);
-            File diretorio = arquivo.getParentFile();
-
-            if (diretorio != null && !diretorio.exists()) {
-                diretorio.mkdirs();
-            }
 
             objectMapper.writeValue(arquivo, objeto);
         } catch (IOException e) {

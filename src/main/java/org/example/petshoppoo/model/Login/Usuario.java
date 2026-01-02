@@ -39,8 +39,11 @@ public class Usuario {
     }
 
     public void adicionarPet(UUID idPet) {
-        if (idPet != null && !idsPets.contains(idPet)) {
-            idsPets.add(idPet);
+        if (this.idsPets == null) {
+            this.idsPets = new ArrayList<>();
+        }
+        if (!this.idsPets.contains(idPet)) {
+            this.idsPets.add(idPet);
         }
     }
 
@@ -58,7 +61,7 @@ public class Usuario {
     public void setTelefone(String telefone) { this.telefone = telefone; }
     public Perfil getPerfil() { return perfil; }
     public void setPerfil(Perfil perfil) { this.perfil = perfil; }
-    public List<UUID> getIdsPets() { return new ArrayList<>(idsPets); }
+    public List<UUID> getIdsPets() { return idsPets; }
     public void setIdsPets(List<UUID> idsPets) { this.idsPets = idsPets; }
 
     public boolean verificarSenha(String senha) {

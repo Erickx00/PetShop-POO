@@ -3,16 +3,16 @@ package org.example.petshoppoo.model.Pet;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class Cao extends Pet {
+public class Cachorro extends Pet {
     private boolean adestrado;
 
-    public Cao() {
+    public Cachorro() {
         super();
         this.tipo = "Cachorro";
     }
 
-    public Cao(UUID id, String nome, LocalDate dataNascimento, String raca,
-               double peso, UUID idUsuario, boolean adestrado) {
+    public Cachorro(UUID id, String nome, LocalDate dataNascimento, String raca,
+                    double peso, UUID idUsuario, boolean adestrado) {
         super(id, nome, dataNascimento, raca, peso, idUsuario, "Cachorro");
         this.adestrado = adestrado;
     }

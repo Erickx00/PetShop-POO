@@ -9,10 +9,10 @@ import java.util.UUID;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "type"
+        property = "tipo" // O Jackson vai procurar/criar esse campo no JSON
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = Cao.class, name = "Cao"),
+        @JsonSubTypes.Type(value = Cachorro.class, name = "Cachorro"),
         @JsonSubTypes.Type(value = Gato.class, name = "Gato")
 })
 public abstract class Pet {

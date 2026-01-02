@@ -1,50 +1,45 @@
 package org.example.petshoppoo.repository;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Pet.Pet;
-import java.io.File;
-import java.io.IOException;
+import org.example.petshoppoo.utils.FilePaths;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public class PetRepository {
-    private final File arquivo = new File("src/main/resources/data/pets.json");
-    private final ObjectMapper mapper = new ObjectMapper();
+    // Usamos o caminho que você definiu
+    private final String caminhoArquivo = FilePaths.PETS_JSON;
 
     public PetRepository() {
-        if (!arquivo.exists()) {
-            try {
-                if (arquivo.getParentFile().mkdirs()) {
-                    arquivo.createNewFile();
-                    mapper.writeValue(arquivo, new ArrayList<Pet>());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        // O JsonFileManager já trata a existência do arquivo no método carregar
     }
 
     public List<Pet> listarTodos() {
         try {
-            if (!arquivo.exists() || arquivo.length() == 0) return new ArrayList<>();
-            return mapper.readValue(arquivo, new TypeReference<List<Pet>>() {});
-        } catch (IOException e) {
+            List<Pet> lista = JsonFileManager.carregar(caminhoArquivo, Pet.class);
+            System.out.println("Pets carregados: " + lista.size()); // Para debug
+            return lista;
+        } catch (PersistenciaException e) {
+            // Se der erro aqui, ele imprime no console o motivo exato
+            System.err.println("ERRO CRÍTICO NA LEITURA: " + e.getMessage());
+            e.printStackTrace();
             return new ArrayList<>();
         }
     }
 
-    public void salvar(Pet pet) {
+    public void salvar(Pet pet) throws PersistenciaException {
         List<Pet> pets = listarTodos();
-        pets.removeIf(p -> p.getId().equals(pet.getId()));
+
+        // Se o pet já existir, remove o antigo para atualizar (evita duplicata)
+        pets.removeIf(p -> p.getId() != null && p.getId().equals(pet.getId()));
+
         pets.add(pet);
-        try {
-            mapper.writeValue(arquivo, pets);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        // SALVA A LISTA TODA
+        JsonFileManager.salvar(caminhoArquivo, pets);
     }
 
     public Optional<Pet> buscarPorId(UUID id) {
@@ -53,13 +48,9 @@ public class PetRepository {
                 .findFirst();
     }
 
-    public void deletar(Pet pet) {
+    public void deletar(Pet pet) throws PersistenciaException {
         List<Pet> pets = listarTodos();
         pets.removeIf(p -> p.getId().equals(pet.getId()));
-        try {
-            mapper.writeValue(arquivo, pets);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        JsonFileManager.salvar(caminhoArquivo, pets);
     }
 }

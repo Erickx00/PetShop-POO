@@ -1,23 +1,15 @@
 package org.example.petshoppoo.repository;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Login.Usuario;
 import org.example.petshoppoo.utils.FilePaths;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public class UsuarioRepository {
-    private final File arquivo = new File("/data/usuarios.json");
-
     private List<Usuario> usuarios;
 
     public UsuarioRepository() throws PersistenciaException {
@@ -29,13 +21,11 @@ public class UsuarioRepository {
         salvarUsuarios();
     }
 
+    // Refatorado: Substitui o loop for por removeIf + add (mais limpo para listas)
     public void atualizar(Usuario usuarioAtualizado) throws PersistenciaException {
-        for (int i = 0; i < usuarios.size(); i++) {
-            if (usuarios.get(i).getId().equals(usuarioAtualizado.getId())) {
-                usuarios.set(i, usuarioAtualizado);
-                salvarUsuarios();
-                return;
-            }
+        if (usuarios.removeIf(u -> u.getId().equals(usuarioAtualizado.getId()))) {
+            usuarios.add(usuarioAtualizado);
+            salvarUsuarios();
         }
     }
 
@@ -53,34 +43,42 @@ public class UsuarioRepository {
                 .orElse(null);
     }
 
-    public boolean telefoneExiste(String telefone){
-        return usuarios.stream()
-                .anyMatch(u -> u.getTelefone().equalsIgnoreCase(telefone));
+    public boolean telefoneExiste(String telefone) {
+        return usuarios.stream().anyMatch(u -> u.getTelefone().equalsIgnoreCase(telefone));
     }
 
     public boolean emailExiste(String email) {
-        return usuarios.stream()
-                .anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
+        return usuarios.stream().anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
     }
 
     public List<Usuario> listarTodos() {
         return new ArrayList<>(usuarios);
     }
 
+    // Refatorado com Optional e Stream para ser mais direto
     public void adicionarPetAoUsuario(UUID idUsuario, UUID idPet) throws PersistenciaException {
-        Usuario usuario = buscarPorId(idUsuario);
-        if (usuario != null) {
-            usuario.adicionarPet(idPet);
-            atualizar(usuario);
-        }
+        Optional.ofNullable(buscarPorId(idUsuario))
+                .ifPresent(usuario -> {
+                    usuario.adicionarPet(idPet);
+                    // Como o objeto foi alterado na lista, basta salvar
+                    try {
+                        salvarUsuarios();
+                    } catch (PersistenciaException e) {
+                        throw new RuntimeException("Erro ao salvar após adicionar pet", e);
+                    }
+                });
     }
 
     public void removerPetDoUsuario(UUID idUsuario, UUID idPet) throws PersistenciaException {
-        Usuario usuario = buscarPorId(idUsuario);
-        if (usuario != null) {
-            usuario.removerPet(idPet);
-            atualizar(usuario);
-        }
+        Optional.ofNullable(buscarPorId(idUsuario))
+                .ifPresent(usuario -> {
+                    usuario.removerPet(idPet);
+                    try {
+                        salvarUsuarios();
+                    } catch (PersistenciaException e) {
+                        throw new RuntimeException("Erro ao salvar após remover pet", e);
+                    }
+                });
     }
 
     private void salvarUsuarios() throws PersistenciaException {
