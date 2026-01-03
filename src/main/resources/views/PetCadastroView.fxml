@@ -1,119 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="401.0" style="-fx-background-color: #FFF8E1;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.PetCadastroController">
+<AnchorPane prefHeight="550.0" prefWidth="395.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.PetCadastroController">
     <children>
-        <VBox alignment="TOP_CENTER" layoutX="40.0" layoutY="30.0" prefWidth="320.0" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+        <Button layoutX="338.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleCancelar" prefHeight="40.0" prefWidth="43.0" style="-fx-background-color: #FF0000; -fx-background-radius: 10; -fx-font-weight: bold; -fx-cursor: hand;" text="🔙" textFill="WHITE">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Button>
+
+        <Label layoutX="167.0" layoutY="10.0" prefHeight="80.0" prefWidth="61.0" text="🐾" textFill="#ffb300">
+            <font>
+                <Font size="59.0" />
+            </font>
+        </Label>
+
+        <Label layoutX="104.0" layoutY="85.0" text="CADASTRAR NOVO PET" textFill="#ffb300">
+            <font>
+                <Font name="System Bold" size="16.0" />
+            </font>
+        </Label>
+
+        <Pane layoutX="30.0" layoutY="115.0" prefHeight="420.0" prefWidth="335.0">
             <children>
-                <VBox alignment="CENTER" spacing="5.0">
+                <Label layoutX="0.0" layoutY="0.0" text="Nome do Pet" />
+                <TextField fx:id="txtNome" layoutX="0.0" layoutY="20.0" prefHeight="30.0" prefWidth="334.0" promptText="Ex: Totó" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
+
+                <Label layoutX="0.0" layoutY="60.0" text="Espécie" />
+                <ComboBox fx:id="cbTipo" layoutX="0.0" layoutY="80.0" prefHeight="30.0" prefWidth="334.0" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
+
+                <Label layoutX="0.0" layoutY="120.0" text="Raça" />
+                <TextField fx:id="txtRaca" layoutX="0.0" layoutY="140.0" prefHeight="30.0" prefWidth="334.0" promptText="Ex: Golden Retriever" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
+
+                <HBox layoutX="0.0" layoutY="180.0" spacing="10.0">
                     <children>
-                        <Label prefHeight="25.0" prefWidth="30.0" text="🐾" textFill="#ffb703">
-                            <font>
-                                <Font size="30.0" />
-                            </font>
-                        </Label>
-                        <Label text="CADASTRAR NOVO PET" textFill="#ffb703">
-                            <font>
-                                <Font name="System Bold" size="18.0" />
-                            </font>
-                        </Label>
-                    </children>
-                    <padding>
-                        <Insets top="10.0" />
-                    </padding>
-                </VBox>
-
-                <VBox spacing="8.0">
-                    <children>
-                        <Label text="Nome do Pet" textFill="#555555">
-                            <font>
-                                <Font name="System Bold" size="12.0" />
-                            </font>
-                        </Label>
-                        <TextField fx:id="txtNome" promptText="Ex: Totó" style="-fx-background-radius: 10; -fx-border-color: #EEEEEE; -fx-border-radius: 10;" />
-
-                        <Label text="Espécie (Cachorro ou Gato)" textFill="#555555">
-                            <font>
-                                <Font name="System Bold" size="12.0" />
-                            </font>
-                        </Label>
-                        <ComboBox fx:id="cbTipo" prefHeight="35.0" prefWidth="283.0" style="-fx-background-radius: 10; -fx-border-color: #EEEEEE; -fx-border-radius: 10;" />
-
-                        <Label text="Raça" textFill="#555555">
-                            <font>
-                                <Font name="System Bold" size="12.0" />
-                            </font>
-                        </Label>
-                        <TextField fx:id="txtRaca" promptText="Ex: Golden Retriever" style="-fx-background-radius: 10; -fx-border-color: #EEEEEE; -fx-border-radius: 10;" />
-
-                        <HBox spacing="10.0">
+                        <VBox>
                             <children>
-                                <VBox HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <Label text="Idade (anos)" textFill="#555555">
-                                            <font>
-                                                <Font name="System Bold" size="12.0" />
-                                            </font>
-                                        </Label>
-                                        <TextField fx:id="txtIdade" promptText="Ex: 3" style="-fx-background-radius: 10; -fx-border-color: #EEEEEE; -fx-border-radius: 10;" />
-                                    </children>
-                                </VBox>
-                                <VBox HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <Label text="Peso (kg)" textFill="#555555">
-                                            <font>
-                                                <Font name="System Bold" size="12.0" />
-                                            </font>
-                                        </Label>
-                                        <TextField fx:id="txtPeso" promptText="Ex: 10.5" style="-fx-background-radius: 10; -fx-border-color: #EEEEEE; -fx-border-radius: 10;" />
-                                    </children>
-                                </VBox>
+                                <Label text="Idade (anos)" />
+                                <TextField fx:id="txtIdade" prefHeight="30.0" prefWidth="162.0" promptText="Ex: 3" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
                             </children>
-                        </HBox>
-
-                        <!-- Checkboxes condicionais -->
-                        <VBox spacing="5.0">
-                            <CheckBox fx:id="chkAdestrado" text="Adestrado" visible="false" style="-fx-text-fill: #555555;" />
-                            <CheckBox fx:id="chkCastrado" text="Castrado" visible="false" style="-fx-text-fill: #555555;" />
+                        </VBox>
+                        <VBox>
+                            <children>
+                                <Label text="Peso (kg)" />
+                                <TextField fx:id="txtPeso" prefHeight="30.0" prefWidth="162.0" promptText="Ex: 10.5" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
+                            </children>
                         </VBox>
                     </children>
-                    <padding>
-                        <Insets left="20.0" right="20.0" />
-                    </padding>
-                </VBox>
-
-                <!-- Botões de ação -->
-                <HBox alignment="CENTER" spacing="15.0">
-                    <children>
-                        <Button mnemonicParsing="false" onAction="#handleCancelar" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #757575; -fx-background-radius: 15; -fx-text-fill: white; -fx-cursor: hand;" text="CANCELAR">
-                            <font>
-                                <Font name="System Bold" size="12.0" />
-                            </font>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#handleSalvar" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #ffb703; -fx-background-radius: 15; -fx-text-fill: white; -fx-cursor: hand;" text="SALVAR">
-                            <font>
-                                <Font name="System Bold" size="12.0" />
-                            </font>
-                        </Button>
-                    </children>
-                    <padding>
-                        <Insets bottom="20.0" top="10.0" />
-                    </padding>
                 </HBox>
 
-                <!-- Botão voltar (mantido do original) -->
-                <VBox alignment="CENTER" spacing="5.0">
-                    <Button mnemonicParsing="false" onAction="#handleCancelar" style="-fx-background-color: transparent; -fx-text-fill: #999999; -fx-cursor: hand;" text="Voltar aos meus pets">
-                        <font>
-                            <Font size="12.0" />
-                        </font>
-                    </Button>
+                <VBox layoutX="0.0" layoutY="240.0" spacing="10.0">
+                    <children>
+                        <CheckBox fx:id="chkAdestrado" style="-fx-text-fill: #555555;" text="Adestrado" />
+                        <CheckBox fx:id="chkCastrado" style="-fx-text-fill: #555555;" text="Castrado" />
+                    </children>
                 </VBox>
+
+                <Button fx:id="btnSalvar" layoutX="67.0" layoutY="320.0" mnemonicParsing="false" onAction="#handleSalvar" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #FFB300; -fx-background-radius: 10; -fx-font-weight: bold; -fx-cursor: hand;" text="SALVAR" textFill="WHITE">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
             </children>
-        </VBox>
+        </Pane>
     </children>
 </AnchorPane>
