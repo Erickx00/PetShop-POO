@@ -15,7 +15,7 @@
 
         <VBox alignment="TOP_CENTER" layoutX="40.0" layoutY="60.0" prefHeight="460.0" prefWidth="520.0" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
             <children>
-                <Label text="🐾 AGENDAR SERVIÇO" textFill="#ffb703">
+                <Label text="🐾 SERVIÇOS" textFill="#ffb703">
                     <font>
                         <Font name="System Bold" size="20.0" />
                     </font>
@@ -59,7 +59,7 @@
                     </padding>
                 </VBox>
 
-                <Button fx:id="btnConfirmar" mnemonicParsing="false" onAction="#handleConfirmarAgendamento" prefHeight="45.0" prefWidth="250.0" style="-fx-background-color: #ffb703; -fx-background-radius: 20; -fx-text-fill: white; -fx-cursor: hand;" text="CONFIRMAR AGENDAMENTO">
+                <Button fx:id="btnConfirmar" mnemonicParsing="false" onAction="#handleConfirmarAgendamento" prefHeight="45.0" prefWidth="250.0" style="-fx-background-color: #ffb703; -fx-background-radius: 20; -fx-text-fill: white; -fx-cursor: hand;" text="PROSSEGUIR">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
