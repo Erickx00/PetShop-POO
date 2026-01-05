@@ -6,6 +6,7 @@ module org.example.petshoppoo {
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.datatype.jsr310;
     requires com.fasterxml.jackson.core;
+    requires java.desktop;
     opens org.example.petshoppoo to javafx.fxml;
     opens org.example.petshoppoo.controllers to javafx.fxml;
     opens org.example.petshoppoo.model.Login to com.fasterxml.jackson.databind;
