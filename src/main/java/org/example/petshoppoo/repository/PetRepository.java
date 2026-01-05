@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class PetRepository {
     // Usamos o caminho que você definiu
@@ -46,6 +47,12 @@ public class PetRepository {
         return listarTodos().stream()
                 .filter(p -> p.getId().equals(id))
                 .findFirst();
+    }
+
+    public List<Pet> buscarPetsPorUsuario(UUID idUsuario) {
+        return listarTodos().stream() // CORREÇÃO AQUI: this.listarTodos() em vez de PetRepository.listarTodos()
+                .filter(pet -> pet.getIdUsuario() != null && pet.getIdUsuario().equals(idUsuario))
+                .collect(Collectors.toList());
     }
 
     public void deletar(Pet pet) throws PersistenciaException {

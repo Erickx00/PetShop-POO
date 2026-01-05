@@ -74,7 +74,6 @@ public class PetCadastroController {
     }
 
     private boolean validarCampos() {
-        // ... (seu método de validação permanece igual) ...
         if (txtNome.getText().isEmpty() || cbTipo.getValue() == null) {
             AlertUtils.showError("Erro", "Campos obrigatórios vazios.");
             return false;
