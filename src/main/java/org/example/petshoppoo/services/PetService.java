@@ -5,6 +5,7 @@ import org.example.petshoppoo.model.Pet.Pet;
 import org.example.petshoppoo.repository.PetRepository;
 import org.example.petshoppoo.repository.UsuarioRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,6 +50,18 @@ public class PetService {
         usuarioRepository.adicionarPetAoUsuario(idUsuario, novoPet.getId());
 
     }
+
+    public List<Pet> listarPetsDoUsuario(UUID usuarioId) throws PersistenciaException {
+        List<Pet> resultado = new ArrayList<>();
+
+        for (Pet pet : listarPets()) {
+            if (pet.getIdUsuario() != null && pet.getIdUsuario().equals(usuarioId)) {
+                resultado.add(pet);
+            }
+        }
+        return resultado;
+    }
+
 
     public List<Pet> listarPets() {
         return petRepository.listarTodos();

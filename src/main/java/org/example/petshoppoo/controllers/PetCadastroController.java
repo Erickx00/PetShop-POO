@@ -11,8 +11,6 @@ import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.SessionManager;
 import org.example.petshoppoo.utils.ViewLoader;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class PetCadastroController {
 
