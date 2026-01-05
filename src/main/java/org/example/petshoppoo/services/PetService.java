@@ -21,7 +21,7 @@ public class PetService {
     public void cadastrarPet(String nome, String tipo, String raca, int idadeAnos, double peso,
                              boolean adestrado, boolean castrado, UUID idUsuario) throws PersistenciaException {
 
-        // 1Validação básica (Regra de Negócio)
+        // Validação básica (Regra de Negócio)
         if (nome == null || nome.trim().isEmpty()) {
             throw new PersistenciaException("O nome do pet é obrigatório.");
         }
@@ -48,7 +48,6 @@ public class PetService {
 
         // VINCULAÇÃO: Adiciona o ID do Pet ao usuário no usuarios.json
         usuarioRepository.adicionarPetAoUsuario(idUsuario, novoPet.getId());
-
     }
 
     public List<Pet> listarPetsDoUsuario(UUID usuarioId) throws PersistenciaException {
@@ -62,7 +61,6 @@ public class PetService {
         return resultado;
     }
 
-
     public List<Pet> listarPets() {
         return petRepository.listarTodos();
     }
@@ -73,5 +71,56 @@ public class PetService {
 
     public void deletarPet(Pet pet) throws PersistenciaException {
         petRepository.deletar(pet);
+    }
+
+    // ===== MÉTODOS PARA CONTROLLER BURRO =====
+
+    /**
+     * Retorna lista de pets como objetos genéricos
+     */
+    public List<Object> listarPetsDoUsuarioComoObjetos(UUID usuarioId) throws PersistenciaException {
+        List<Pet> pets = listarPetsDoUsuario(usuarioId);
+        return new ArrayList<>(pets);
+    }
+
+    /**
+     * Retorna descrição completa do pet: "Nome (Raça)"
+     */
+    public String obterDescricaoCompleta(Object pet) {
+        if (pet instanceof Pet) {
+            Pet p = (Pet) pet;
+            return p.getNome() + " (" + p.getRaca() + ")";
+        }
+        return "";
+    }
+
+    /**
+     * Retorna apenas o nome do pet
+     */
+    public String obterNome(Object pet) {
+        if (pet instanceof Pet) {
+            return ((Pet) pet).getNome();
+        }
+        return "";
+    }
+
+    /**
+     * Retorna o ID do pet
+     */
+    public UUID obterId(Object pet) {
+        if (pet instanceof Pet) {
+            return ((Pet) pet).getId();
+        }
+        return null;
+    }
+
+    /**
+     * Retorna o peso do pet (necessário para cálculo de preço)
+     */
+    public double obterPeso(Object pet) {
+        if (pet instanceof Pet) {
+            return ((Pet) pet).getPeso();
+        }
+        return 0.0;
     }
 }

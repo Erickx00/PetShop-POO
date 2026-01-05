@@ -9,9 +9,11 @@ import org.example.petshoppoo.repository.PetRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class AgendamentoService {
     private final AgendamentoRepository agendamentoRepository;
@@ -25,10 +27,10 @@ public class AgendamentoService {
     }
 
     /**
-     * Agendar um novo serviço para um pet
+     * Agendar um novo serviço para um pet - RETORNA APENAS O ID
      */
-    public Agendamento agendar(UUID idPet, UUID idServico, UUID idUsuario,
-                               LocalDateTime dataHora, String observacoes) throws PersistenciaException {
+    public UUID agendar(UUID idPet, UUID idServico, UUID idUsuario,
+                        LocalDateTime dataHora, String observacoes) throws PersistenciaException {
 
         // Validar se pet existe
         if (petRepository.buscarPorId(idPet).isEmpty()) {
@@ -51,21 +53,23 @@ public class AgendamentoService {
             throw new PersistenciaException("Horário indisponível. Escolha outro horário.");
         }
 
-        // Criar agendamento - CORRIGIDO: adicionar duraçãoMinutos
+        // Criar agendamento
         Agendamento agendamento = new Agendamento(
                 idPet,
                 idServico,
                 idUsuario,
                 dataHora,
                 observacoes,
-                servico.getDuracaoMinutos() // Adicionar duração
+                servico.getDuracaoMinutos()
         );
 
         agendamento.setValorCobrado(servico.getPreco());
 
         // Salvar
         agendamentoRepository.adicionar(agendamento);
-        return agendamento;
+
+        // Retorna apenas o ID
+        return agendamento.getId();
     }
 
     /**
@@ -97,10 +101,15 @@ public class AgendamentoService {
     }
 
     /**
-     * Listar horários disponíveis para uma data e duração
+     * Listar horários disponíveis para uma data e duração - RETORNA LocalTime
      */
-    public List<LocalDateTime> listarHorariosDisponiveis(LocalDate data, int duracaoMinutos) throws PersistenciaException {
-        return agendamentoRepository.getHorariosDisponiveis(data, duracaoMinutos);
+    public List<LocalTime> listarHorariosDisponiveis(LocalDate data, int duracaoMinutos) throws PersistenciaException {
+        List<LocalDateTime> horariosCompletos = agendamentoRepository.getHorariosDisponiveis(data, duracaoMinutos);
+
+        // Converte LocalDateTime para LocalTime
+        return horariosCompletos.stream()
+                .map(LocalDateTime::toLocalTime)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -250,12 +259,5 @@ public class AgendamentoService {
      */
     public List<Agendamento> listarTodosAgendamentos() throws PersistenciaException {
         return agendamentoRepository.getAgendamentos();
-    }
-
-    /**
-     * Método auxiliar para buscar por ID (mantido para compatibilidade)
-     */
-    private Agendamento buscarPorId(UUID idAgendamento) throws PersistenciaException {
-        return agendamentoRepository.buscarPorId(idAgendamento);
     }
 }
