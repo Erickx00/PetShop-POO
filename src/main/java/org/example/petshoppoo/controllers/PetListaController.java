@@ -59,7 +59,7 @@ public class PetListaController {
                 System.err.println("Arquivo não encontrado!");
             }
         } catch (Exception e) {
-            System.err.println("Erro ao processar JSON de pets: " + e.getMessage());
+            System.err.println("Erro ao processar JSON de pet: " + e.getMessage());
             e.printStackTrace();
         }
     }

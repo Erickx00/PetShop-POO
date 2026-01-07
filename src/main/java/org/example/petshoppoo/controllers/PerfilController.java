@@ -59,7 +59,7 @@ public class PerfilController {
 
 
         } catch (Exception e) {
-            System.err.println("Erro ao processar JSON: " + e.getMessage());
+            System.err.println("Erro  ao processar JSON: " + e.getMessage());
             e.printStackTrace();
         }
     }
