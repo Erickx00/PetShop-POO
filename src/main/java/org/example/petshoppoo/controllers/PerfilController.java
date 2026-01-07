@@ -9,7 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField; // Deve ser TextField!
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.petshoppoo.model.Login.Usuario;
 
@@ -21,8 +21,7 @@ import java.io.InputStream;
 public class PerfilController {
 
 
-    @FXML
-    private Button btnVoltar;
+
     @FXML
     private TextField nome;
     @FXML
@@ -55,7 +54,7 @@ public class PerfilController {
                     System.out.println("O arquivo JSON está vazio.");
                 }
             } else {
-                System.err.println("Arquivo /data/usuarios.json não encontrado!");
+                System.err.println("Arquivo não encontrado!");
             }
 
 

@@ -6,7 +6,7 @@
 
 <AnchorPane prefHeight="550.0" prefWidth="395.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.PetCadastroController">
     <children>
-        <Button layoutX="338.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleCancelar" prefHeight="40.0" prefWidth="43.0" style="-fx-background-color: #FF0000; -fx-background-radius: 10; -fx-font-weight: bold; -fx-cursor: hand;" text="🔙" textFill="WHITE">
+        <Button layoutX="338.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleCancelar" prefHeight="40.0" prefWidth="43.0" style="-fx-background-color:  #FB3000; -fx-background-radius: 50; -fx-font-weight: bold; -fx-cursor: hand;" text="🔙" textFill="WHITE">
             <font>
                 <Font size="18.0" />
             </font>
