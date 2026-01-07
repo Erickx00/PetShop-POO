@@ -1,78 +1,83 @@
 package org.example.petshoppoo.controllers;
 
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.example.petshoppoo.model.Login.Usuario;
-
+import org.example.petshoppoo.services.AuthService;
+import org.example.petshoppoo.utils.AlertUtils;
+import org.example.petshoppoo.utils.SessionManager;
 
 import java.io.IOException;
-import java.io.InputStream;
-
 
 public class PerfilController {
 
+    @FXML private TextField nome;
+    @FXML private TextField email;
+    @FXML private TextField telefone;
 
-
-    @FXML
-    private TextField nome;
-    @FXML
-    private TextField email;
-    @FXML
-    private TextField telefone;
-
+    private AuthService authService;
 
     @FXML
     public void initialize() {
-        carregarDadosPerfil();
+        try {
+            authService = new AuthService();
+            carregarDadosPerfil();
+        } catch (Exception e) {
+            AlertUtils.showError("Erro", "Erro ao inicializar: " + e.getMessage());
+        }
     }
 
-
     private void carregarDadosPerfil() {
+        if (!authService.temUsuarioLogado()) {
+            AlertUtils.showError("Erro", "Nenhum usuário logado!");
+            return;
+        }
+
+        nome.setText(authService.obterNomeUsuarioLogado());
+        email.setText(authService.obterEmailUsuarioLogado());
+        telefone.setText(authService.obterTelefoneUsuarioLogado());
+    }
+
+    @FXML
+    private void handleSalvar() {
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            InputStream is = getClass().getResourceAsStream("/data/usuarios.json");
+            String novoNome = nome.getText().trim();
+            String novoEmail = email.getText().trim();
+            String novoTelefone = telefone.getText().trim();
 
-
-            if (is != null) {
-                Usuario[] usuarios = mapper.readValue(is, Usuario[].class);
-                if (usuarios.length > 0) {
-                    Usuario usuarioLogado = usuarios[0];
-                    nome.setText(usuarioLogado.getNome());
-                    email.setText(usuarioLogado.getEmail());
-                    telefone.setText(usuarioLogado.getTelefone());
-                    System.out.println("Perfil carregado: " + usuarioLogado.getNome());
-                } else {
-                    System.out.println("O arquivo JSON está vazio.");
-                }
-            } else {
-                System.err.println("Arquivo não encontrado!");
+            if (novoNome.isEmpty() || novoEmail.isEmpty() || novoTelefone.isEmpty()) {
+                AlertUtils.showError("Campos vazios", "Preencha todos os campos!");
+                return;
             }
 
+            authService.atualizarPerfil(
+                    SessionManager.getUsuarioId(),
+                    novoNome,
+                    novoEmail,
+                    novoTelefone
+            );
+
+            AlertUtils.showInfo("Sucesso", "Perfil atualizado com sucesso!");
 
         } catch (Exception e) {
-            System.err.println("Erro  ao processar JSON: " + e.getMessage());
-            e.printStackTrace();
+            AlertUtils.showError("Erro ao salvar", e.getMessage());
         }
     }
 
     @FXML
-    public void handleVoltar(ActionEvent event) {
+    private void handleVoltar(ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/views/MenuView.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            AlertUtils.showError("Erro", "Não foi possível voltar ao menu.");
         }
     }
 }

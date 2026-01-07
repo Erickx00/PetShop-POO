@@ -7,12 +7,10 @@
 
 <AnchorPane prefHeight="547.0" prefWidth="570.0" style="-fx-background-color: #FDF8E1;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.PerfilController">
     <children>
-        <VBox alignment="CENTER" layoutX="-34.0" layoutY="-30.0" prefHeight="576.0" prefWidth="548.0" AnchorPane.bottomAnchor="-30.0" AnchorPane.leftAnchor="-34.0" AnchorPane.rightAnchor="-42.0" AnchorPane.topAnchor="-30.0">
+        <VBox alignment="CENTER" layoutX="-34.0" layoutY="3.0" prefHeight="529.0" prefWidth="641.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="-34.0" AnchorPane.rightAnchor="-37.0" AnchorPane.topAnchor="3.0">
             <children>
 
-
-                <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="450.0" spacing="20.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 30; -fx-padding: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
-
+                <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="509.0" prefWidth="478.0" spacing="20.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 30; -fx-padding: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
 
                     <children>
                         <HBox alignment="CENTER_LEFT" prefWidth="390.0">
@@ -33,9 +31,7 @@
                             </children>
                         </HBox>
 
-
                         <Separator prefWidth="200.0" />
-
 
                         <VBox alignment="CENTER" spacing="10.0">
                             <children>
@@ -52,36 +48,39 @@
                             </children>
                         </VBox>
 
-
                         <VBox spacing="15.0">
                             <children>
                                 <VBox spacing="5.0">
                                     <children>
                                         <Label style="-fx-font-weight: bold;" text="🙎‍♂️ Nome Completo" textFill="#fbb300" />
-                                        <TextField fx:id="nome" editable="false" prefHeight="40.0" style="-fx-background-color: #F8F9FA; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-radius: 10;" />
+                                        <TextField fx:id="nome" prefHeight="40.0" style="-fx-background-color: #F8F9FA; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-radius: 10;" />
                                     </children>
                                 </VBox>
-
 
                                 <VBox spacing="5.0">
                                     <children>
                                         <Label style="-fx-font-weight: bold;" text="📧 E-mail" textFill="#fbb300" />
-                                        <TextField fx:id="email" editable="false" prefHeight="40.0" style="-fx-background-color: #F8F9FA; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-radius: 10;" />
+                                        <TextField fx:id="email" prefHeight="40.0" style="-fx-background-color: #F8F9FA; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-radius: 10;" />
                                     </children>
                                 </VBox>
-
 
                                 <VBox spacing="5.0">
                                     <children>
                                         <Label style="-fx-font-weight: bold;" text="📞 Telefone" textFill="#fbb300" />
-                                        <TextField fx:id="telefone" editable="false" prefHeight="40.0" style="-fx-background-color: #F8F9FA; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-radius: 10;" />
+                                        <TextField fx:id="telefone" prefHeight="40.0" style="-fx-background-color: #F8F9FA; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-radius: 10;" />
                                     </children>
                                 </VBox>
                             </children>
                         </VBox>
+
+                        <!-- BOTÃO SALVAR ADICIONADO -->
+                        <Button fx:id="btnSalvar" mnemonicParsing="false" onAction="#handleSalvar" prefHeight="45.0" prefWidth="390.0" style="-fx-background-color: #FFB300; -fx-background-radius: 20; -fx-cursor: hand;" text="💾 SALVAR ALTERAÇÕES" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Button>
                     </children>
                 </VBox>
-
 
             </children>
         </VBox>

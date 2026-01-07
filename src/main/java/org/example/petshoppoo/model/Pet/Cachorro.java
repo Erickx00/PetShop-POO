@@ -1,8 +1,11 @@
 package org.example.petshoppoo.model.Pet;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
+@JsonTypeName("Cachorro")
 public class Cachorro extends Pet {
     private boolean adestrado;
 

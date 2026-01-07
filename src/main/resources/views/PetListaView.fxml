@@ -1,26 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="498.0" prefWidth="565.0" style="-fx-background-color: #FFF8E1;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.PetListaController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="700.0" style="-fx-background-color: #FFF8E1;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.PetListaController">
     <children>
-        <Separator layoutX="11.0" layoutY="75.0" prefHeight="6.0" prefWidth="555.0" />
-        <Label layoutX="132.0" layoutY="14.0" text="🐾 Meus Animais" textFill="#fbb300">
-            <font>
-                <Font name="System Bold" size="36.0" />
-            </font>
-        </Label>
-        <TableView fx:id="tabelaPets" layoutX="86.0" layoutY="102.0" prefHeight="317.0" prefWidth="376.0" style="column: fbb300;">
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" prefWidth="660.0" spacing="20.0">
+            <children>
+                <Button fx:id="btnVoltar" mnemonicParsing="false" onAction="#handleVoltar" prefHeight="44.0" prefWidth="44.0" style="-fx-background-color: #FB3000; -fx-background-radius: 50; -fx-cursor: hand;" text="🔙" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                </Button>
+                <Region HBox.hgrow="ALWAYS" />
+                <Label text="🐾 Meus Animais" textFill="#fbb300">
+                    <font>
+                        <Font name="System Bold" size="32.0" />
+                    </font>
+                </Label>
+                <Region HBox.hgrow="ALWAYS" />
+            </children>
+        </HBox>
+
+        <Separator layoutX="20.0" layoutY="80.0" prefWidth="660.0" />
+
+        <!-- Tabela de Pets -->
+        <TableView fx:id="tabelaPets" layoutX="20.0" layoutY="100.0" prefHeight="280.0" prefWidth="660.0" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-radius: 10;">
             <columns>
-                <TableColumn fx:id="clNome" prefWidth="75.0" style="-fx-background-color: fbb300;" text="Nome" />
-                <TableColumn fx:id="clEspecie" prefWidth="75.0" style="-fx-background-color: fbb300;" text="Espécie" />
-                <TableColumn fx:id="clRaca" prefWidth="75.0" style="-fx-background-color: fbb300;" text="Raça" />
-                <TableColumn fx:id="clIdade" prefWidth="75.0" style="-fx-background-color: fbb300;" text="Idade" />
-                <TableColumn fx:id="clPeso" prefWidth="75.0" style="-fx-background-color: fbb300;" text="Peso" />
+                <TableColumn fx:id="clNome" prefWidth="140.0" text="Nome" />
+                <TableColumn fx:id="clEspecie" prefWidth="120.0" text="Espécie" />
+                <TableColumn fx:id="clRaca" prefWidth="140.0" text="Raça" />
+                <TableColumn fx:id="clIdade" prefWidth="120.0" text="Idade" />
+                <TableColumn fx:id="clPeso" prefWidth="140.0" text="Peso (kg)" />
             </columns>
         </TableView>
-        <Button fx:id="btnVoltar" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleVoltar" prefHeight="44.0" prefWidth="42.0" style="-fx-background-color: #FB3000; -fx-background-radius: 50; -fx-cursor: hand;" text="🔙" textFill="WHITE" />
+
+        <!-- Painel de Edição -->
+        <VBox fx:id="painelEdicao" layoutX="20.0" layoutY="400.0" prefWidth="660.0" spacing="15.0" style="-fx-background-color: white; -fx-border-color: #FFB300; -fx-border-width: 2; -fx-border-radius: 15; -fx-background-radius: 15; -fx-padding: 20;" visible="false">
+            <children>
+                <Label text="✏️ Editar Pet" textFill="#FFB300">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Label>
+
+                <HBox spacing="15.0">
+                    <children>
+                        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label style="-fx-font-weight: bold;" text="Nome" textFill="#FFB300" />
+                                <TextField fx:id="txtNome" prefHeight="35.0" style="-fx-background-color: #F8F9FA; -fx-border-color: #E0E0E0; -fx-border-radius: 8; -fx-background-radius: 8;" />
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label style="-fx-font-weight: bold;" text="Raça" textFill="#FFB300" />
+                                <TextField fx:id="txtRaca" prefHeight="35.0" style="-fx-background-color: #F8F9FA; -fx-border-color: #E0E0E0; -fx-border-radius: 8; -fx-background-radius: 8;" />
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label style="-fx-font-weight: bold;" text="Peso (kg)" textFill="#FFB300" />
+                                <TextField fx:id="txtPeso" prefHeight="35.0" style="-fx-background-color: #F8F9FA; -fx-border-color: #E0E0E0; -fx-border-radius: 8; -fx-background-radius: 8;" />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <HBox alignment="CENTER" spacing="15.0">
+                    <children>
+                        <Button fx:id="btnSalvar" mnemonicParsing="false" onAction="#handleSalvar" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #4CAF50; -fx-background-radius: 20; -fx-cursor: hand;" text="💾 Salvar" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#handleCancelar" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #9E9E9E; -fx-background-radius: 20; -fx-cursor: hand;" text="❌ Cancelar" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <!-- Botões de Ação -->
+        <HBox fx:id="botoesAcao" alignment="CENTER" layoutX="20.0" layoutY="400.0" prefWidth="660.0" spacing="20.0">
+            <children>
+                <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#handleEditar" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #2196F3; -fx-background-radius: 20; -fx-cursor: hand;" text="✏️ Editar" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+                <Button fx:id="btnDeletar" mnemonicParsing="false" onAction="#handleDeletar" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #F44336; -fx-background-radius: 20; -fx-cursor: hand;" text="🗑️ Deletar" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+                <Button fx:id="btnAdicionar" mnemonicParsing="false" onAction="#handleAdicionar" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #4CAF50; -fx-background-radius: 20; -fx-cursor: hand;" text="➕ Adicionar" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+            </children>
+        </HBox>
     </children>
 </AnchorPane>

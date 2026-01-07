@@ -23,6 +23,8 @@ public class UsuarioService {
         return novoUsuario;
     }
 
+
+
     public List<Usuario> listarTodosUsuarios() {
         return usuarioRepository.listarTodos();
     }
