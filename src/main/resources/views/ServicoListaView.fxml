@@ -95,16 +95,20 @@
                             <children>
                                 <Button onAction="#limparCampos" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #A0A0A0; -fx-background-radius: 20; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="LIMPAR" />
 
-                                <Button maxWidth="Infinity"  prefHeight="40.0" style="-fx-background-color: #2ECC71; -fx-background-radius: 20; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="MEUS AGENDAMENTOS" HBox.hgrow="ALWAYS" />
+                                <Button maxWidth="Infinity" prefHeight="40.0" style="-fx-background-color: #2ECC71; -fx-background-radius: 20; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="MEUS AGENDAMENTOS" HBox.hgrow="ALWAYS" />
 
                                 <Button fx:id="btnConfirmar" onAction="#handleConfirmar" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #FFB300; -fx-background-radius: 20; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="CONFIRMAR" />
                             </children>
                         </HBox>
+                  <Pane prefHeight="40.0" prefWidth="440.0">
+                     <children>
+            
+                            <Hyperlink layoutX="161.0" layoutY="14.0" onAction="#voltarMenu" style="-fx-font-weight: bold;" text="Voltar para o Menu" textFill="#FFB300" />
+                     </children>
+                  </Pane>
 
                     </children>
                 </VBox>
-
-                <Hyperlink onAction="#voltarMenu" style="-fx-font-weight: bold;" text="Voltar para o Menu" textFill="#FFB300" />
             </children>
         </VBox>
     </children>

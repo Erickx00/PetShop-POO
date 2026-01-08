@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -98,11 +97,6 @@
                     </font>
                 </Button>
                 <Button fx:id="btnDeletar" mnemonicParsing="false" onAction="#handleDeletar" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #F44336; -fx-background-radius: 20; -fx-cursor: hand;" text="🗑️ Deletar" textFill="WHITE">
-                    <font>
-                        <Font name="System Bold" size="14.0" />
-                    </font>
-                </Button>
-                <Button fx:id="btnAdicionar" mnemonicParsing="false" onAction="#handleAdicionar" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #4CAF50; -fx-background-radius: 20; -fx-cursor: hand;" text="➕ Adicionar" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>

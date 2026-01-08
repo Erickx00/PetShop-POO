@@ -1,70 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="550.0" prefWidth="395.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.PetCadastroController">
+<AnchorPane prefHeight="550.0" prefWidth="400.0" style="-fx-background-color: #FFF8E1;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.PetCadastroController">
     <children>
-        <Button layoutX="338.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleCancelar" prefHeight="40.0" prefWidth="43.0" style="-fx-background-color:  #FB3000; -fx-background-radius: 50; -fx-font-weight: bold; -fx-cursor: hand;" text="🔙" textFill="WHITE">
+
+        <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleCancelar" prefHeight="45.0" prefWidth="42.0" style="-fx-background-color: #Fb3000; -fx-background-radius: 50; -fx-cursor: hand;" text="🔙" textFill="WHITE">
             <font>
                 <Font size="18.0" />
             </font>
         </Button>
 
-        <Label layoutX="167.0" layoutY="10.0" prefHeight="80.0" prefWidth="61.0" text="🐾" textFill="#ffb300">
+        <Label alignment="CENTER" layoutY="42.0" prefWidth="400.0" text="NOVO PET" textFill="#ffb300">
             <font>
-                <Font size="59.0" />
+                <Font name="System Bold" size="24.0" />
             </font>
         </Label>
 
-        <Label layoutX="104.0" layoutY="85.0" text="CADASTRAR NOVO PET" textFill="#ffb300">
-            <font>
-                <Font name="System Bold" size="16.0" />
-            </font>
-        </Label>
-
-        <Pane layoutX="30.0" layoutY="115.0" prefHeight="420.0" prefWidth="335.0">
+        <AnchorPane layoutX="25.0" layoutY="100.0" prefHeight="419.0" prefWidth="350.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20; -fx-background-radius: 20;">
+            <effect>
+                <DropShadow color="#0000001a" radius="10" spread="0.1" />
+            </effect>
             <children>
-                <Label layoutX="0.0" layoutY="0.0" text="Nome do Pet" />
-                <TextField fx:id="txtNome" layoutX="0.0" layoutY="20.0" prefHeight="30.0" prefWidth="334.0" promptText="Ex: Totó" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
 
-                <Label layoutX="0.0" layoutY="60.0" text="Espécie" />
-                <ComboBox fx:id="cbTipo" layoutX="0.0" layoutY="80.0" prefHeight="30.0" prefWidth="334.0" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
-
-                <Label layoutX="0.0" layoutY="120.0" text="Raça" />
-                <TextField fx:id="txtRaca" layoutX="0.0" layoutY="140.0" prefHeight="30.0" prefWidth="334.0" promptText="Ex: Golden Retriever" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
-
-                <HBox layoutX="0.0" layoutY="180.0" spacing="10.0">
+                <VBox layoutX="25.0" layoutY="25.0" spacing="12.0">
                     <children>
-                        <VBox>
-                            <children>
-                                <Label text="Idade (anos)" />
-                                <TextField fx:id="txtIdade" prefHeight="30.0" prefWidth="162.0" promptText="Ex: 3" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
-                            </children>
+                        <VBox spacing="5">
+                            <Label style="-fx-font-weight: bold;" text="Nome do Pet" textFill="#555555" />
+                            <TextField fx:id="txtNome" prefHeight="35.0" prefWidth="300.0" promptText="Ex: Totó" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
                         </VBox>
-                        <VBox>
-                            <children>
-                                <Label text="Peso (kg)" />
-                                <TextField fx:id="txtPeso" prefHeight="30.0" prefWidth="162.0" promptText="Ex: 10.5" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
-                            </children>
-                        </VBox>
-                    </children>
-                </HBox>
 
-                <VBox layoutX="0.0" layoutY="240.0" spacing="10.0">
-                    <children>
-                        <CheckBox fx:id="chkAdestrado" style="-fx-text-fill: #555555;" text="Adestrado" />
-                        <CheckBox fx:id="chkCastrado" style="-fx-text-fill: #555555;" text="Castrado" />
+                        <VBox spacing="5">
+                            <Label style="-fx-font-weight: bold;" text="Espécie" textFill="#555555" />
+                            <ComboBox fx:id="cbTipo" prefHeight="35.0" prefWidth="300.0" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
+                        </VBox>
+
+                        <VBox spacing="5">
+                            <Label style="-fx-font-weight: bold;" text="Raça" textFill="#555555" />
+                            <TextField fx:id="txtRaca" prefHeight="35.0" prefWidth="300.0" promptText="Ex: Golden Retriever" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
+                        </VBox>
+
+                        <HBox spacing="10.0">
+                            <children>
+                                <VBox spacing="5">
+                                    <Label style="-fx-font-weight: bold;" text="Idade (anos)" textFill="#555555" />
+                                    <TextField fx:id="txtIdade" prefHeight="35.0" prefWidth="145.0" promptText="Ex: 3" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
+                                </VBox>
+                                <VBox spacing="5">
+                                    <Label style="-fx-font-weight: bold;" text="Peso (kg)" textFill="#555555" />
+                                    <TextField fx:id="txtPeso" prefHeight="35.0" prefWidth="145.0" promptText="Ex: 10.5" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                        <HBox spacing="20.0" style="-fx-padding: 5 0 0 0;">
+                            <children>
+                                <CheckBox fx:id="chkAdestrado" style="-fx-text-fill: #555555;" text="Adestrado" />
+                                <CheckBox fx:id="chkCastrado" style="-fx-text-fill: #555555;" text="Castrado" />
+                            </children>
+                        </HBox>
+
+                        <Button fx:id="btnSalvar" mnemonicParsing="false" onAction="#handleSalvar" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #FFB300; -fx-background-radius: 10; -fx-font-weight: bold; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);" text="SALVAR" textFill="WHITE">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <VBox.margin>
+                            </VBox.margin>
+                        </Button>
                     </children>
                 </VBox>
-
-                <Button fx:id="btnSalvar" layoutX="67.0" layoutY="320.0" mnemonicParsing="false" onAction="#handleSalvar" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #FFB300; -fx-background-radius: 10; -fx-font-weight: bold; -fx-cursor: hand;" text="SALVAR" textFill="WHITE">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Button>
             </children>
-        </Pane>
+        </AnchorPane>
     </children>
 </AnchorPane>
