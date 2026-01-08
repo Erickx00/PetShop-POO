@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Usuario {
-    private UUID id;
+    private UUID idUsuario;
     private String nome;
     private String email;
     private String senha;
@@ -16,7 +16,7 @@ public class Usuario {
     private List<UUID> idsPets;
 
     public Usuario() {
-        this.id = UUID.randomUUID();
+        this.idUsuario = UUID.randomUUID();
         this.perfil = Perfil.CLIENTE;
         this.idsPets = new ArrayList<>();
     }
@@ -51,7 +51,7 @@ public class Usuario {
         idsPets.remove(idPet);
     }
 
-    public UUID getId() { return id; }
+    public UUID getIdUsuario() { return idUsuario; }
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
     public String getEmail() { return email; }

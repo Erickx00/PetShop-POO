@@ -23,7 +23,7 @@ public class SessionManager {
     }
 
     public static UUID getUsuarioId() {
-        return SessionManager.getInstance().usuarioLogado.getId();
+        return SessionManager.getInstance().usuarioLogado.getIdUsuario();
     }
 
     public void setUsuarioLogado(Usuario usuarioLogado) {

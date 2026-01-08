@@ -31,14 +31,14 @@ public class PetRepository {
 
     public void salvar(Pet pet) throws PersistenciaException {
         List<Pet> pets = listarTodos();
-        pets.removeIf(p -> p.getId() != null && p.getId().equals(pet.getId()));
+        pets.removeIf(p -> p.getIdPet() != null && p.getIdPet().equals(pet.getIdPet()));
         pets.add(pet);
         JsonFileManager.salvar(caminhoArquivo, pets);
     }
 
     public Optional<Pet> buscarPorId(UUID id) {
         return listarTodos().stream()
-                .filter(p -> p.getId().equals(id))
+                .filter(p -> p.getIdPet().equals(id))
                 .findFirst();
     }
 
@@ -50,7 +50,7 @@ public class PetRepository {
 
     public void deletar(Pet pet) throws PersistenciaException {
         List<Pet> pets = listarTodos();
-        pets.removeIf(p -> p.getId().equals(pet.getId()));
+        pets.removeIf(p -> p.getIdPet().equals(pet.getIdPet()));
         JsonFileManager.salvar(caminhoArquivo, pets);
     }
 
@@ -60,12 +60,12 @@ public class PetRepository {
     public void atualizar(Pet petAtualizado) throws PersistenciaException {
         List<Pet> pets = listarTodos();
 
-        if (pets.stream().noneMatch(p -> p.getId().equals(petAtualizado.getId()))) {
+        if (pets.stream().noneMatch(p -> p.getIdPet().equals(petAtualizado.getIdPet()))) {
             throw new PersistenciaException("Pet não encontrado para atualizar");
         }
 
         List<Pet> petsAtualizados = pets.stream()
-                .map(p -> p.getId().equals(petAtualizado.getId()) ? petAtualizado : p)
+                .map(p -> p.getIdPet().equals(petAtualizado.getIdPet()) ? petAtualizado : p)
                 .collect(Collectors.toList());
 
         JsonFileManager.salvar(caminhoArquivo, petsAtualizados);

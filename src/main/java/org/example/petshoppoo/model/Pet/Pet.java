@@ -16,7 +16,7 @@ import java.util.UUID;
         @JsonSubTypes.Type(value = Gato.class, name = "Gato")
 })
 public abstract class Pet {
-    protected UUID id;
+    protected UUID idPet;
     protected String nome;
     protected String raca;
     protected LocalDate dataNascimento;
@@ -25,12 +25,12 @@ public abstract class Pet {
     protected String tipo;
 
     public Pet() {
-        this.id = UUID.randomUUID();
+        this.idPet = UUID.randomUUID();
     }
 
-    public Pet(UUID id, String nome, LocalDate dataNascimento, String raca,
+    public Pet(UUID idPet, String nome, LocalDate dataNascimento, String raca,
                double peso, UUID idUsuario, String tipo) {
-        this.id = id == null ? UUID.randomUUID() : id;
+        this.idPet = idPet == null ? UUID.randomUUID() : idPet;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.raca = raca;
@@ -44,8 +44,8 @@ public abstract class Pet {
         return Period.between(dataNascimento, LocalDate.now()).getYears();
     }
 
-    public UUID getId() { return id; }
-    public void setId(UUID id) { this.id = id; }
+    public UUID getIdPet() { return idPet; }
+    public void setIdPet(UUID idPet) { this.idPet = idPet; }
 
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }

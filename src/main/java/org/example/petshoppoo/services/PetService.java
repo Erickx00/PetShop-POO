@@ -42,7 +42,7 @@ public class PetService {
         }
 
         petRepository.salvar(novoPet);
-        usuarioRepository.adicionarPetAoUsuario(idUsuario, novoPet.getId());
+        usuarioRepository.adicionarPetAoUsuario(idUsuario, novoPet.getIdPet());
     }
 
     public List<Pet> listarPetsDoUsuario(UUID usuarioId) throws PersistenciaException {
@@ -86,7 +86,7 @@ public class PetService {
     }
 
     public UUID obterId(Object pet) {
-        return pet instanceof Pet ? ((Pet) pet).getId() : null;
+        return pet instanceof Pet ? ((Pet) pet).getIdPet() : null;
     }
 
     public double obterPeso(Object pet) {

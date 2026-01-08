@@ -23,7 +23,7 @@ public class UsuarioRepository {
 
     // Refatorado: Substitui o loop for por removeIf + add (mais limpo para listas)
     public void atualizar(Usuario usuarioAtualizado) throws PersistenciaException {
-        if (usuarios.removeIf(u -> u.getId().equals(usuarioAtualizado.getId()))) {
+        if (usuarios.removeIf(u -> u.getIdUsuario().equals(usuarioAtualizado.getIdUsuario()))) {
             usuarios.add(usuarioAtualizado);
             salvarUsuarios();
         }
@@ -31,7 +31,7 @@ public class UsuarioRepository {
 
     public Usuario buscarPorId(UUID id) {
         return usuarios.stream()
-                .filter(u -> u.getId().equals(id))
+                .filter(u -> u.getIdUsuario().equals(id))
                 .findFirst()
                 .orElse(null);
     }
