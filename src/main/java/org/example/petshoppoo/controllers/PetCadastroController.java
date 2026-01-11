@@ -6,13 +6,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.petshoppoo.exceptions.PersistenciaException;
+import org.example.petshoppoo.model.Login.Usuario;
 import org.example.petshoppoo.services.PetService;
 import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.SessionManager;
 import org.example.petshoppoo.utils.ViewLoader;
 
 
-public class PetCadastroController {
+public class PetCadastroController extends BaseController {
 
     @FXML private TextField txtNome;
     @FXML private ComboBox<String> cbTipo;
@@ -28,6 +29,9 @@ public class PetCadastroController {
     public void initialize() {
         // Inicializa o serviço apenas uma vez
         try {
+            validarSessao();
+            Usuario u = session.getUsuarioLogado();
+
             this.petService = new PetService();
         } catch (PersistenciaException e) {
             AlertUtils.showError("Erro", "Erro ao carregar banco de dados.");

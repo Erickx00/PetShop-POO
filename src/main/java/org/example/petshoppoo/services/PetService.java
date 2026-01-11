@@ -147,4 +147,51 @@ public class PetService {
 
         petRepository.atualizar(p);
     }
+
+    public void excluir(UUID idPet) throws PersistenciaException {
+        Pet pet = petRepository.buscarPorId(idPet)
+                .orElseThrow(() -> new PersistenciaException("Pet não encontrado."));
+        petRepository.deletar(pet);
+    }
+
+    public void atualizar(Pet pet) throws PersistenciaException {
+        validarPet(pet);
+        petRepository.atualizar(pet);
+    }
+
+    private void validarPet(Pet pet) throws PersistenciaException {
+        if (pet == null) {
+            throw new PersistenciaException("Pet não pode ser nulo.");
+        }
+
+        if (pet.getNome() == null || pet.getNome().trim().isEmpty()) {
+            throw new PersistenciaException("O nome do pet é obrigatório.");
+        }
+
+        if (pet.getRaca() == null || pet.getRaca().trim().isEmpty()) {
+            throw new PersistenciaException("A raça do pet é obrigatória.");
+        }
+
+        if (pet.getPeso() <= 0) {
+            throw new PersistenciaException("O peso deve ser maior que zero.");
+        }
+
+        if (pet.getDataNascimento() == null) {
+            throw new PersistenciaException("A data de nascimento é obrigatória.");
+        }
+
+        if (pet.getDataNascimento().isAfter(LocalDate.now())) {
+            throw new PersistenciaException("A data de nascimento não pode ser futura.");
+        }
+
+        if (pet.getIdUsuario() == null) {
+            throw new PersistenciaException("O pet deve estar associado a um usuário.");
+        }
+    }
+
+    public String formatarIdade(Pet pet) {
+        if (pet == null) return "N/A";
+        int anos = pet.calcularIdade();
+        return anos + (anos == 1 ? " ano" : " anos");
+    }
 }

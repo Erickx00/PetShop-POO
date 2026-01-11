@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import org.example.petshoppoo.services.AuthService;
+import org.example.petshoppoo.services.UsuarioService;
 import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.ViewLoader;
 import java.io.IOException;
@@ -17,11 +17,11 @@ public class CadastroController {
     @FXML private PasswordField txtConfirmarSenha;
     @FXML private Button btnFinalizar;
 
-    private AuthService authService;
+    private UsuarioService usuarioService;
 
     public CadastroController() {
         try {
-            this.authService = new AuthService();
+           this.usuarioService = new UsuarioService();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,7 +46,7 @@ public class CadastroController {
         }
 
         try {
-            authService.registrar(nome, email, telefone, senha);
+            usuarioService.registrar(nome, email, telefone, senha);
             AlertUtils.showInfo("Sucesso", "Cadastro realizado!");
             ViewLoader.changeScene(btnFinalizar, "/views/LoginView.fxml", "Login");
         } catch (Exception e) {

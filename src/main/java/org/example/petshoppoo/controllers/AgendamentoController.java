@@ -6,25 +6,20 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.example.petshoppoo.exceptions.PersistenciaException;
-import org.example.petshoppoo.services.AgendamentoService;
-import org.example.petshoppoo.services.PetService;
-import org.example.petshoppoo.services.ServicoService;
-import org.example.petshoppoo.utils.AlertUtils;
-import org.example.petshoppoo.utils.SessionManager;
-import org.example.petshoppoo.utils.ViewLoader;
+import org.example.petshoppoo.model.Login.Usuario;
+import org.example.petshoppoo.model.Pet.Pet;
+import org.example.petshoppoo.model.Servico.Servico;
+import org.example.petshoppoo.services.*;
+import org.example.petshoppoo.utils.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.UUID;
 
-public class AgendamentoController {
+public class AgendamentoController extends BaseController {
 
-
-    @FXML private ComboBox<Object> comboPet;
-    @FXML private ComboBox<Object> comboServico;
+    @FXML private ComboBox<Pet> comboPet;
+    @FXML private ComboBox<Servico> comboServico;
     @FXML private ComboBox<String> comboHorario;
     @FXML private DatePicker datePicker;
     @FXML private TextArea txtObservacoes;
@@ -33,101 +28,98 @@ public class AgendamentoController {
     @FXML private Label lblTotal;
     @FXML private Button btnConfirmar;
 
-    //  LISTAS
-    private final ObservableList<Object> pets = FXCollections.observableArrayList();
-    private final ObservableList<Object> servicos = FXCollections.observableArrayList();
-    private final ObservableList<String> horarios = FXCollections.observableArrayList();
+    private final ObservableList<Pet> pets = FXCollections.observableArrayList();
+    private final ObservableList<Servico> servicos = FXCollections.observableArrayList();
 
-    // SERVICES
     private PetService petService;
     private ServicoService servicoService;
     private AgendamentoService agendamentoService;
 
-    // FORMATADORES
-    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
 
-    //  INITIALIZE
     @FXML
     public void initialize() {
         try {
-            petService = new PetService();
-            servicoService = new ServicoService();
-            agendamentoService = new AgendamentoService();
+            validarSessao();
+            Usuario u = session.getUsuarioLogado();
 
-            carregarServicos();
-            carregarPets();
-            configurarDatePicker();
-            configurarListeners();
-            atualizarResumo();
+            inicializarServices();
+            carregarDados();
+            configurarComponentes();
         } catch (Exception e) {
             AlertUtils.showError("Erro ao inicializar", e.getMessage());
         }
     }
 
-    //CARGA DE DADOS
-    private void carregarServicos() throws PersistenciaException {
-        List<Object> servicosDisponiveis = servicoService.listarServicosDisponiveisComoObjetos();
-        servicos.setAll(servicosDisponiveis);
+    private void inicializarServices() throws PersistenciaException {
+        petService = new PetService();
+        servicoService = new ServicoService();
+        agendamentoService = new AgendamentoService();
+    }
+
+    private void carregarDados() throws Exception {
+        carregarServicos();
+        carregarPets();
+    }
+
+    private void carregarServicos() throws Exception {
+        servicos.setAll(servicoService.listarServicosDisponiveis());
         comboServico.setItems(servicos);
 
-        comboServico.setCellFactory(param -> new ListCell<>() {
+        comboServico.setCellFactory(p -> new ListCell<>() {
             @Override
-            protected void updateItem(Object servico, boolean empty) {
-                super.updateItem(servico, empty);
-                if (empty || servico == null) {
+            protected void updateItem(Servico s, boolean empty) {
+                super.updateItem(s, empty);
+                if (empty || s == null) {
                     setText(null);
                 } else {
-                    setText(servicoService.obterDescricaoCompleta(servico));
+                    setText(String.format("%s - R$ %.2f (%d min)",
+                            s.getTipo().getDescricao(),
+                            s.getPreco(),
+                            s.getDuracaoMinutos()));
                 }
             }
         });
 
         comboServico.setButtonCell(new ListCell<>() {
             @Override
-            protected void updateItem(Object servico, boolean empty) {
-                super.updateItem(servico, empty);
-                if (empty || servico == null) {
-                    setText(null);
-                } else {
-                    setText(servicoService.obterDescricaoSimples(servico));
-                }
+            protected void updateItem(Servico s, boolean empty) {
+                super.updateItem(s, empty);
+                setText(empty || s == null ? null : s.getTipo().getDescricao());
             }
         });
     }
 
-    private void carregarPets() throws PersistenciaException {
+    private void carregarPets() throws Exception {
         UUID usuarioId = SessionManager.getUsuarioId();
         if (usuarioId == null) {
             AlertUtils.showError("Sessão expirada", "Faça login novamente.");
             return;
         }
 
-        List<Object> petsUsuario = petService.listarPetsDoUsuarioComoObjetos(usuarioId);
-        pets.setAll(petsUsuario);
+        pets.setAll(petService.listarPetsDoUsuario(usuarioId));
         comboPet.setItems(pets);
 
-        comboPet.setCellFactory(param -> new ListCell<>() {
+        comboPet.setCellFactory(p -> new ListCell<>() {
             @Override
-            protected void updateItem(Object pet, boolean empty) {
+            protected void updateItem(Pet pet, boolean empty) {
                 super.updateItem(pet, empty);
                 if (empty || pet == null) {
                     setText(null);
                 } else {
-                    setText(petService.obterDescricaoCompleta(pet));
+                    setText(String.format("%s (%s, %s)",
+                            pet.getNome(),
+                            pet.getTipo(),
+                            pet.getRaca()));
                 }
             }
         });
 
         comboPet.setButtonCell(new ListCell<>() {
             @Override
-            protected void updateItem(Object pet, boolean empty) {
+            protected void updateItem(Pet pet, boolean empty) {
                 super.updateItem(pet, empty);
-                if (empty || pet == null) {
-                    setText(null);
-                } else {
-                    setText(petService.obterNome(pet));
-                }
+                setText(empty || pet == null ? null : pet.getNome());
             }
         });
 
@@ -136,37 +128,33 @@ public class AgendamentoController {
         }
     }
 
-    // ===== CONFIGURAÇÕES =====
+    private void configurarComponentes() {
+        configurarDatePicker();
+        configurarListeners();
+        atualizarResumo();
+    }
+
     private void configurarDatePicker() {
+        LocalDate hoje = LocalDate.now();
+        LocalDate minimo = hoje.plusDays(1);
+        LocalDate maximo = hoje.plusMonths(4);
+
         datePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
-                setDisable(empty || date.isBefore(LocalDate.now().plusDays(1)));
+                setDisable(empty || date.isBefore(minimo) || date.isAfter(maximo));
             }
         });
 
-        datePicker.setValue(LocalDate.now().plusDays(1));
-
-        datePicker.setConverter(new javafx.util.StringConverter<>() {
-            @Override
-            public String toString(LocalDate date) {
-                return date != null ? date.format(dateFormatter) : "";
-            }
-
-            @Override
-            public LocalDate fromString(String string) {
-                return (string == null || string.isEmpty()) ? null
-                        : LocalDate.parse(string, dateFormatter);
-            }
-        });
+        datePicker.setValue(minimo);
     }
 
     private void configurarListeners() {
-        comboPet.valueProperty().addListener((o, a, b) -> atualizarTudo());
-        comboServico.valueProperty().addListener((o, a, b) -> atualizarTudo());
-        datePicker.valueProperty().addListener((o, a, b) -> atualizarTudo());
-        comboHorario.valueProperty().addListener((o, a, b) -> atualizarResumo());
+        comboPet.valueProperty().addListener((o, a, n) -> atualizarTudo());
+        comboServico.valueProperty().addListener((o, a, n) -> atualizarTudo());
+        datePicker.valueProperty().addListener((o, a, n) -> atualizarTudo());
+        comboHorario.valueProperty().addListener((o, a, n) -> atualizarResumo());
     }
 
     private void atualizarTudo() {
@@ -174,52 +162,48 @@ public class AgendamentoController {
         atualizarResumo();
     }
 
-    // ===== HORÁRIOS =====
     private void carregarHorariosDisponiveis() {
-        horarios.clear();
         comboHorario.getItems().clear();
 
-        if (comboServico.getValue() == null || datePicker.getValue() == null) {
-            return;
-        }
+        Servico servico = comboServico.getValue();
+        LocalDate data = datePicker.getValue();
+
+        if (servico == null || data == null) return;
 
         try {
-            int duracao = servicoService.obterDuracaoMinutos(comboServico.getValue());
-            List<LocalTime> disponiveis = agendamentoService.listarHorariosDisponiveis(
-                    datePicker.getValue(),
-                    duracao
-            );
+            var horarios = agendamentoService
+                    .listarHorariosDisponiveis(data, servico.getDuracaoMinutos())
+                    .stream()
+                    .map(h -> h.format(TIME_FMT))
+                    .toList();
 
-            disponiveis.forEach(h -> horarios.add(h.format(timeFormatter)));
-            comboHorario.setItems(horarios);
-
+            comboHorario.getItems().setAll(horarios);
             if (!horarios.isEmpty()) {
                 comboHorario.getSelectionModel().selectFirst();
             }
         } catch (Exception e) {
-            System.out.println("Erro ao carregar horários: " + e.getMessage());
+            System.err.println("Erro ao carregar horários: " + e.getMessage());
         }
     }
 
-    //  RESUMO PARA CONFIRMAR
     private void atualizarResumo() {
-        Object pet = comboPet.getValue();
-        Object servico = comboServico.getValue();
+        Pet pet = comboPet.getValue();
+        Servico servico = comboServico.getValue();
 
-        lblResumoPet.setText(pet != null ? petService.obterDescricaoCompleta(pet) : "-");
-        lblResumoServico.setText(servico != null ? servicoService.obterDescricaoSimples(servico) : "-");
+        lblResumoPet.setText(pet != null ?
+                String.format("%s (%s, %s)", pet.getNome(), pet.getTipo(), pet.getRaca()) : "-");
 
-        if (pet != null && servico != null) {
-            double preco = servicoService.calcularPrecoParaPet(servico, pet);
-            lblTotal.setText(String.format("R$ %.2f", preco));
-        } else {
-            lblTotal.setText("R$ 0,00");
-        }
+        lblResumoServico.setText(servico != null ?
+                servico.getTipo().getDescricao() : "-");
+
+        double preco = (pet != null && servico != null)
+                ? servicoService.calcularPrecoParaPet(servico, pet)
+                : 0.0;
+        lblTotal.setText(String.format("R$ %.2f", preco));
 
         btnConfirmar.setDisable(!validarCampos());
     }
 
-    // AÇÕES
     @FXML
     private void handleConfirmar() {
         try {
@@ -228,37 +212,41 @@ public class AgendamentoController {
                 return;
             }
 
-            UUID usuarioId = SessionManager.getUsuarioId();
-            Object pet = comboPet.getValue();
-            Object servico = comboServico.getValue();
-
+            Servico servico = comboServico.getValue();
             LocalDateTime dataHora = LocalDateTime.of(
                     datePicker.getValue(),
-                    LocalTime.parse(comboHorario.getValue(), timeFormatter)
+                    LocalTime.parse(comboHorario.getValue(), TIME_FMT)
             );
 
-            int duracao = servicoService.obterDuracaoMinutos(servico);
-
-            if (agendamentoService.existeConflitoHorario(dataHora, duracao)) {
+            if (agendamentoService.existeConflitoHorario(dataHora, servico.getDuracaoMinutos())) {
                 AlertUtils.showError("Horário indisponível", "Este horário já foi reservado.");
                 carregarHorariosDisponiveis();
                 return;
             }
 
-            UUID petId = petService.obterId(pet);
-            UUID servicoId = servicoService.obterId(servico);
-
             UUID agendamentoId = agendamentoService.agendar(
-                    petId,
-                    servicoId,
-                    usuarioId,
+                    comboPet.getValue().getIdPet(),
+                    servico.getId(),
+                    SessionManager.getUsuarioId(),
                     dataHora,
                     txtObservacoes.getText()
             );
 
             agendamentoService.confirmarAgendamento(agendamentoId);
 
-            AlertUtils.showInfo("Sucesso", "Agendamento confirmado!");
+            Alert sucesso = new Alert(Alert.AlertType.INFORMATION);
+            sucesso.setTitle("Sucesso!");
+            sucesso.setHeaderText("Agendamento confirmado! 🎉");
+            sucesso.setContentText(String.format(
+                    "Pet: %s\nServiço: %s\nData: %s às %s\nValor: R$ %.2f",
+                    comboPet.getValue().getNome(),
+                    servico.getTipo().getDescricao(),
+                    datePicker.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                    comboHorario.getValue(),
+                    servicoService.calcularPrecoParaPet(servico, comboPet.getValue())
+            ));
+            sucesso.showAndWait();
+
             limparCampos();
 
         } catch (Exception e) {
@@ -273,20 +261,24 @@ public class AgendamentoController {
         comboHorario.getItems().clear();
         txtObservacoes.clear();
         datePicker.setValue(LocalDate.now().plusDays(1));
+
+        if (!pets.isEmpty()) {
+            comboPet.getSelectionModel().selectFirst();
+        }
+
         atualizarResumo();
     }
 
     @FXML
     private void voltarMenu() {
         try {
-            Stage stage = (Stage) comboPet.getScene().getWindow();
-            ViewLoader.loadView(stage, "/views/MenuView.fxml", "Menu");
+            ViewLoader.loadView((Stage) comboPet.getScene().getWindow(),
+                    "/views/MenuView.fxml", "Menu");
         } catch (Exception e) {
             AlertUtils.showError("Erro", "Não foi possível voltar.");
         }
     }
 
-    // ===== VALIDAÇÃO =====
     private boolean validarCampos() {
         return comboPet.getValue() != null
                 && comboServico.getValue() != null

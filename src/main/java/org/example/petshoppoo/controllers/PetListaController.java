@@ -1,115 +1,124 @@
 package org.example.petshoppoo.controllers;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.example.petshoppoo.model.Login.Usuario;
+import org.example.petshoppoo.model.Pet.Pet;
 import org.example.petshoppoo.services.PetService;
 import org.example.petshoppoo.utils.AlertUtils;
-import org.example.petshoppoo.utils.PetTableData;
 import org.example.petshoppoo.utils.SessionManager;
+import org.example.petshoppoo.utils.ViewLoader;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+public class PetListaController extends BaseController {
 
-public class PetListaController {
-
-    @FXML private TableView<PetTableData> tabelaPets;
-    @FXML private TableColumn<PetTableData, String> clNome;
-    @FXML private TableColumn<PetTableData, String> clEspecie;
-    @FXML private TableColumn<PetTableData, String> clRaca;
-    @FXML private TableColumn<PetTableData, String> clIdade;
-    @FXML private TableColumn<PetTableData, Double> clPeso;
+    @FXML private TableView<Pet> tabelaPets;
+    @FXML private TableColumn<Pet, String> clNome;
+    @FXML private TableColumn<Pet, String> clEspecie;
+    @FXML private TableColumn<Pet, String> clRaca;
+    @FXML private TableColumn<Pet, String> clIdade;
+    @FXML private TableColumn<Pet, Double> clPeso;
 
     @FXML private VBox painelEdicao;
     @FXML private HBox botoesAcao;
+
     @FXML private TextField txtNome;
     @FXML private TextField txtRaca;
     @FXML private TextField txtPeso;
 
+    @FXML private Button btnVoltar;
+    @FXML private Button btnEditar;
+    @FXML private Button btnDeletar;
+    @FXML private Button btnSalvar;
+    @FXML private Button btnCancelar;
+
+    private final ObservableList<Pet> pets = FXCollections.observableArrayList();
     private PetService petService;
-    private Object petEmEdicao;
+    private Pet petEmEdicao;
 
     @FXML
     public void initialize() {
         try {
+            validarSessao();
+            Usuario u = session.getUsuarioLogado();
+
+
             petService = new PetService();
             configurarTabela();
             carregarPets();
         } catch (Exception e) {
-            AlertUtils.showError("Erro", "Erro ao inicializar: " + e.getMessage());
+            AlertUtils.showError("Erro ao inicializar", e.getMessage());
         }
     }
 
     private void configurarTabela() {
-        clNome.setCellValueFactory(data -> data.getValue().nomeProperty());
-        clEspecie.setCellValueFactory(data -> data.getValue().especieProperty());
-        clRaca.setCellValueFactory(data -> data.getValue().racaProperty());
-        clIdade.setCellValueFactory(data -> data.getValue().idadeProperty());
-        clPeso.setCellValueFactory(data -> data.getValue().pesoProperty().asObject());
+        // Service faz a formatação, controller só exibe
+        clNome.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getNome()));
+
+        clEspecie.setCellValueFactory(data ->
+                new SimpleStringProperty(petService.obterTipo(data.getValue())));
+
+        clRaca.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getRaca()));
+
+        clIdade.setCellValueFactory(data ->
+                new SimpleStringProperty(petService.formatarIdade(data.getValue())));
+
+        clPeso.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleDoubleProperty(data.getValue().getPeso()).asObject());
+
+        // Formatar coluna de peso
+        clPeso.setCellFactory(col -> new TableCell<Pet, Double>() {
+            @Override
+            protected void updateItem(Double peso, boolean empty) {
+                super.updateItem(peso, empty);
+                setText(empty || peso == null ? null : String.format("%.1f", peso));
+            }
+        });
+
+        tabelaPets.setItems(pets);
+        tabelaPets.setPlaceholder(new Label("Nenhum pet cadastrado"));
+
+        // Listener para habilitar/desabilitar botões
+        tabelaPets.getSelectionModel().selectedItemProperty().addListener((obs, old, pet) -> {
+            btnEditar.setDisable(pet == null);
+            btnDeletar.setDisable(pet == null);
+        });
+
+        // Desabilitar botões inicialmente
+        btnEditar.setDisable(true);
+        btnDeletar.setDisable(true);
     }
 
     private void carregarPets() {
         try {
-            List<Object> pets = petService.listarPetsParaTabela(SessionManager.getUsuarioId());
-            ObservableList<PetTableData> dadosTabela = FXCollections.observableArrayList();
-
-            for (Object pet : pets) {
-                dadosTabela.add(new PetTableData(
-                        pet,
-                        petService.obterNome(pet),
-                        petService.obterTipo(pet),
-                        petService.obterRaca(pet),
-                        petService.obterIdade(pet),
-                        petService.obterPeso(pet)
-                ));
-            }
-
-            tabelaPets.setItems(dadosTabela);
-
+            pets.setAll(petService.listarPetsDoUsuario(SessionManager.getUsuarioId()));
         } catch (Exception e) {
-            AlertUtils.showError("Erro", "Erro ao carregar pets: " + e.getMessage());
-        }
-    }
-
-    @FXML
-    private void handleAdicionar() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/CadastroPetView.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) tabelaPets.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            AlertUtils.showError("Erro", "Não foi possível abrir cadastro de pet.");
+            AlertUtils.showError("Erro ao carregar", e.getMessage());
         }
     }
 
     @FXML
     private void handleEditar() {
-        PetTableData selecionado = tabelaPets.getSelectionModel().getSelectedItem();
+        Pet pet = tabelaPets.getSelectionModel().getSelectedItem();
 
-        if (selecionado == null) {
-            AlertUtils.showWarning("Nenhum pet selecionado", "Selecione um pet para editar.");
+        if (pet == null) {
+            AlertUtils.showWarning("Nenhum pet selecionado", "Selecione um pet na tabela para editar.");
             return;
         }
 
-        // Armazena o pet em edição
-        petEmEdicao = selecionado.getPet();
+        petEmEdicao = pet;
 
         // Preenche os campos
-        txtNome.setText(petService.obterNome(petEmEdicao));
-        txtRaca.setText(petService.obterRaca(petEmEdicao));
-        txtPeso.setText(String.valueOf(petService.obterPeso(petEmEdicao)));
+        txtNome.setText(pet.getNome());
+        txtRaca.setText(pet.getRaca());
+        txtPeso.setText(String.format("%.1f", pet.getPeso()));
 
         // Mostra painel de edição e esconde botões
         painelEdicao.setVisible(true);
@@ -119,32 +128,29 @@ public class PetListaController {
     @FXML
     private void handleSalvar() {
         try {
-            String nome = txtNome.getText().trim();
-            String raca = txtRaca.getText().trim();
-            String pesoStr = txtPeso.getText().trim();
-
-            if (nome.isEmpty() || raca.isEmpty() || pesoStr.isEmpty()) {
-                AlertUtils.showWarning("Campos vazios", "Preencha todos os campos!");
+            if (!validarCampos()) {
                 return;
             }
 
-            double peso;
-            try {
-                peso = Double.parseDouble(pesoStr);
-                if (peso <= 0) throw new NumberFormatException();
-            } catch (NumberFormatException e) {
-                AlertUtils.showError("Peso inválido", "Digite um peso válido (ex: 5.5)");
-                return;
-            }
+            double peso = Double.parseDouble(txtPeso.getText().trim());
 
-            petService.atualizarPet(petEmEdicao, nome, raca, peso);
-            AlertUtils.showInfo("Sucesso", "Pet atualizado com sucesso!");
+            // Atualiza o pet
+            petEmEdicao.setNome(txtNome.getText().trim());
+            petEmEdicao.setRaca(txtRaca.getText().trim());
+            petEmEdicao.setPeso(peso);
 
+            // Service faz a persistência
+            petService.atualizar(petEmEdicao);
+
+            AlertUtils.showInfo("Sucesso", "Pet atualizado com sucesso! ✅");
             handleCancelar();
             carregarPets();
+            tabelaPets.refresh();
 
+        } catch (NumberFormatException e) {
+            AlertUtils.showError("Peso inválido", "Digite um peso válido (ex: 10.5)");
         } catch (Exception e) {
-            AlertUtils.showError("Erro", "Erro ao salvar: " + e.getMessage());
+            AlertUtils.showError("Erro ao salvar", e.getMessage());
         }
     }
 
@@ -154,6 +160,47 @@ public class PetListaController {
         botoesAcao.setVisible(true);
         petEmEdicao = null;
         limparCampos();
+        tabelaPets.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    private void handleDeletar() {
+        Pet pet = tabelaPets.getSelectionModel().getSelectedItem();
+
+        if (pet == null) {
+            AlertUtils.showWarning("Nenhum pet selecionado", "Selecione um pet na tabela para deletar.");
+            return;
+        }
+
+        Alert confirmacao = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmacao.setTitle("Confirmar exclusão");
+        confirmacao.setHeaderText("🗑️ Deseja realmente deletar este pet?");
+        confirmacao.setContentText(String.format(
+                "Pet: %s\nTipo: %s\nRaça: %s\n\n⚠️ Esta ação não pode ser desfeita!",
+                pet.getNome(),
+                petService.obterTipo(pet),
+                pet.getRaca()
+        ));
+
+        if (confirmacao.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            try {
+                petService.excluir(pet.getIdPet());
+                AlertUtils.showInfo("Sucesso", "Pet deletado com sucesso!");
+                carregarPets();
+            } catch (Exception e) {
+                AlertUtils.showError("Erro ao deletar", e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void handleVoltar() {
+        try {
+            Stage stage = (Stage) tabelaPets.getScene().getWindow();
+            ViewLoader.loadView(stage, "/views/MenuView.fxml", "Menu");
+        } catch (Exception e) {
+            AlertUtils.showError("Erro", "Não foi possível voltar ao menu.");
+        }
     }
 
     private void limparCampos() {
@@ -162,42 +209,33 @@ public class PetListaController {
         txtPeso.clear();
     }
 
-    @FXML
-    private void handleDeletar() {
-        PetTableData selecionado = tabelaPets.getSelectionModel().getSelectedItem();
-
-        if (selecionado == null) {
-            AlertUtils.showWarning("Nenhum pet selecionado", "Selecione um pet para deletar.");
-            return;
+    private boolean validarCampos() {
+        if (txtNome.getText().trim().isEmpty()) {
+            AlertUtils.showError("Campo obrigatório", "Informe o nome do pet.");
+            return false;
         }
 
-        Alert confirmacao = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacao.setTitle("Confirmar exclusão");
-        confirmacao.setHeaderText("Deseja realmente deletar o pet?");
-        confirmacao.setContentText("Pet: " + selecionado.getNome() + "\nEsta ação não pode ser desfeita!");
-
-        Optional<ButtonType> resultado = confirmacao.showAndWait();
-
-        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
-            try {
-                petService.deletarPet(selecionado.getPet());
-                AlertUtils.showInfo("Sucesso", "Pet deletado com sucesso!");
-                carregarPets();
-            } catch (Exception e) {
-                AlertUtils.showError("Erro", "Não foi possível deletar: " + e.getMessage());
-            }
+        if (txtRaca.getText().trim().isEmpty()) {
+            AlertUtils.showError("Campo obrigatório", "Informe a raça do pet.");
+            return false;
         }
-    }
 
-    @FXML
-    public void handleVoltar(ActionEvent event) {
+        if (txtPeso.getText().trim().isEmpty()) {
+            AlertUtils.showError("Campo obrigatório", "Informe o peso do pet.");
+            return false;
+        }
+
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/views/MenuView.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            AlertUtils.showError("Erro", "Não foi possível voltar ao menu.");
+            double peso = Double.parseDouble(txtPeso.getText().trim());
+            if (peso <= 0) {
+                AlertUtils.showError("Peso inválido", "O peso deve ser maior que zero.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            AlertUtils.showError("Peso inválido", "Digite um peso válido (ex: 10.5)");
+            return false;
         }
+
+        return true;
     }
 }

@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MenuController {
+public class MenuController extends BaseController{
 
     @FXML private Button CadastroPet;
     @FXML private Button ListaPets;
@@ -32,8 +32,11 @@ public class MenuController {
 
     private AuthService authService;
 
-    public MenuController() {
+    public void initialize() {
         try {
+            validarSessao();
+            Usuario u = session.getUsuarioLogado();
+
             this.authService = new AuthService();
         } catch (Exception e) {
             e.printStackTrace();

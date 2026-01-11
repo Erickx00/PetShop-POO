@@ -10,6 +10,7 @@ module org.example.petshoppoo {
     requires javafx.base;
 
 
+
     opens org.example.petshoppoo to javafx.fxml;
     opens org.example.petshoppoo.controllers to javafx.fxml;
     opens org.example.petshoppoo.model.Login to com.fasterxml.jackson.databind;

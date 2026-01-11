@@ -8,24 +8,32 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.example.petshoppoo.model.Login.Usuario;
 import org.example.petshoppoo.services.AuthService;
+import org.example.petshoppoo.services.UsuarioService;
 import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.SessionManager;
 
 import java.io.IOException;
 
-public class PerfilController {
+public class PerfilController extends BaseController {
 
     @FXML private TextField nome;
     @FXML private TextField email;
     @FXML private TextField telefone;
 
+    private UsuarioService usuarioService;
     private AuthService authService;
 
     @FXML
     public void initialize() {
         try {
-            authService = new AuthService();
+            validarSessao();
+            Usuario u = session.getUsuarioLogado();
+
+            this.usuarioService = new UsuarioService();
+            this.authService = new AuthService();
+
             carregarDadosPerfil();
         } catch (Exception e) {
             AlertUtils.showError("Erro", "Erro ao inicializar: " + e.getMessage());
@@ -38,9 +46,9 @@ public class PerfilController {
             return;
         }
 
-        nome.setText(authService.obterNomeUsuarioLogado());
-        email.setText(authService.obterEmailUsuarioLogado());
-        telefone.setText(authService.obterTelefoneUsuarioLogado());
+        nome.setText(usuarioService.obterNomeUsuarioLogado());
+        email.setText(usuarioService.obterEmailUsuarioLogado());
+        telefone.setText(usuarioService.obterTelefoneUsuarioLogado());
     }
 
     @FXML
@@ -55,7 +63,7 @@ public class PerfilController {
                 return;
             }
 
-            authService.atualizarPerfil(
+            usuarioService.atualizarPerfil(
                     SessionManager.getUsuarioId(),
                     novoNome,
                     novoEmail,
