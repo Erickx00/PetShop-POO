@@ -98,7 +98,7 @@ public class PetListaController extends BaseController {
 
     private void carregarPets() {
         try {
-            pets.setAll(petService.listarPetsDoUsuario(SessionManager.getUsuarioId()));
+            pets.setAll(petService.listarPetsPorUsuario(SessionManager.getUsuarioId()));
         } catch (Exception e) {
             AlertUtils.showError("Erro ao carregar", e.getMessage());
         }

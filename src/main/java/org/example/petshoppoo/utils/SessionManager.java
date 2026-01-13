@@ -18,12 +18,18 @@ public class SessionManager {
         return instance;
     }
 
+    public static void limparSessao() {
+        // Pega a instância e zera o usuário logado
+        getInstance().usuarioLogado = null;
+    }
+
     public Usuario getUsuarioLogado() {
         return usuarioLogado;
     }
 
     public static UUID getUsuarioId() {
-        return SessionManager.getInstance().usuarioLogado.getIdUsuario();
+        if (getInstance().usuarioLogado == null) return null;
+        return getInstance().usuarioLogado.getIdUsuario();
     }
 
     public void setUsuarioLogado(Usuario usuarioLogado) {

@@ -7,6 +7,7 @@ import org.example.petshoppoo.repository.ServicoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ServicoService {
     private final ServicoRepository servicoRepository;
@@ -19,7 +20,11 @@ public class ServicoService {
         return servicoRepository.listarAtivos();
     }
 
-    public Servico buscarServicoPorTipo(TipoServico tipo) throws PersistenciaException {
+    public Servico buscarServicoPorId(UUID id) {
+        return servicoRepository.buscarPorId(id);
+    }
+
+    public Servico buscarServicoPorTipo(TipoServico tipo) {
         return servicoRepository.buscarPorTipo(tipo);
     }
 
@@ -39,22 +44,15 @@ public class ServicoService {
         return precoBase;
     }
 
-    // ===== MÉTODOS PARA CONTROLLER BURRO =====
+    // ===== MÉTODOS PARA O CONTROLLER (Genéricos) =====
 
-    /**
-     * Retorna lista de serviços como objetos genéricos
-     */
     public List<Object> listarServicosDisponiveisComoObjetos() throws PersistenciaException {
-        List<Servico> servicos = listarServicosDisponiveis();
-        return new ArrayList<>(servicos);
+        return new ArrayList<>(listarServicosDisponiveis());
     }
 
-    /**
-     * Retorna descrição completa: "Tipo (R$ preco - duracao min)"
-     */
-    public String obterDescricaoCompleta(Object servico) {
-        if (servico instanceof Servico) {
-            Servico s = (Servico) servico;
+    public String obterDescricaoCompleta(Object obj) {
+        if (obj instanceof Servico) {
+            Servico s = (Servico) obj;
             return s.getTipo().getDescricao() +
                     " (R$ " + String.format("%.2f", s.getPreco()) +
                     " - " + s.getDuracaoMinutos() + " min)";
@@ -62,54 +60,30 @@ public class ServicoService {
         return "";
     }
 
-    /**
-     * Retorna descrição simples (apenas o tipo)
-     */
-    public String obterDescricaoSimples(Object servico) {
-        if (servico instanceof Servico) {
-            return ((Servico) servico).getTipo().getDescricao();
+    public String obterDescricaoSimples(Object obj) {
+        if (obj instanceof Servico) {
+            return ((Servico) obj).getTipo().getDescricao();
         }
         return "";
     }
 
-    /**
-     * Retorna a duração em minutos do serviço
-     */
-    public int obterDuracaoMinutos(Object servico) {
-        if (servico instanceof Servico) {
-            return ((Servico) servico).getDuracaoMinutos();
+    public int obterDuracaoMinutos(Object obj) {
+        if (obj instanceof Servico) {
+            return ((Servico) obj).getDuracaoMinutos();
         }
         return 0;
     }
 
-    /**
-     * Retorna o ID do serviço
-     */
-    public java.util.UUID obterId(Object servico) {
-        if (servico instanceof Servico) {
-            return ((Servico) servico).getId();
+    public UUID obterId(Object obj) {
+        if (obj instanceof Servico) {
+            return ((Servico) obj).getId();
         }
         return null;
     }
 
-    /**
-     * Calcula o preço para um pet específico (recebe objetos genéricos)
-     */
-    public double calcularPrecoParaPet(Object servico, Object pet) {
-        if (servico instanceof Servico && pet instanceof org.example.petshoppoo.model.Pet.Pet) {
-            Servico s = (Servico) servico;
-            org.example.petshoppoo.model.Pet.Pet p = (org.example.petshoppoo.model.Pet.Pet) pet;
-            return calcularPreco(s.getTipo(), p.getPeso());
-        }
-        return 0.0;
-    }
-
-    /**
-     * Obtém o preço base do serviço
-     */
-    public double obterPreco(Object servico) {
-        if (servico instanceof Servico) {
-            return ((Servico) servico).getPreco();
+    public double obterPreco(Object obj) {
+        if (obj instanceof Servico) {
+            return ((Servico) obj).getPreco();
         }
         return 0.0;
     }

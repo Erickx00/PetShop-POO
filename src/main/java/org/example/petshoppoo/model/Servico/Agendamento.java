@@ -1,14 +1,15 @@
 package org.example.petshoppoo.model.Servico;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
-public class Agendamento {
+public class
+Agendamento {
     private UUID id;
     private UUID idPet;
-    private UUID idServico;
+    private UUID idServico; // Aponta para o ID da classe Servico acima
     private UUID idUsuario;
     private LocalDateTime dataHora;
     private StatusAgendamento status;
@@ -20,9 +21,6 @@ public class Agendamento {
 
     public enum StatusAgendamento {
         AGENDADO("Agendado", "⏰", "#FFE0B2"),
-        CONFIRMADO("Confirmado", "✓", "#B3E5FC"),
-        EM_ANDAMENTO("Em Andamento", "▶", "#FFF9C4"),
-        CONCLUIDO("Concluído", "✔", "#C8E6C9"),
         CANCELADO("Cancelado", "✖", "#FFCDD2");
 
         private final String descricao;
@@ -40,11 +38,6 @@ public class Agendamento {
         public String getCor() { return cor; }
     }
 
-    // ========== CONSTRUTORES ==========
-
-    /**
-     * Construtor vazio (para JSON, novos agendamentos)
-     */
     public Agendamento() {
         this.id = UUID.randomUUID();
         this.status = StatusAgendamento.AGENDADO;
@@ -53,9 +46,6 @@ public class Agendamento {
         this.duracaoMinutos = 0;
     }
 
-    /**
-     * Construtor completo para novo agendamento
-     */
     public Agendamento(UUID idPet, UUID idServico, UUID idUsuario,
                        LocalDateTime dataHora, String observacoes, int duracaoMinutos) {
         this();
@@ -67,30 +57,9 @@ public class Agendamento {
         this.duracaoMinutos = duracaoMinutos;
     }
 
-    /**
-     * Construtor para carregar do JSON (com todos os campos)
-     */
-    public Agendamento(UUID id, UUID idPet, UUID idServico, UUID idUsuario,
-                       LocalDateTime dataHora, StatusAgendamento status,
-                       String observacoes, double valorCobrado,
-                       LocalDateTime dataCriacao, LocalDateTime dataConclusao,
-                       int duracaoMinutos) {
-        this.id = id != null ? id : UUID.randomUUID();
-        this.idPet = idPet;
-        this.idServico = idServico;
-        this.idUsuario = idUsuario;
-        this.dataHora = dataHora;
-        this.status = status != null ? status : StatusAgendamento.AGENDADO;
-        this.observacoes = observacoes;
-        this.valorCobrado = valorCobrado;
-        this.dataCriacao = dataCriacao != null ? dataCriacao : LocalDateTime.now();
-        this.dataConclusao = dataConclusao;
-        this.duracaoMinutos = duracaoMinutos;
-    }
-
-    // ========== GETTERS E SETTERS ==========
-
+    // Getters e Setters padrão
     public UUID getId() { return id; }
+    public void setId(UUID id) { this.id = id; }
 
     public UUID getIdPet() { return idPet; }
     public void setIdPet(UUID idPet) { this.idPet = idPet; }
@@ -121,67 +90,15 @@ public class Agendamento {
     public int getDuracaoMinutos() { return duracaoMinutos; }
     public void setDuracaoMinutos(int duracaoMinutos) { this.duracaoMinutos = duracaoMinutos; }
 
-    // ========== MÉTODOS ÚTEIS ==========
+    // Helpers Visuais
     @JsonIgnore
-    public String getDescricaoStatus() {
-        return status.getIcone() + " " + status.getDescricao();
-    }
+    public String getDescricaoStatus() { return status.getIcone() + " " + status.getDescricao(); }
+
     @JsonIgnore
-    public String getCorStatus() {
-        return status.getCor();
-    }
-    @JsonIgnore
-    public boolean isConcluido() {
-        return status == StatusAgendamento.CONCLUIDO;
-    }
-    @JsonIgnore
-    public boolean isCancelado() {
-        return status == StatusAgendamento.CANCELADO;
-    }
-    @JsonIgnore
-    public boolean isAtivo() {
-        return status != StatusAgendamento.CANCELADO && status != StatusAgendamento.CONCLUIDO;
-    }
-    @JsonIgnore
-    public LocalDateTime getDataHoraFim() {
-        return dataHora.plusMinutes(duracaoMinutos);
-    }
-    @JsonIgnore
-    public String getDataFormatada() {
-        if (dataHora == null) return "";
-        return dataHora.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-    }
-    @JsonIgnore
-    public String getHoraFormatada() {
-        if (dataHora == null) return "";
-        return dataHora.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
-    }
+    public String getCorStatus() { return status.getCor(); }
+
     @JsonIgnore
     public String getDataHoraFormatada() {
-        if (dataHora == null) return "";
-        return dataHora.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Agendamento [ID: %s, Pet: %s, Data: %s, Status: %s]",
-                id.toString().substring(0, 8),
-                idPet != null ? idPet.toString().substring(0, 8) : "null",
-                getDataHoraFormatada(),
-                status.getDescricao()
-        );
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Agendamento that = (Agendamento) obj;
-        return id.equals(that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
+        return dataHora != null ? dataHora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "";
     }
 }

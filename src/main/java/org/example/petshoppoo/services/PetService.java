@@ -45,7 +45,7 @@ public class PetService {
         usuarioRepository.adicionarPetAoUsuario(idUsuario, novoPet.getIdPet());
     }
 
-    public List<Pet> listarPetsDoUsuario(UUID usuarioId) throws PersistenciaException {
+    public List<Pet> listarPetsPorUsuario(UUID usuarioId) throws PersistenciaException {
         List<Pet> resultado = new ArrayList<>();
         for (Pet pet : listarPets()) {
             if (pet.getIdUsuario() != null && pet.getIdUsuario().equals(usuarioId)) {
@@ -74,7 +74,7 @@ public class PetService {
     // ===== MÉTODOS PARA CONTROLLER BURRO =====
 
     public List<Object> listarPetsDoUsuarioComoObjetos(UUID usuarioId) throws PersistenciaException {
-        return new ArrayList<>(listarPetsDoUsuario(usuarioId));
+        return new ArrayList<>(listarPetsPorUsuario(usuarioId));
     }
 
     public String obterDescricaoCompleta(Object pet) {
@@ -99,7 +99,7 @@ public class PetService {
      * Lista pets para exibição em tabela
      */
     public List<Object> listarPetsParaTabela(UUID usuarioId) throws PersistenciaException {
-        return new ArrayList<>(listarPetsDoUsuario(usuarioId));
+        return new ArrayList<>(listarPetsPorUsuario(usuarioId));
     }
 
     /**

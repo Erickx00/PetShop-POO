@@ -1,156 +1,91 @@
 package org.example.petshoppoo.controllers;
 
 import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.example.petshoppoo.model.Login.Usuario;
-import org.example.petshoppoo.services.AuthService;
-import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.SessionManager;
-import org.example.petshoppoo.utils.ViewLoader;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class MenuController extends BaseController{
+public class MenuController {
 
-    @FXML private Button CadastroPet;
-    @FXML private Button ListaPets;
-    @FXML private Button Servicos;
-    @FXML private Button Agendamento;
     @FXML private VBox menuLateral;
     @FXML private Button btnMenu;
 
-    private AuthService authService;
-
+    @FXML
     public void initialize() {
-        try {
-            validarSessao();
-            Usuario u = session.getUsuarioLogado();
-
-            this.authService = new AuthService();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        menuLateral.setTranslateX(0);
     }
 
-
-    private boolean isMenuOpen = false;
-
     @FXML
-    void toggleMenu(ActionEvent event) {
-        TranslateTransition transition = new TranslateTransition(Duration.seconds(0.3), menuLateral);
-        if (!isMenuOpen) {
-            transition.setToX(-200);
-            isMenuOpen = true;
+    public void toggleMenu() {
+        TranslateTransition slide = new TranslateTransition();
+        slide.setDuration(Duration.seconds(0.4));
+        slide.setNode(menuLateral);
+        if (menuLateral.getTranslateX() == 0) {
+            slide.setToX(-210);
         } else {
-            transition.setToX(0);
-            isMenuOpen = false;
+            slide.setToX(0);
         }
-        transition.play();
+        slide.play();
     }
 
     @FXML
-    void handleVoltar(ActionEvent event) {
-        TranslateTransition transition = new TranslateTransition(Duration.seconds(0.3), menuLateral);
-        transition.setToX(0);
-        transition.play();
-        isMenuOpen = false;
+    public void handleServicos() {
+        abrirTela("/views/ServicoListaView.fxml", "Agendar Serviço");
     }
 
     @FXML
-    public void handleCadastrarPet(ActionEvent event) {
+    public void handleAgendamentos() {
+        abrirTela("/views/AgendamentoView.fxml", "Meus Agendamentos");
+    }
+
+    @FXML
+    public void handleCadastrarPet() {
+        abrirTela("/views/PetCadastroView.fxml", "Cadastrar Novo Pet");
+    }
+
+    @FXML
+    public void handleListarPets() {
+        abrirTela("/views/PetListaView.fxml", "Meus Pets");
+    }
+
+    @FXML
+    public void handleSairDaConta() {
+        SessionManager.limparSessao();
+        abrirTela("/views/LoginView.fxml", "Login - Golden Pet");
+    }
+
+    @FXML
+    public void handleVoltar() {
+        toggleMenu(); // Apenas fecha o menu lateral
+    }
+
+    @FXML public void handlePerfil() {
+    abrirTela("/views/PerfilView.fxml", "Perfil");
+
+    }
+    @FXML public void handleSuporte() {
+
+    }
+    private void abrirTela(String fxmlPath, String titulo) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/views/PetCadastroView.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+            Stage stageAtual = (Stage) btnMenu.getScene().getWindow();
+            stageAtual.setScene(new Scene(root));
+            stageAtual.setTitle(titulo);
+            stageAtual.centerOnScreen();
+            stageAtual.show();
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Erro ao abrir tela: " + fxmlPath);
         }
     }
-
-    @FXML
-    public void handleListarPets(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/views/PetListaView.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void handleServicos(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/views/ServicoListaView.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void handleAgendamentos(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/views/Agendamento.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void handlePerfil(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/views/PerfilView.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void handleSuporte(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource(""));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    @FXML
-    public void handleSairDaConta(ActionEvent event) {
-        authService.logout();
-
-        try {
-            ViewLoader.changeScene(
-                    (Node) event.getSource(),
-                    "/views/LoginView.fxml",
-                    "Login"
-            );
-        } catch (IOException e) {
-            AlertUtils.showError("Erro", "Não foi possível sair da conta");
-        }
-    }
-
 }

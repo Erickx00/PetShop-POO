@@ -1,288 +1,172 @@
 package org.example.petshoppoo.controllers;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
-import org.example.petshoppoo.exceptions.PersistenciaException;
-import org.example.petshoppoo.model.Login.Usuario;
-import org.example.petshoppoo.model.Pet.Pet;
-import org.example.petshoppoo.model.Servico.Servico;
-import org.example.petshoppoo.services.*;
-import org.example.petshoppoo.utils.*;
-
-import java.time.*;
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
-public class AgendamentoController extends BaseController {
+import org.example.petshoppoo.model.Servico.Agendamento;
+import org.example.petshoppoo.services.AgendamentoService;
+import org.example.petshoppoo.services.PetService;
+import org.example.petshoppoo.services.ServicoService;
+import org.example.petshoppoo.utils.AlertUtils;
+import org.example.petshoppoo.utils.SessionManager;
 
-    @FXML private ComboBox<Pet> comboPet;
-    @FXML private ComboBox<Servico> comboServico;
-    @FXML private ComboBox<String> comboHorario;
-    @FXML private DatePicker datePicker;
-    @FXML private TextArea txtObservacoes;
-    @FXML private Label lblResumoPet;
-    @FXML private Label lblResumoServico;
-    @FXML private Label lblTotal;
-    @FXML private Button btnConfirmar;
 
-    private final ObservableList<Pet> pets = FXCollections.observableArrayList();
-    private final ObservableList<Servico> servicos = FXCollections.observableArrayList();
 
+public class AgendamentoController {
+
+
+    @FXML private TableView<Agendamento> tabelaAgendamentos;
+    @FXML private TableColumn<Agendamento, String> colPet;
+    @FXML private TableColumn<Agendamento, String> colData;
+    @FXML private TableColumn<Agendamento, String> colServico;
+    @FXML private TableColumn<Agendamento, String> colDuracao;
+    @FXML private TableColumn<Agendamento, String> colStatus;
+
+    // Services
+    private AgendamentoService agendamentoService;
     private PetService petService;
     private ServicoService servicoService;
-    private AgendamentoService agendamentoService;
-
-    private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
 
     @FXML
     public void initialize() {
         try {
-            validarSessao();
-            Usuario u = session.getUsuarioLogado();
+            // Inicializa os serviços
+            this.agendamentoService = new AgendamentoService();
+            this.petService = new PetService();
+            this.servicoService = new ServicoService();
 
-            inicializarServices();
-            carregarDados();
-            configurarComponentes();
+            configurarColunas();
+            carregarTabela();
+
         } catch (Exception e) {
-            AlertUtils.showError("Erro ao inicializar", e.getMessage());
+            e.printStackTrace();
+            AlertUtils.showError("Erro", "Erro ao inicializar tela: " + e.getMessage());
         }
     }
 
-    private void inicializarServices() throws PersistenciaException {
-        petService = new PetService();
-        servicoService = new ServicoService();
-        agendamentoService = new AgendamentoService();
-    }
+    private void configuringColunas() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    private void carregarDados() throws Exception {
-        carregarServicos();
-        carregarPets();
-    }
+        // Data e Hora
+        colData.setCellValueFactory(cell ->
+                new SimpleStringProperty(cell.getValue().getDataHora().format(dtf)));
 
-    private void carregarServicos() throws Exception {
-        servicos.setAll(servicoService.listarServicosDisponiveis());
-        comboServico.setItems(servicos);
+        // Status (Andamento)
+        colStatus.setCellValueFactory(cell ->
+                new SimpleStringProperty(cell.getValue().getStatus().getDescricao()));
 
-        comboServico.setCellFactory(p -> new ListCell<>() {
-            @Override
-            protected void updateItem(Servico s, boolean empty) {
-                super.updateItem(s, empty);
-                if (empty || s == null) {
-                    setText(null);
-                } else {
-                    setText(String.format("%s - R$ %.2f (%d min)",
-                            s.getTipo().getDescricao(),
-                            s.getPreco(),
-                            s.getDuracaoMinutos()));
-                }
-            }
+         // Nome do Pet
+        colPet.setCellValueFactory(cell -> {
+            try {
+                var pet = petService.buscarPorId(cell.getValue().getIdPet());
+                return new SimpleStringProperty(pet != null ? pet.getNome() : "Desconhecido");
+            } catch (Exception e) { return new SimpleStringProperty("-"); }
         });
 
-        comboServico.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(Servico s, boolean empty) {
-                super.updateItem(s, empty);
-                setText(empty || s == null ? null : s.getTipo().getDescricao());
-            }
+        // Nome do Serviço
+        colServico.setCellValueFactory(cell -> {
+            try {
+                var serv = servicoService.buscarServicoPorId(cell.getValue().getIdServico());
+                return new SimpleStringProperty(serv != null ? serv.getTipo().getDescricao() : "Desconhecido");
+            } catch (Exception e) { return new SimpleStringProperty("-"); }
+        });
+
+        // Valor
+        colDuracao.setCellValueFactory(cell -> {
+            try {
+                var serv = servicoService.buscarServicoPorId(cell.getValue().getIdServico());
+                // Exemplo: pega o preço ou um texto fixo, já que duração não tem no model padrão
+                return new SimpleStringProperty(serv != null ? "R$ " + serv.getPreco() : "-");
+            } catch (Exception e) { return new SimpleStringProperty("-"); }
         });
     }
 
-    private void carregarPets() throws Exception {
-        UUID usuarioId = SessionManager.getUsuarioId();
-        if (usuarioId == null) {
-            AlertUtils.showError("Sessão expirada", "Faça login novamente.");
+    // Método auxiliar para chamar o de cima
+    private void configurarColunas() {
+        configuringColunas();
+    }
+
+    private void carregarTabela() {
+        try {
+            List<Agendamento> lista = agendamentoService.listarAgendamentosPorUsuario(SessionManager.getUsuarioId());
+            tabelaAgendamentos.setItems(FXCollections.observableArrayList(lista));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleCancelar() {
+        Agendamento selecionado = tabelaAgendamentos.getSelectionModel().getSelectedItem();
+
+        if (selecionado == null) {
+            AlertUtils.showWarning("Atenção", "Selecione um agendamento na lista para cancelar.");
             return;
         }
 
-        pets.setAll(petService.listarPetsDoUsuario(usuarioId));
-        comboPet.setItems(pets);
+        try {
+            agendamentoService.cancelarAgendamento(selecionado);
+            carregarTabela(); // Atualiza a lista na hora
+            AlertUtils.showInfo("Sucesso", "Serviço cancelado com sucesso.");
+        } catch (Exception e) {
+            AlertUtils.showError("Erro", "Não foi possível cancelar: " + e.getMessage());
+        }
+    }
 
-        comboPet.setCellFactory(p -> new ListCell<>() {
-            @Override
-            protected void updateItem(Pet pet, boolean empty) {
-                super.updateItem(pet, empty);
-                if (empty || pet == null) {
-                    setText(null);
-                } else {
-                    setText(String.format("%s (%s, %s)",
-                            pet.getNome(),
-                            pet.getTipo(),
-                            pet.getRaca()));
+    @FXML
+    public void handleVoltar() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MenuView.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) tabelaAgendamentos.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Menu Principal");
+            stage.centerOnScreen();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            AlertUtils.showError("Erro", "Erro ao voltar para o menu.");
+        }
+    }
+
+    @FXML
+    public void handleLimpar(ActionEvent event) {
+        List<Agendamento> paraRemover = new ArrayList<>();
+        for (Agendamento ag : tabelaAgendamentos.getItems()) {
+            if (ag.getStatus() == Agendamento.StatusAgendamento.CANCELADO) {
+                paraRemover.add(ag);
+            }
+        }
+
+        if (paraRemover.isEmpty()) {
+            AlertUtils.showWarning("Aviso", "Não há agendamentos cancelados para limpar.");
+            return;
+        }
+        boolean confirmar = AlertUtils.showConfirmation("Limpar Histórico",
+                "Tem certeza que deseja excluir permanentemente " + paraRemover.size() + " agendamentos cancelados?");
+
+        if (confirmar) {
+            try {
+                for (Agendamento ag : paraRemover) {
+                    agendamentoService.excluirAgendamento(ag);
                 }
+                carregarTabela();
+                AlertUtils.showInfo("Sucesso", "Histórico limpo com sucesso!");
+            } catch (Exception e) {
+                AlertUtils.showError("Erro", "Erro ao limpar agendamentos: " + e.getMessage());
             }
-        });
-
-        comboPet.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(Pet pet, boolean empty) {
-                super.updateItem(pet, empty);
-                setText(empty || pet == null ? null : pet.getNome());
-            }
-        });
-
-        if (!pets.isEmpty()) {
-            comboPet.getSelectionModel().selectFirst();
         }
-    }
-
-    private void configurarComponentes() {
-        configurarDatePicker();
-        configurarListeners();
-        atualizarResumo();
-    }
-
-    private void configurarDatePicker() {
-        LocalDate hoje = LocalDate.now();
-        LocalDate minimo = hoje.plusDays(1);
-        LocalDate maximo = hoje.plusMonths(4);
-
-        datePicker.setDayCellFactory(picker -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                setDisable(empty || date.isBefore(minimo) || date.isAfter(maximo));
-            }
-        });
-
-        datePicker.setValue(minimo);
-    }
-
-    private void configurarListeners() {
-        comboPet.valueProperty().addListener((o, a, n) -> atualizarTudo());
-        comboServico.valueProperty().addListener((o, a, n) -> atualizarTudo());
-        datePicker.valueProperty().addListener((o, a, n) -> atualizarTudo());
-        comboHorario.valueProperty().addListener((o, a, n) -> atualizarResumo());
-    }
-
-    private void atualizarTudo() {
-        carregarHorariosDisponiveis();
-        atualizarResumo();
-    }
-
-    private void carregarHorariosDisponiveis() {
-        comboHorario.getItems().clear();
-
-        Servico servico = comboServico.getValue();
-        LocalDate data = datePicker.getValue();
-
-        if (servico == null || data == null) return;
-
-        try {
-            var horarios = agendamentoService
-                    .listarHorariosDisponiveis(data, servico.getDuracaoMinutos())
-                    .stream()
-                    .map(h -> h.format(TIME_FMT))
-                    .toList();
-
-            comboHorario.getItems().setAll(horarios);
-            if (!horarios.isEmpty()) {
-                comboHorario.getSelectionModel().selectFirst();
-            }
-        } catch (Exception e) {
-            System.err.println("Erro ao carregar horários: " + e.getMessage());
-        }
-    }
-
-    private void atualizarResumo() {
-        Pet pet = comboPet.getValue();
-        Servico servico = comboServico.getValue();
-
-        lblResumoPet.setText(pet != null ?
-                String.format("%s (%s, %s)", pet.getNome(), pet.getTipo(), pet.getRaca()) : "-");
-
-        lblResumoServico.setText(servico != null ?
-                servico.getTipo().getDescricao() : "-");
-
-        double preco = (pet != null && servico != null)
-                ? servicoService.calcularPrecoParaPet(servico, pet)
-                : 0.0;
-        lblTotal.setText(String.format("R$ %.2f", preco));
-
-        btnConfirmar.setDisable(!validarCampos());
-    }
-
-    @FXML
-    private void handleConfirmar() {
-        try {
-            if (!validarCampos()) {
-                AlertUtils.showError("Campos inválidos", "Preencha todos os campos.");
-                return;
-            }
-
-            Servico servico = comboServico.getValue();
-            LocalDateTime dataHora = LocalDateTime.of(
-                    datePicker.getValue(),
-                    LocalTime.parse(comboHorario.getValue(), TIME_FMT)
-            );
-
-            if (agendamentoService.existeConflitoHorario(dataHora, servico.getDuracaoMinutos())) {
-                AlertUtils.showError("Horário indisponível", "Este horário já foi reservado.");
-                carregarHorariosDisponiveis();
-                return;
-            }
-
-            UUID agendamentoId = agendamentoService.agendar(
-                    comboPet.getValue().getIdPet(),
-                    servico.getId(),
-                    SessionManager.getUsuarioId(),
-                    dataHora,
-                    txtObservacoes.getText()
-            );
-
-            agendamentoService.confirmarAgendamento(agendamentoId);
-
-            Alert sucesso = new Alert(Alert.AlertType.INFORMATION);
-            sucesso.setTitle("Sucesso!");
-            sucesso.setHeaderText("Agendamento confirmado! 🎉");
-            sucesso.setContentText(String.format(
-                    "Pet: %s\nServiço: %s\nData: %s às %s\nValor: R$ %.2f",
-                    comboPet.getValue().getNome(),
-                    servico.getTipo().getDescricao(),
-                    datePicker.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                    comboHorario.getValue(),
-                    servicoService.calcularPrecoParaPet(servico, comboPet.getValue())
-            ));
-            sucesso.showAndWait();
-
-            limparCampos();
-
-        } catch (Exception e) {
-            AlertUtils.showError("Erro", e.getMessage());
-        }
-    }
-
-    @FXML
-    private void limparCampos() {
-        comboPet.getSelectionModel().clearSelection();
-        comboServico.getSelectionModel().clearSelection();
-        comboHorario.getItems().clear();
-        txtObservacoes.clear();
-        datePicker.setValue(LocalDate.now().plusDays(1));
-
-        if (!pets.isEmpty()) {
-            comboPet.getSelectionModel().selectFirst();
-        }
-
-        atualizarResumo();
-    }
-
-    @FXML
-    private void voltarMenu() {
-        try {
-            ViewLoader.loadView((Stage) comboPet.getScene().getWindow(),
-                    "/views/MenuView.fxml", "Menu");
-        } catch (Exception e) {
-            AlertUtils.showError("Erro", "Não foi possível voltar.");
-        }
-    }
-
-    private boolean validarCampos() {
-        return comboPet.getValue() != null
-                && comboServico.getValue() != null
-                && comboHorario.getValue() != null
-                && datePicker.getValue() != null;
     }
 }

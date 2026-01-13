@@ -1,19 +1,16 @@
 package org.example.petshoppoo.services;
 
 import org.example.petshoppoo.exceptions.PersistenciaException;
+import org.example.petshoppoo.model.Pet.Pet;
 import org.example.petshoppoo.model.Servico.Agendamento;
 import org.example.petshoppoo.model.Servico.Servico;
 import org.example.petshoppoo.repository.AgendamentoRepository;
-import org.example.petshoppoo.repository.ServicoRepository;
 import org.example.petshoppoo.repository.PetRepository;
+import org.example.petshoppoo.repository.ServicoRepository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class AgendamentoService {
     private final AgendamentoRepository agendamentoRepository;
@@ -26,35 +23,41 @@ public class AgendamentoService {
         this.petRepository = new PetRepository();
     }
 
-    /**
-     * Agendar um novo serviço para um pet - RETORNA APENAS O ID
-     */
-    public UUID agendar(UUID idPet, UUID idServico, UUID idUsuario,
-                        LocalDateTime dataHora, String observacoes) throws PersistenciaException {
+    public void criarAgendamento(UUID idUsuario, UUID idPet, UUID idServico,
+                                 LocalDateTime dataHora, String observacoes) throws Exception {
 
-        // Validar se pet existe
-        if (petRepository.buscarPorId(idPet).isEmpty()) {
-            throw new PersistenciaException("Pet não encontrado");
-        }
+        // 1. Validações básicas
+        if (idPet == null) throw new Exception("Selecione um Pet!");
+        if (idServico == null) throw new Exception("Selecione um Serviço!");
+        if (dataHora == null) throw new Exception("Selecione data e hora!");
+        if (dataHora.isBefore(LocalDateTime.now())) throw new Exception("A data deve ser futura!");
 
-        // Validar serviço
+        // 2. Buscas nos repositórios
         Servico servico = servicoRepository.buscarPorId(idServico);
-        if (servico == null) {
-            throw new PersistenciaException("Serviço não encontrado");
-        }
+        if (servico == null) throw new Exception("Serviço não encontrado!");
 
-        // Validar data/hora
-        if (dataHora.isBefore(LocalDateTime.now())) {
-            throw new PersistenciaException("Data/hora deve ser futura");
-        }
+        Pet pet = petRepository.buscarPorId(idPet).orElse(null);
+        if (pet == null) throw new Exception("Pet não encontrado!");
 
-        // Verificar conflito de horário
-        if (agendamentoRepository.existeConflitoHorario(dataHora, servico.getDuracaoMinutos())) {
-            throw new PersistenciaException("Horário indisponível. Escolha outro horário.");
-        }
+        // -------------------------------------------------------------------------
+        // 3. VALIDAÇÃO DE CONFLITO DE HORÁRIO (A PARADA CERTA)
+        // -------------------------------------------------------------------------
+        List<Agendamento> agendamentosExistentes = agendamentoRepository.listarTodos();
 
-        // Criar agendamento
-        Agendamento agendamento = new Agendamento(
+        for (Agendamento ag : agendamentosExistentes) {
+            // Verifica se é EXATAMENTE o mesmo horário
+            if (ag.getDataHora().equals(dataHora)) {
+                // Se o agendamento existente NÃO estiver CANCELADO, então o horário está ocupado
+                if (ag.getStatus() != Agendamento.StatusAgendamento.CANCELADO) {
+                    throw new Exception("Horário indisponível! Já existe um agendamento para " +
+                            dataHora.getHour() + ":" + String.format("%02d", dataHora.getMinute()));
+                }
+            }
+        }
+        // -------------------------------------------------------------------------
+
+        // 4. Criação do Agendamento (se passou pela validação acima)
+        Agendamento novoAgendamento = new Agendamento(
                 idPet,
                 idServico,
                 idUsuario,
@@ -63,201 +66,31 @@ public class AgendamentoService {
                 servico.getDuracaoMinutos()
         );
 
-        agendamento.setValorCobrado(servico.getPreco());
+        // Define preço inicial
+        novoAgendamento.setValorCobrado(servico.getPreco());
 
-        // Salvar
-        agendamentoRepository.adicionar(agendamento);
-
-        // Retorna apenas o ID
-        return agendamento.getId();
+        // 5. Salva
+        agendamentoRepository.salvar(novoAgendamento);
     }
 
-    /**
-     * Listar todos os agendamentos de um usuário
-     */
-    public List<Agendamento> listarAgendamentosUsuario(UUID idUsuario) throws PersistenciaException {
+    public List<Agendamento> listarAgendamentosPorUsuario(UUID idUsuario) {
         return agendamentoRepository.buscarPorUsuario(idUsuario);
     }
 
-    /**
-     * Listar agendamentos ativos (não cancelados ou concluídos)
-     */
-    public List<Agendamento> listarAgendamentosAtivos() throws PersistenciaException {
-        return agendamentoRepository.buscarAtivos();
-    }
-
-    /**
-     * Listar agendamentos futuros
-     */
-    public List<Agendamento> listarAgendamentosFuturos() throws PersistenciaException {
-        return agendamentoRepository.buscarAgendadosFuturos();
-    }
-
-    /**
-     * Listar agendamentos por data específica
-     */
-    public List<Agendamento> listarAgendamentosPorData(LocalDate data) throws PersistenciaException {
-        return agendamentoRepository.buscarPorData(data);
-    }
-
-    /**
-     * Listar horários disponíveis para uma data e duração - RETORNA LocalTime
-     */
-    public List<LocalTime> listarHorariosDisponiveis(LocalDate data, int duracaoMinutos) throws PersistenciaException {
-        List<LocalDateTime> horariosCompletos = agendamentoRepository.getHorariosDisponiveis(data, duracaoMinutos);
-
-        // Converte LocalDateTime para LocalTime
-        return horariosCompletos.stream()
-                .map(LocalDateTime::toLocalTime)
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Verificar se há conflito de horário
-     */
-    public boolean existeConflitoHorario(LocalDateTime dataHora, int duracaoMinutos) throws PersistenciaException {
-        return agendamentoRepository.existeConflitoHorario(dataHora, duracaoMinutos);
-    }
-
-    /**
-     * Buscar agendamento por ID
-     */
-    public Agendamento buscarAgendamentoPorId(UUID id) throws PersistenciaException {
-        return agendamentoRepository.buscarPorId(id);
-    }
-
-    /**
-     * Buscar agendamentos por período
-     */
-    public List<Agendamento> buscarPorPeriodo(LocalDate dataInicio, LocalDate dataFim) throws PersistenciaException {
-        return agendamentoRepository.buscarPorPeriodo(dataInicio, dataFim);
-    }
-
-    /**
-     * Concluir um agendamento
-     */
-    public void concluirAgendamento(UUID idAgendamento) throws PersistenciaException {
-        agendamentoRepository.concluirAgendamento(idAgendamento);
-    }
-
-    /**
-     * Cancelar um agendamento
-     */
-    public void cancelarAgendamento(UUID idAgendamento) throws PersistenciaException {
-        agendamentoRepository.cancelarAgendamento(idAgendamento);
-    }
-
-    /**
-     * Confirmar um agendamento
-     */
-    public void confirmarAgendamento(UUID idAgendamento) throws PersistenciaException {
-        agendamentoRepository.confirmarAgendamento(idAgendamento);
-    }
-
-    /**
-     * Iniciar um agendamento (em andamento)
-     */
-    public void iniciarAgendamento(UUID idAgendamento) throws PersistenciaException {
-        agendamentoRepository.iniciarAgendamento(idAgendamento);
-    }
-
-    /**
-     * Atualizar status de um agendamento
-     */
-    public void atualizarStatus(UUID idAgendamento, Agendamento.StatusAgendamento status) throws PersistenciaException {
-        Agendamento agendamento = agendamentoRepository.buscarPorId(idAgendamento);
-        if (agendamento == null) {
-            throw new PersistenciaException("Agendamento não encontrado");
-        }
-
-        agendamento.setStatus(status);
-
-        if (status == Agendamento.StatusAgendamento.CONCLUIDO) {
-            agendamento.setDataConclusao(LocalDateTime.now());
-        }
-
-        agendamentoRepository.atualizar(agendamento);
-    }
-
-    /**
-     * Atualizar observações de um agendamento
-     */
-    public void atualizarObservacoes(UUID idAgendamento, String observacoes) throws PersistenciaException {
-        Agendamento agendamento = agendamentoRepository.buscarPorId(idAgendamento);
+    public void cancelarAgendamento(Agendamento agendamento) throws PersistenciaException {
         if (agendamento != null) {
-            agendamento.setObservacoes(observacoes);
+            agendamento.setStatus(Agendamento.StatusAgendamento.CANCELADO);
             agendamentoRepository.atualizar(agendamento);
         }
     }
 
-    /**
-     * Buscar agendamentos por pet
-     */
-    public List<Agendamento> buscarAgendamentosPorPet(UUID idPet) throws PersistenciaException {
-        return agendamentoRepository.buscarPorPet(idPet);
+    public List<Agendamento> listarTodos() {
+        return agendamentoRepository.listarTodos();
     }
 
-    /**
-     * Buscar agendamentos por serviço
-     */
-    public List<Agendamento> buscarAgendamentosPorServico(UUID idServico) throws PersistenciaException {
-        return agendamentoRepository.buscarPorServico(idServico);
-    }
-
-    /**
-     * Buscar agendamentos por status
-     */
-    public List<Agendamento> buscarAgendamentosPorStatus(Agendamento.StatusAgendamento status) throws PersistenciaException {
-        return agendamentoRepository.buscarPorStatus(status);
-    }
-
-    /**
-     * Agrupar agendamentos por data
-     */
-    public Map<LocalDate, List<Agendamento>> agruparAgendamentosPorData() throws PersistenciaException {
-        return agendamentoRepository.agruparPorData();
-    }
-
-    /**
-     * Calcular receita total de todos os agendamentos concluídos
-     */
-    public double calcularReceitaTotal() throws PersistenciaException {
-        return agendamentoRepository.calcularReceitaTotal();
-    }
-
-    /**
-     * Calcular receita de um período
-     */
-    public double calcularReceitaPeriodo(LocalDate inicio, LocalDate fim) throws PersistenciaException {
-        return agendamentoRepository.calcularReceitaPeriodo(inicio, fim);
-    }
-
-    /**
-     * Contar agendamentos de um usuário
-     */
-    public long contarAgendamentosUsuario(UUID idUsuario) throws PersistenciaException {
-        return agendamentoRepository.contarPorUsuario(idUsuario);
-    }
-
-    /**
-     * Verificar se um agendamento pertence a um usuário
-     */
-    public boolean agendamentoPertenceAoUsuario(UUID idAgendamento, UUID idUsuario) throws PersistenciaException {
-        Agendamento agendamento = buscarAgendamentoPorId(idAgendamento);
-        return agendamento != null && agendamento.getIdUsuario().equals(idUsuario);
-    }
-
-    /**
-     * Remover um agendamento (apenas admin)
-     */
-    public void removerAgendamento(UUID idAgendamento) throws PersistenciaException {
-        agendamentoRepository.remover(idAgendamento);
-    }
-
-    /**
-     * Obter todos os agendamentos
-     */
-    public List<Agendamento> listarTodosAgendamentos() throws PersistenciaException {
-        return agendamentoRepository.getAgendamentos();
+    public void excluirAgendamento(Agendamento agendamento) throws Exception {
+        if (agendamento == null) return;
+        // Remove do repositório/JSON
+        agendamentoRepository.deletar(agendamento);
     }
 }
