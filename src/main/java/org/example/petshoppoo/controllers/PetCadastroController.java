@@ -27,7 +27,6 @@ public class PetCadastroController extends BaseController {
 
     @FXML
     public void initialize() {
-        // Inicializa o serviço apenas uma vez
         try {
             validarSessao();
             Usuario u = session.getUsuarioLogado();
@@ -39,7 +38,6 @@ public class PetCadastroController extends BaseController {
 
         cbTipo.getItems().addAll("Cachorro", "Gato");
 
-        // Gerencia visibilidade dos campos específicos
         cbTipo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             boolean isCachorro = "Cachorro".equals(newVal);
             chkAdestrado.setVisible(isCachorro);
@@ -52,7 +50,7 @@ public class PetCadastroController extends BaseController {
         if (!validarCampos()) return;
 
         try {
-            // Coleta dados da UI
+
             String nome = txtNome.getText();
             String tipo = cbTipo.getValue();
             String raca = txtRaca.getText();
@@ -61,7 +59,7 @@ public class PetCadastroController extends BaseController {
             boolean adestrado = chkAdestrado.isSelected();
             boolean castrado = chkCastrado.isSelected();
 
-            // Delega TODA a lógica de criação para o Service
+
             petService.cadastrarPet(nome, tipo, raca, idade, peso, adestrado, castrado, SessionManager.getUsuarioId());
 
             AlertUtils.showInfo("Sucesso", "Pet cadastrado com sucesso!");

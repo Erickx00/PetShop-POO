@@ -52,8 +52,8 @@ public class ServicoController {
         }
     }
 
-    private void carregarCombos() {
-        // 1. Carrega Pets do Usuário Logado
+    private void carregarCombos() {//Carrega Pets do Usuário Logado
+
         try {
             List<Pet> pets = petService.listarPetsPorUsuario(SessionManager.getUsuarioId());
             comboPet.setItems(FXCollections.observableArrayList(pets));
@@ -64,7 +64,7 @@ public class ServicoController {
                 @Override public Pet fromString(String s) { return null; }
             });
 
-            // 2. Carrega Serviços Disponíveis
+            //Carrega Serviços Disponíveis
             List<Servico> servicos = servicoService.listarServicosDisponiveis();
             comboServico.setItems(FXCollections.observableArrayList(servicos));
 
@@ -74,7 +74,7 @@ public class ServicoController {
                 @Override public Servico fromString(String s) { return null; }
             });
 
-            // 3. Carrega Horários (das 08:00 às 18:00)
+            // Carrega Horários (das 08:00 às 18:00)
             List<String> horarios = new ArrayList<>();
             for (int h = 8; h <= 18; h++) {
                 horarios.add(String.format("%02d:00", h));

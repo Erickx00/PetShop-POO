@@ -40,9 +40,9 @@ public class AgendamentoController {
     private ServicoService servicoService;
 
     @FXML
-    public void initialize() {
+    public void initialize() { //Aqui ta inicializando os servicos
         try {
-            // Inicializa os serviços
+
             this.agendamentoService = new AgendamentoService();
             this.petService = new PetService();
             this.servicoService = new ServicoService();

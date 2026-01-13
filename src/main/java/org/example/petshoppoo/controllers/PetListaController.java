@@ -73,7 +73,6 @@ public class PetListaController extends BaseController {
         clPeso.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleDoubleProperty(data.getValue().getPeso()).asObject());
 
-        // Formatar coluna de peso
         clPeso.setCellFactory(col -> new TableCell<Pet, Double>() {
             @Override
             protected void updateItem(Double peso, boolean empty) {
@@ -85,13 +84,11 @@ public class PetListaController extends BaseController {
         tabelaPets.setItems(pets);
         tabelaPets.setPlaceholder(new Label("Nenhum pet cadastrado"));
 
-        // Listener para habilitar/desabilitar botões
         tabelaPets.getSelectionModel().selectedItemProperty().addListener((obs, old, pet) -> {
             btnEditar.setDisable(pet == null);
             btnDeletar.setDisable(pet == null);
         });
 
-        // Desabilitar botões inicialmente
         btnEditar.setDisable(true);
         btnDeletar.setDisable(true);
     }
@@ -115,12 +112,12 @@ public class PetListaController extends BaseController {
 
         petEmEdicao = pet;
 
-        // Preenche os campos
+
         txtNome.setText(pet.getNome());
         txtRaca.setText(pet.getRaca());
         txtPeso.setText(String.format("%.1f", pet.getPeso()));
 
-        // Mostra painel de edição e esconde botões
+
         painelEdicao.setVisible(true);
         botoesAcao.setVisible(false);
     }
