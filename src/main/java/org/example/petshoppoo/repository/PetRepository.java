@@ -3,6 +3,7 @@ package org.example.petshoppoo.repository;
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Pet.Pet;
 import org.example.petshoppoo.utils.FilePaths;
+import org.example.petshoppoo.utils.JsonFileManager;
 
 import java.util.ArrayList;
 import java.util.List;

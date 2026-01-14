@@ -1,5 +1,7 @@
 package org.example.petshoppoo.model.Servico;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.UUID;
 
 public class Servico {
@@ -15,13 +17,12 @@ public class Servico {
         this.ativo = true;
     }
 
-    public Servico(TipoServico tipo, double preco, int duracaoMinutos, String descricaoAdicional) {
-        this.id = UUID.randomUUID();
+    public Servico(TipoServico tipo) {
+        this();
         this.tipo = tipo;
-        this.preco = preco;
-        this.duracaoMinutos = duracaoMinutos;
-        this.descricaoAdicional = descricaoAdicional;
-        this.ativo = true;
+        this.preco = tipo.getPrecoBase();
+        this.duracaoMinutos = tipo.getDuracaoMinutos();
+        this.descricaoAdicional = tipo.getDetalhes();
     }
 
     public UUID getId() { return id; }
@@ -43,6 +44,7 @@ public class Servico {
     public void setAtivo(boolean ativo) { this.ativo = ativo; }
 
     // Helpers para exibição
+    @JsonIgnore
     public String getDescricaoCompleta() {
         return tipo.getDescricao() + " - R$ " + String.format("%.2f", preco);
     }

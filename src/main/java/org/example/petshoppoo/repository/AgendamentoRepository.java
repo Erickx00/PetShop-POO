@@ -19,7 +19,7 @@ public class AgendamentoRepository {
 
     private void carregarDados() throws PersistenciaException {
         try {
-            agendamentos = JsonFileManager.carregarLista(FilePaths.AGENDAMENTOS_JSON, Agendamento.class);
+            agendamentos = JsonFileManager.carregar(FilePaths.AGENDAMENTOS_JSON, Agendamento.class);
             if (agendamentos == null) {
                 agendamentos = new ArrayList<>();
             }
@@ -32,7 +32,7 @@ public class AgendamentoRepository {
 
     public void salvar(Agendamento agendamento) throws PersistenciaException {
         agendamentos.add(agendamento);
-        JsonFileManager.salvarLista(FilePaths.AGENDAMENTOS_JSON, agendamentos);
+        JsonFileManager.salvar(FilePaths.AGENDAMENTOS_JSON, agendamentos);
     }
 
     public void atualizar(Agendamento agendamento) throws PersistenciaException {
@@ -42,7 +42,7 @@ public class AgendamentoRepository {
                 break;
             }
         }
-        JsonFileManager.salvarLista(FilePaths.AGENDAMENTOS_JSON, agendamentos);
+        JsonFileManager.salvar(FilePaths.AGENDAMENTOS_JSON, agendamentos);
     }
 
     // --- ESSE ERA O MÉTODO QUE FALTAVA ---
@@ -59,7 +59,7 @@ public class AgendamentoRepository {
 
         // Só grava no arquivo se realmente removeu alguém, pra evitar I/O desnecessário
         if (removido) {
-            JsonFileManager.salvarLista(FilePaths.AGENDAMENTOS_JSON, agendamentos);
+            JsonFileManager.salvar(FilePaths.AGENDAMENTOS_JSON, agendamentos);
         }
     }
 

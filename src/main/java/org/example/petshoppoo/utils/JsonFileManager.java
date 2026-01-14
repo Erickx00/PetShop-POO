@@ -1,4 +1,4 @@
-package org.example.petshoppoo.repository;
+package org.example.petshoppoo.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

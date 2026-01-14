@@ -16,18 +16,25 @@ public class ServicoRepository {
 
     public ServicoRepository() throws PersistenciaException {
         carregarDados();
+        inicializarServicosPadrao();
     }
 
     private void carregarDados() throws PersistenciaException {
-        try {
-            servicos = JsonFileManager.carregarLista(FilePaths.SERVICOS_JSON, Servico.class);
-            if (servicos == null) {
-                servicos = new ArrayList<>();
+        this.servicos = JsonFileManager.carregar(FilePaths.SERVICOS_JSON, Servico.class);
+    }
+
+    private void inicializarServicosPadrao() throws PersistenciaException {
+        if (servicos.isEmpty()) {
+            for (TipoServico tipo : TipoServico.values()) {
+                Servico servico = new Servico(tipo);
+                servicos.add(servico);
             }
-        } catch (Exception e) {
-            servicos = new ArrayList<>();
-            throw new PersistenciaException("Erro ao carregar serviços: " + e.getMessage());
+            salvarServicos();
         }
+    }
+
+    private void salvarServicos() throws PersistenciaException {
+        JsonFileManager.salvar(FilePaths.SERVICOS_JSON, servicos);
     }
 
     public List<Servico> listarAtivos() {
