@@ -70,4 +70,3 @@ Lista dos membros da equipe envolvidos e seus respectivos perfis no GitHub.
 |José| [@joseaugusto302](https://github.com/joseaugusto302) |
 |Erick| [@Erickx00](https://github.com/Erickx00) |
 |Leandro| [@LeandroS4nt](https://github.com/LeandroS4nt) |
-|Adjon| [@Adjon-IO](https://github.com/Adjon-IO) |
