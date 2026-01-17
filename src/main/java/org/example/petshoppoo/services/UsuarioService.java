@@ -2,7 +2,6 @@ package org.example.petshoppoo.services;
 
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Login.Usuario;
-import org.example.petshoppoo.model.Login.exceptions.EmailInvalidoException;
 import org.example.petshoppoo.repository.UsuarioRepository;
 import org.example.petshoppoo.utils.SessionManager;
 

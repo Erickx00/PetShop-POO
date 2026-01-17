@@ -1,6 +1,6 @@
 package org.example.petshoppoo.model.Login;
 
-import org.example.petshoppoo.model.Login.exceptions.EmailInvalidoException;
+import org.example.petshoppoo.exceptions.EmailInvalidoException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

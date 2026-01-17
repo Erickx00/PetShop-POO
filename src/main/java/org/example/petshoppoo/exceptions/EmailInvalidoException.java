@@ -1,4 +1,4 @@
-package org.example.petshoppoo.model.Login.exceptions;
+package org.example.petshoppoo.exceptions;
 
 public class EmailInvalidoException extends RuntimeException{
 
