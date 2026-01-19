@@ -4,7 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.example.petshoppoo.exceptions.PersistenciaException;
+import org.example.petshoppoo.repository.RepositoryFactory;
+import org.example.petshoppoo.services.ServiceFactory;
 import org.example.petshoppoo.services.UsuarioService;
+import org.example.petshoppoo.services.interfaces.IUsuarioService;
 import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.ViewLoader;
 import java.io.IOException;
@@ -17,14 +21,10 @@ public class CadastroController {
     @FXML private PasswordField txtConfirmarSenha;
     @FXML private Button btnFinalizar;
 
-    private UsuarioService usuarioService;
+    private IUsuarioService usuarioService;
 
-    public CadastroController() {
-        try {
-           this.usuarioService = new UsuarioService();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public CadastroController() throws PersistenciaException {
+        this.usuarioService = ServiceFactory.getUsuarioService();
     }
 
     @FXML

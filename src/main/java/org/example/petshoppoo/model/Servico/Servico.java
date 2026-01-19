@@ -48,4 +48,9 @@ public class Servico {
     public String getDescricaoCompleta() {
         return tipo.getDescricao() + " - R$ " + String.format("%.2f", preco);
     }
+
+    @JsonIgnore
+    public String getDescricao() {
+        return descricaoAdicional;
+    }
 }

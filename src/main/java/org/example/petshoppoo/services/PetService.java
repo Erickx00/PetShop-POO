@@ -2,8 +2,11 @@ package org.example.petshoppoo.services;
 
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Pet.Pet;
-import org.example.petshoppoo.repository.PetRepository;
-import org.example.petshoppoo.repository.UsuarioRepository;
+import org.example.petshoppoo.repository.implementations.PetRepository;
+import org.example.petshoppoo.repository.implementations.UsuarioRepository;
+import org.example.petshoppoo.repository.interfaces.IPetRepository;
+import org.example.petshoppoo.repository.interfaces.IUsuarioRepository;
+import org.example.petshoppoo.services.interfaces.IPetService;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -11,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PetService {
-    private PetRepository petRepository;
-    private UsuarioRepository usuarioRepository;
+public class PetService implements IPetService {
+    private IPetRepository petRepository;
+    private IUsuarioRepository usuarioRepository;
 
-    public PetService() throws PersistenciaException {
+    public PetService(IPetRepository petRepository) throws PersistenciaException {
         this.petRepository = new PetRepository();
         this.usuarioRepository = new UsuarioRepository();
     }
@@ -45,6 +48,11 @@ public class PetService {
         usuarioRepository.adicionarPetAoUsuario(idUsuario, novoPet.getIdPet());
     }
 
+    @Override
+    public List<Pet> listarPetsDoUsuario(UUID usuarioId) throws PersistenciaException {
+        return petRepository.buscarPetsPorUsuario(usuarioId);
+    }
+
     public List<Pet> listarPetsPorUsuario(UUID usuarioId) throws PersistenciaException {
         List<Pet> resultado = new ArrayList<>();
         for (Pet pet : listarPets()) {
@@ -63,13 +71,12 @@ public class PetService {
         return petRepository.buscarPorId(id).orElse(null);
     }
 
-    public void deletarPet(Object pet) throws PersistenciaException {
-        if (pet instanceof Pet) {
-            petRepository.deletar((Pet) pet);
-        } else {
-            throw new PersistenciaException("Objeto inválido para deletar");
-        }
+    @Override
+    public void deletarPet(Pet pet) throws PersistenciaException {
+        petRepository.deletar(pet.getIdPet());
+
     }
+
 
     // ===== MÉTODOS PARA CONTROLLER BURRO =====
 
@@ -151,12 +158,17 @@ public class PetService {
     public void excluir(UUID idPet) throws PersistenciaException {
         Pet pet = petRepository.buscarPorId(idPet)
                 .orElseThrow(() -> new PersistenciaException("Pet não encontrado."));
-        petRepository.deletar(pet);
+        petRepository.deletar(pet.getIdPet());
     }
 
     public void atualizar(Pet pet) throws PersistenciaException {
         validarPet(pet);
         petRepository.atualizar(pet);
+    }
+
+    @Override
+    public Pet buscarPetPorId(UUID id) throws PersistenciaException {
+        return null;
     }
 
     private void validarPet(Pet pet) throws PersistenciaException {
@@ -193,5 +205,10 @@ public class PetService {
         if (pet == null) return "N/A";
         int anos = pet.calcularIdade();
         return anos + (anos == 1 ? " ano" : " anos");
+    }
+
+    @Override
+    public Object obterTipo(Pet pet) {
+        return null;
     }
 }

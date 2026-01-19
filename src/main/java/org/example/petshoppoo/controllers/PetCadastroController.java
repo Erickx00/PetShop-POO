@@ -7,7 +7,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Login.Usuario;
+import org.example.petshoppoo.repository.RepositoryFactory;
 import org.example.petshoppoo.services.PetService;
+import org.example.petshoppoo.services.ServiceFactory;
+import org.example.petshoppoo.services.interfaces.IPetService;
 import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.SessionManager;
 import org.example.petshoppoo.utils.ViewLoader;
@@ -23,18 +26,16 @@ public class PetCadastroController extends BaseController {
     @FXML private CheckBox chkAdestrado;
     @FXML private CheckBox chkCastrado;
 
-    private PetService petService;
+    private IPetService petService;
+
+    public PetCadastroController() throws PersistenciaException {
+        this.petService = ServiceFactory.getPetService();
+    }
 
     @FXML
     public void initialize() {
-        try {
-            validarSessao();
-            Usuario u = session.getUsuarioLogado();
-
-            this.petService = new PetService();
-        } catch (PersistenciaException e) {
-            AlertUtils.showError("Erro", "Erro ao carregar banco de dados.");
-        }
+        validarSessao();
+        Usuario u = session.getUsuarioLogado();
 
         cbTipo.getItems().addAll("Cachorro", "Gato");
 

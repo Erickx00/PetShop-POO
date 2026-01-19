@@ -1,18 +1,22 @@
 package org.example.petshoppoo.services;
 
 import org.example.petshoppoo.exceptions.PersistenciaException;
+import org.example.petshoppoo.model.Pet.Pet;
 import org.example.petshoppoo.model.Servico.Servico;
 import org.example.petshoppoo.model.Servico.TipoServico;
-import org.example.petshoppoo.repository.ServicoRepository;
+import org.example.petshoppoo.repository.implementations.ServicoRepository;
+import org.example.petshoppoo.repository.interfaces.IServicoRepository;
+import org.example.petshoppoo.services.interfaces.IServicoService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-public class ServicoService {
+public class ServicoService implements IServicoService {
     private final ServicoRepository servicoRepository;
 
-    public ServicoService() throws PersistenciaException {
+    public ServicoService(IServicoRepository servicoRepository) throws PersistenciaException {
         this.servicoRepository = new ServicoRepository();
     }
 
@@ -20,8 +24,43 @@ public class ServicoService {
         return servicoRepository.listarAtivos();
     }
 
+    @Override
+    public Optional<Servico> buscarPorId(UUID id) throws PersistenciaException {
+        return Optional.empty();
+    }
+
+    @Override
+    public double calcularPrecoParaPet(Servico servico, Pet pet) {
+        return 0;
+    }
+
+    @Override
+    public void adicionarServico(Servico servico) throws PersistenciaException {
+
+    }
+
+    @Override
+    public void atualizarServico(Servico servico) throws PersistenciaException {
+
+    }
+
+    @Override
+    public void removerServico(UUID id) throws PersistenciaException {
+
+    }
+
+    @Override
+    public ArrayList<Servico> servicoDisponivel(UUID id) throws PersistenciaException {
+        return null;
+    }
+
+    @Override
+    public double calcularPrecoComDesconto(Servico servico, double percentualDesconto) {
+        return 0;
+    }
+
     public Servico buscarServicoPorId(UUID id) {
-        return servicoRepository.buscarPorId(id);
+        return servicoRepository.buscarPorId(id).orElse(null);
     }
 
     public Servico buscarServicoPorTipo(TipoServico tipo) {
@@ -44,47 +83,5 @@ public class ServicoService {
         return precoBase;
     }
 
-    // ===== MÉTODOS PARA O CONTROLLER (Genéricos) =====
 
-    public List<Object> listarServicosDisponiveisComoObjetos() throws PersistenciaException {
-        return new ArrayList<>(listarServicosDisponiveis());
-    }
-
-    public String obterDescricaoCompleta(Object obj) {
-        if (obj instanceof Servico) {
-            Servico s = (Servico) obj;
-            return s.getTipo().getDescricao() +
-                    " (R$ " + String.format("%.2f", s.getPreco()) +
-                    " - " + s.getDuracaoMinutos() + " min)";
-        }
-        return "";
-    }
-
-    public String obterDescricaoSimples(Object obj) {
-        if (obj instanceof Servico) {
-            return ((Servico) obj).getTipo().getDescricao();
-        }
-        return "";
-    }
-
-    public int obterDuracaoMinutos(Object obj) {
-        if (obj instanceof Servico) {
-            return ((Servico) obj).getDuracaoMinutos();
-        }
-        return 0;
-    }
-
-    public UUID obterId(Object obj) {
-        if (obj instanceof Servico) {
-            return ((Servico) obj).getId();
-        }
-        return null;
-    }
-
-    public double obterPreco(Object obj) {
-        if (obj instanceof Servico) {
-            return ((Servico) obj).getPreco();
-        }
-        return 0.0;
-    }
 }

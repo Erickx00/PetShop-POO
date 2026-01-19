@@ -2,16 +2,16 @@ package org.example.petshoppoo.services;
 
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Login.Usuario;
-import org.example.petshoppoo.repository.UsuarioRepository;
+import org.example.petshoppoo.repository.implementations.UsuarioRepository;
+import org.example.petshoppoo.repository.interfaces.IUsuarioRepository;
+import org.example.petshoppoo.services.interfaces.IAuthService;
 import org.example.petshoppoo.utils.SessionManager;
 
-import java.util.UUID;
+public class AuthService implements IAuthService {
+    private final IUsuarioRepository usuarioRepository;
 
-public class AuthService {
-    private final UsuarioRepository usuarioRepository;
-
-    public AuthService() throws PersistenciaException {
-        this.usuarioRepository = new UsuarioRepository();
+    public AuthService(IUsuarioRepository usuarioRepository) throws PersistenciaException {
+        this.usuarioRepository = usuarioRepository;
     }
 
 

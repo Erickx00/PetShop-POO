@@ -8,11 +8,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Pet.Pet;
 import org.example.petshoppoo.model.Servico.Servico;
+import org.example.petshoppoo.repository.RepositoryFactory;
 import org.example.petshoppoo.services.AgendamentoService;
 import org.example.petshoppoo.services.PetService;
+import org.example.petshoppoo.services.ServiceFactory;
 import org.example.petshoppoo.services.ServicoService;
+import org.example.petshoppoo.services.interfaces.IAgendamentoService;
+import org.example.petshoppoo.services.interfaces.IPetService;
+import org.example.petshoppoo.services.interfaces.IServicoService;
 import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.SessionManager;
 
@@ -32,18 +38,20 @@ public class ServicoController {
     @FXML private TextArea txtObservacoes;
 
     // Services
-    private AgendamentoService agendamentoService;
-    private PetService petService;
-    private ServicoService servicoService;
+    private IAgendamentoService agendamentoService;
+    private IPetService petService;
+    private IServicoService servicoService;
+
+    public ServicoController() throws PersistenciaException {
+        this.agendamentoService = ServiceFactory.getAgendamentoService();
+        this.petService = ServiceFactory.getPetService();
+        this.servicoService = ServiceFactory.getServicoService();
+    }
+
 
     @FXML
     public void initialize() {
         try {
-            // Inicializa os services
-            this.agendamentoService = new AgendamentoService();
-            this.petService = new PetService();
-            this.servicoService = new ServicoService();
-
             carregarCombos();
 
         } catch (Exception e) {
@@ -55,7 +63,7 @@ public class ServicoController {
     private void carregarCombos() {//Carrega Pets do Usuário Logado
 
         try {
-            List<Pet> pets = petService.listarPetsPorUsuario(SessionManager.getUsuarioId());
+            List<Pet> pets = petService.listarPetsDoUsuario(SessionManager.getUsuarioId());
             comboPet.setItems(FXCollections.observableArrayList(pets));
 
             // Faz aparecer o NOME do pet, e não o código de memória
@@ -115,7 +123,6 @@ public class ServicoController {
             AlertUtils.showError("Erro", "Falha ao agendar: " + e.getMessage());
         }
     }
-
 
 
     @FXML

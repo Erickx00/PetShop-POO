@@ -8,9 +8,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Login.Usuario;
+import org.example.petshoppoo.repository.RepositoryFactory;
 import org.example.petshoppoo.services.AuthService;
+import org.example.petshoppoo.services.ServiceFactory;
 import org.example.petshoppoo.services.UsuarioService;
+import org.example.petshoppoo.services.interfaces.IAuthService;
+import org.example.petshoppoo.services.interfaces.IUsuarioService;
 import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.SessionManager;
 
@@ -22,17 +27,20 @@ public class PerfilController extends BaseController {
     @FXML private TextField email;
     @FXML private TextField telefone;
 
-    private UsuarioService usuarioService;
-    private AuthService authService;
+    private IUsuarioService usuarioService;
+    private IAuthService authService;
+
+    public PerfilController() throws PersistenciaException {
+        this.usuarioService = ServiceFactory.getUsuarioService();
+        this.authService = ServiceFactory.getAuthService();
+
+    }
 
     @FXML
     public void initialize() {
         try {
             validarSessao();
             Usuario u = session.getUsuarioLogado();
-
-            this.usuarioService = new UsuarioService();
-            this.authService = new AuthService();
 
             carregarDadosPerfil();
         } catch (Exception e) {

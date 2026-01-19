@@ -12,13 +12,19 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Servico.Agendamento;
+import org.example.petshoppoo.repository.RepositoryFactory;
 import org.example.petshoppoo.services.AgendamentoService;
 import org.example.petshoppoo.services.PetService;
+import org.example.petshoppoo.services.ServiceFactory;
 import org.example.petshoppoo.services.ServicoService;
+import org.example.petshoppoo.services.interfaces.IAgendamentoService;
+import org.example.petshoppoo.services.interfaces.IPetService;
+import org.example.petshoppoo.services.interfaces.IServicoService;
 import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.SessionManager;
 
@@ -35,18 +41,19 @@ public class AgendamentoController {
     @FXML private TableColumn<Agendamento, String> colStatus;
 
     // Services
-    private AgendamentoService agendamentoService;
-    private PetService petService;
-    private ServicoService servicoService;
+    private IAgendamentoService agendamentoService;
+    private IPetService petService;
+    private IServicoService servicoService;
+
+    public AgendamentoController() throws PersistenciaException {
+        this.agendamentoService = ServiceFactory.getAgendamentoService();
+        this.petService = ServiceFactory.getPetService();
+        this.servicoService = ServiceFactory.getServicoService();
+    }
 
     @FXML
     public void initialize() { //Aqui ta inicializando os servicos
         try {
-
-            this.agendamentoService = new AgendamentoService();
-            this.petService = new PetService();
-            this.servicoService = new ServicoService();
-
             configurarColunas();
             carregarTabela();
 
@@ -78,17 +85,17 @@ public class AgendamentoController {
         // Nome do Serviço
         colServico.setCellValueFactory(cell -> {
             try {
-                var serv = servicoService.buscarServicoPorId(cell.getValue().getIdServico());
-                return new SimpleStringProperty(serv != null ? serv.getTipo().getDescricao() : "Desconhecido");
+                var serv = servicoService.buscarPorId(cell.getValue().getIdServico());
+                return new SimpleStringProperty(serv != null ? serv.get().getDescricao() : "Desconhecido");
             } catch (Exception e) { return new SimpleStringProperty("-"); }
         });
 
         // Valor
         colDuracao.setCellValueFactory(cell -> {
             try {
-                var serv = servicoService.buscarServicoPorId(cell.getValue().getIdServico());
+                var serv = servicoService.buscarPorId(cell.getValue().getIdServico());
                 // Exemplo: pega o preço ou um texto fixo, já que duração não tem no model padrão
-                return new SimpleStringProperty(serv != null ? "R$ " + serv.getPreco() : "-");
+                return new SimpleStringProperty(serv != null ? "R$ " + serv.get().getPreco() : "-");
             } catch (Exception e) { return new SimpleStringProperty("-"); }
         });
     }
@@ -116,10 +123,21 @@ public class AgendamentoController {
             return;
         }
 
+        boolean confirmar = AlertUtils.showConfirmation("Cancelar Agendamento",
+                "Deseja realmente cancelar este agendamento?");
+
+        if (!confirmar) return;
+
         try {
+            // Executa o cancelamento
             agendamentoService.cancelarAgendamento(selecionado);
-            carregarTabela(); // Atualiza a lista na hora
-            AlertUtils.showInfo("Sucesso", "Serviço cancelado com sucesso.");
+
+            // Atualiza a tabela imediatamente
+            javafx.application.Platform.runLater(() -> {
+                carregarTabela(); // Atualiza a lista
+                AlertUtils.showInfo("Sucesso", "Serviço cancelado com sucesso.");
+            });
+
         } catch (Exception e) {
             AlertUtils.showError("Erro", "Não foi possível cancelar: " + e.getMessage());
         }
@@ -143,30 +161,40 @@ public class AgendamentoController {
 
     @FXML
     public void handleLimpar(ActionEvent event) {
-        List<Agendamento> paraRemover = new ArrayList<>();
-        for (Agendamento ag : tabelaAgendamentos.getItems()) {
-            if (ag.getStatus() == Agendamento.StatusAgendamento.CANCELADO) {
-                paraRemover.add(ag);
-            }
-        }
+        List<Agendamento> cancelados = tabelaAgendamentos.getItems().stream()
+                .filter(ag -> ag.getStatus() == Agendamento.StatusAgendamento.CANCELADO)
+                .collect(Collectors.toList());
 
-        if (paraRemover.isEmpty()) {
+        if (cancelados.isEmpty()) {
             AlertUtils.showWarning("Aviso", "Não há agendamentos cancelados para limpar.");
             return;
         }
-        boolean confirmar = AlertUtils.showConfirmation("Limpar Histórico",
-                "Tem certeza que deseja excluir permanentemente " + paraRemover.size() + " agendamentos cancelados?");
 
-        if (confirmar) {
-            try {
-                for (Agendamento ag : paraRemover) {
-                    agendamentoService.excluirAgendamento(ag);
+        boolean confirmar = AlertUtils.showConfirmation("Limpar Histórico",
+                String.format("Excluir %d agendamento%s cancelado%s permanentemente?",
+                        cancelados.size(),
+                        cancelados.size() != 1 ? "s" : "",
+                        cancelados.size() != 1 ? "s" : ""));
+
+        if (!confirmar) return;
+
+        try {
+            cancelados.forEach(ag -> {
+                try {
+                    agendamentoService.excluirAgendamento(ag.getId());
+                } catch (Exception e) {
+                    throw new RuntimeException("Erro ao excluir agendamento " + ag.getId(), e);
                 }
-                carregarTabela();
-                AlertUtils.showInfo("Sucesso", "Histórico limpo com sucesso!");
-            } catch (Exception e) {
-                AlertUtils.showError("Erro", "Erro ao limpar agendamentos: " + e.getMessage());
-            }
+            });
+
+            carregarTabela();
+            AlertUtils.showInfo("Concluído", String.format("%d agendamento%s removido%s.",
+                    cancelados.size(),
+                    cancelados.size() != 1 ? "s" : "",
+                    cancelados.size() != 1 ? "s" : ""));
+
+        } catch (Exception e) {
+            AlertUtils.showError("Erro", "Falha ao limpar histórico: " + e.getMessage());
         }
     }
 }

@@ -1,7 +1,8 @@
-package org.example.petshoppoo.repository;
+package org.example.petshoppoo.repository.implementations;
 
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Login.Usuario;
+import org.example.petshoppoo.repository.interfaces.IUsuarioRepository;
 import org.example.petshoppoo.utils.FilePaths;
 import org.example.petshoppoo.utils.JsonFileManager;
 
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class UsuarioRepository {
+public class UsuarioRepository implements IUsuarioRepository {
     private List<Usuario> usuarios;
 
     public UsuarioRepository() throws PersistenciaException {
@@ -30,11 +31,20 @@ public class UsuarioRepository {
         }
     }
 
-    public Usuario buscarPorId(UUID id) {
-        return usuarios.stream()
-                .filter(u -> u.getIdUsuario().equals(id))
+    @Override
+    public void deletar(UUID id) throws PersistenciaException {
+        usuarios.stream()
+                .filter(usuario -> usuario.getIdUsuario().equals(id))
                 .findFirst()
-                .orElse(null);
+                .ifPresent(usuario -> usuarios.remove(usuario));
+    }
+
+
+
+    @Override
+    public void salvar(Usuario usuario) throws PersistenciaException {
+        usuarios.add(usuario);
+        salvarUsuarios();
     }
 
     public Usuario buscarPorEmail(String email) {
@@ -56,9 +66,17 @@ public class UsuarioRepository {
         return new ArrayList<>(usuarios);
     }
 
+    @Override
+    public Optional<Usuario> buscarPorId(UUID id) {
+        return usuarios.stream()
+                .filter(u -> u.getIdUsuario().equals(id))
+                .findFirst();
+    }
+
     // Refatorado com Optional e Stream para ser mais direto
+    @Override
     public void adicionarPetAoUsuario(UUID idUsuario, UUID idPet) throws PersistenciaException {
-        Optional.ofNullable(buscarPorId(idUsuario))
+        buscarPorId(idUsuario)
                 .ifPresent(usuario -> {
                     usuario.adicionarPet(idPet);
                     // Como o objeto foi alterado na lista, basta salvar
@@ -71,15 +89,16 @@ public class UsuarioRepository {
     }
 
     public void removerPetDoUsuario(UUID idUsuario, UUID idPet) throws PersistenciaException {
-        Optional.ofNullable(buscarPorId(idUsuario))
-                .ifPresent(usuario -> {
-                    usuario.removerPet(idPet);
-                    try {
-                        salvarUsuarios();
-                    } catch (PersistenciaException e) {
-                        throw new RuntimeException("Erro ao salvar após remover pet", e);
-                    }
-                });
+        // buscarPorId já retorna um Optional, não use Optional.ofNullable nele
+        buscarPorId(idUsuario).ifPresent(usuario -> {
+            usuario.removerPet(idPet);
+            try {
+                salvarUsuarios();
+            } catch (PersistenciaException e) {
+                // Transformando a checked exception em Runtime para usar dentro do lambda
+                throw new RuntimeException("Erro ao salvar após remover pet", e);
+            }
+        });
     }
 
     private void salvarUsuarios() throws PersistenciaException {

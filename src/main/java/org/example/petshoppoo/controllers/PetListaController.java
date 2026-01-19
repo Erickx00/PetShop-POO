@@ -8,9 +8,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Login.Usuario;
 import org.example.petshoppoo.model.Pet.Pet;
+import org.example.petshoppoo.repository.RepositoryFactory;
 import org.example.petshoppoo.services.PetService;
+import org.example.petshoppoo.services.ServiceFactory;
+import org.example.petshoppoo.services.interfaces.IPetService;
 import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.SessionManager;
 import org.example.petshoppoo.utils.ViewLoader;
@@ -38,8 +42,12 @@ public class PetListaController extends BaseController {
     @FXML private Button btnCancelar;
 
     private final ObservableList<Pet> pets = FXCollections.observableArrayList();
-    private PetService petService;
+    private IPetService petService;
     private Pet petEmEdicao;
+
+    public PetListaController() throws PersistenciaException {
+        this.petService = ServiceFactory.getPetService();
+    }
 
     @FXML
     public void initialize() {
@@ -47,8 +55,6 @@ public class PetListaController extends BaseController {
             validarSessao();
             Usuario u = session.getUsuarioLogado();
 
-
-            petService = new PetService();
             configurarTabela();
             carregarPets();
         } catch (Exception e) {
@@ -62,7 +68,7 @@ public class PetListaController extends BaseController {
                 new SimpleStringProperty(data.getValue().getNome()));
 
         clEspecie.setCellValueFactory(data ->
-                new SimpleStringProperty(petService.obterTipo(data.getValue())));
+                new SimpleStringProperty((String) petService.obterTipo(data.getValue())));
 
         clRaca.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getRaca()));
@@ -95,7 +101,7 @@ public class PetListaController extends BaseController {
 
     private void carregarPets() {
         try {
-            pets.setAll(petService.listarPetsPorUsuario(SessionManager.getUsuarioId()));
+            pets.setAll(petService.listarPetsDoUsuario(SessionManager.getUsuarioId()));
         } catch (Exception e) {
             AlertUtils.showError("Erro ao carregar", e.getMessage());
         }

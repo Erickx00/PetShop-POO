@@ -5,7 +5,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.example.petshoppoo.exceptions.PersistenciaException;
+import org.example.petshoppoo.repository.RepositoryFactory;
 import org.example.petshoppoo.services.AuthService;
+import org.example.petshoppoo.services.ServiceFactory;
+import org.example.petshoppoo.services.interfaces.IAuthService;
 import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.ViewLoader;
 import java.io.IOException;
@@ -17,15 +21,14 @@ public class LoginController {
     @FXML private Button btnEntrar;
     @FXML private Hyperlink btnCadastrar;
 
-    private AuthService authService;
+    private IAuthService authService;
 
-    public LoginController() {
-        try {
-            this.authService = new AuthService();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public LoginController() throws PersistenciaException {
+        // Inicializa com a Factory
+        this.authService = ServiceFactory.getAuthService();
+
     }
+
 
     @FXML
     private void handleLogin() {
@@ -38,6 +41,11 @@ public class LoginController {
         }
 
         try {
+            try {
+                Thread.sleep(300); // Espera 0.3 segundos
+            } catch (InterruptedException e) {
+                // Ignora
+            }
             // Autentica e seta o usuário na sessão
             authService.login(email, senha);
             // Isso vai chamar a tela de menu com o tamanho automático

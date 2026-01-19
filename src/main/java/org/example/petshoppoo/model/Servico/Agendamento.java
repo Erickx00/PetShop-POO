@@ -21,7 +21,10 @@ Agendamento {
 
     public enum StatusAgendamento {
         AGENDADO("Agendado", "⏰", "#FFE0B2"),
-        CANCELADO("Cancelado", "✖", "#FFCDD2");
+        CANCELADO("Cancelado", "✖", "#FFCDD2"),
+        CONCLUIDO("Concluído", "✔", "#C8E6C9"),
+        EM_ANDAMENTO("Em Andamento", "▶", "#FFF9C4");
+
 
         private final String descricao;
         private final String icone;
@@ -92,13 +95,17 @@ Agendamento {
 
     // Helpers Visuais
     @JsonIgnore
-    public String getDescricaoStatus() { return status.getIcone() + " " + status.getDescricao(); }
+    public boolean isAtivo() {
+        return status != StatusAgendamento.CANCELADO && status != StatusAgendamento.CONCLUIDO;
+    }
 
     @JsonIgnore
-    public String getCorStatus() { return status.getCor(); }
+    public boolean isConcluido() {
+        return status == StatusAgendamento.CONCLUIDO;
+    }
 
     @JsonIgnore
-    public String getDataHoraFormatada() {
-        return dataHora != null ? dataHora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) : "";
+    public LocalDateTime getDataHoraFim() {
+        return dataHora.plusMinutes(duracaoMinutos);
     }
 }
