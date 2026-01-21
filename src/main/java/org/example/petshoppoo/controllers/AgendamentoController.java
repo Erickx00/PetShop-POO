@@ -30,7 +30,7 @@ import org.example.petshoppoo.utils.SessionManager;
 
 
 
-public class AgendamentoController {
+public class AgendamentoController  {
 
 
     @FXML private TableView<Agendamento> tabelaAgendamentos;
@@ -41,9 +41,9 @@ public class AgendamentoController {
     @FXML private TableColumn<Agendamento, String> colStatus;
 
     // Services
-    private IAgendamentoService agendamentoService;
-    private IPetService petService;
-    private IServicoService servicoService;
+    private final IAgendamentoService agendamentoService;
+    private final IPetService petService;
+    private final IServicoService servicoService;
 
     public AgendamentoController() throws PersistenciaException {
         this.agendamentoService = ServiceFactory.getAgendamentoService();
@@ -161,9 +161,7 @@ public class AgendamentoController {
 
     @FXML
     public void handleLimpar(ActionEvent event) {
-        List<Agendamento> cancelados = tabelaAgendamentos.getItems().stream()
-                .filter(ag -> ag.getStatus() == Agendamento.StatusAgendamento.CANCELADO)
-                .collect(Collectors.toList());
+        List<Agendamento> cancelados = agendamentoService.getCancelados();
 
         if (cancelados.isEmpty()) {
             AlertUtils.showWarning("Aviso", "Não há agendamentos cancelados para limpar.");

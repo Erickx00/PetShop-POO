@@ -24,7 +24,7 @@ public class RepositoryFactory {
         return usuarioRepository;
     }
 
-    public static IPetRepository getPetRepository() throws PersistenciaException {
+    public static IPetRepository getPetRepository() {
         if (petRepository == null) {
             petRepository = new PetRepository();
         }
@@ -38,11 +38,10 @@ public class RepositoryFactory {
         return servicoRepository;
     }
 
-    public static IAgendamentoRepository getAgendamentoRepository() throws PersistenciaException {
+    public static IAgendamentoRepository getAgendamentoRepository() {
         if (agendamentoRepository == null) {
             agendamentoRepository = new AgendamentoRepository();
         }
         return agendamentoRepository;
     }
-
 }

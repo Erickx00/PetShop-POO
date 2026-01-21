@@ -10,18 +10,12 @@ import java.util.UUID;
 
 public interface IAgendamentoRepository extends IRepository<Agendamento> {
     List<Agendamento> buscarPorUsuario(UUID idUsuario);
-    List<Agendamento> buscarPorPet(UUID idPet);
-    List<Agendamento> buscarPorServico(UUID idServico);
     List<Agendamento> buscarPorData(LocalDate data);
-    List<Agendamento> buscarPorStatus(Agendamento.StatusAgendamento status);
     List<Agendamento> buscarAtivos();
-    List<Agendamento> buscarConcluidos();
     boolean existeConflitoHorario(LocalDateTime dataHora, int duracaoMinutos, UUID ignorarAgendamentoId);
     boolean existeConflitoHorario(LocalDateTime dataHora, int duracaoMinutos);
     List<LocalDateTime> getHorariosDisponiveis(LocalDate data, int duracaoMinutos);
-    double calcularReceitaTotal();
-    void concluirAgendamento(UUID idAgendamento) throws PersistenciaException;
+    List<Agendamento> getCancelados();
     void cancelarAgendamento(Agendamento agendamento) throws PersistenciaException;
-    void confirmarAgendamento(UUID idAgendamento) throws PersistenciaException;
-    //void iniciarAgendamento(UUID idAgendamento) throws PersistenciaException;
+    //void confirmarAgendamento(UUID idAgendamento) throws PersistenciaException;
 }

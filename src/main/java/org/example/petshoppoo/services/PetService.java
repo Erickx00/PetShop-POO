@@ -71,12 +71,6 @@ public class PetService implements IPetService {
         return petRepository.buscarPorId(id).orElse(null);
     }
 
-    @Override
-    public void deletarPet(Pet pet) throws PersistenciaException {
-        petRepository.deletar(pet.getIdPet());
-
-    }
-
 
     // ===== MÉTODOS PARA CONTROLLER BURRO =====
 
@@ -142,19 +136,6 @@ public class PetService implements IPetService {
         return "N/A";
     }
 
-    public void atualizarPet(Object pet, String nome, String raca, double peso) throws PersistenciaException {
-        if (!(pet instanceof Pet)) {
-            throw new PersistenciaException("Objeto inválido");
-        }
-
-        Pet p = (Pet) pet;
-        p.setNome(nome);
-        p.setRaca(raca);
-        p.setPeso(peso);
-
-        petRepository.atualizar(p);
-    }
-
     public void excluir(UUID idPet) throws PersistenciaException {
         Pet pet = petRepository.buscarPorId(idPet)
                 .orElseThrow(() -> new PersistenciaException("Pet não encontrado."));
@@ -164,11 +145,6 @@ public class PetService implements IPetService {
     public void atualizar(Pet pet) throws PersistenciaException {
         validarPet(pet);
         petRepository.atualizar(pet);
-    }
-
-    @Override
-    public Pet buscarPetPorId(UUID id) throws PersistenciaException {
-        return null;
     }
 
     private void validarPet(Pet pet) throws PersistenciaException {

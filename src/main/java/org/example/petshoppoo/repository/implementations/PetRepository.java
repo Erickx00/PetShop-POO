@@ -16,7 +16,7 @@ public class PetRepository implements IPetRepository {
     private List<Pet> pets;
 
     public PetRepository() {
-        // ✅ CORRETO: Carrega dados do arquivo
+        //  CORRETO: Carrega dados do arquivo
         this.pets = carregarDoArquivo();
     }
 
@@ -71,6 +71,7 @@ public class PetRepository implements IPetRepository {
     }
 
 
+
     @Override
     public void atualizar(Pet petAtualizado) throws PersistenciaException {
         List<Pet> listaAtual = listarTodos();
@@ -79,11 +80,9 @@ public class PetRepository implements IPetRepository {
             throw new PersistenciaException("Pet não encontrado para atualizar");
         }
 
-        List<Pet> petsAtualizados = listaAtual.stream()
+        this.pets = listaAtual.stream()
                 .map(p -> p.getIdPet() != null && p.getIdPet().equals(petAtualizado.getIdPet()) ? petAtualizado : p)
                 .collect(Collectors.toList());
-
-        this.pets = petsAtualizados;
         salvarNoArquivo();
     }
 

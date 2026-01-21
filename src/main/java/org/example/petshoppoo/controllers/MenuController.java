@@ -58,7 +58,7 @@ public class MenuController {
 
     @FXML
     public void handleSairDaConta() {
-        SessionManager.limparSessao();
+        SessionManager.logout();
         abrirTela("/views/LoginView.fxml", "Login - Golden Pet");
     }
 

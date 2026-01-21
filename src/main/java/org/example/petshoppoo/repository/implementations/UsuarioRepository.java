@@ -18,11 +18,6 @@ public class UsuarioRepository implements IUsuarioRepository {
         this.usuarios = JsonFileManager.carregar(FilePaths.USUARIOS_JSON, Usuario.class);
     }
 
-    public void adicionar(Usuario usuario) throws PersistenciaException {
-        usuarios.add(usuario);
-        salvarUsuarios();
-    }
-
     // Refatorado: Substitui o loop for por removeIf + add (mais limpo para listas)
     public void atualizar(Usuario usuarioAtualizado) throws PersistenciaException {
         if (usuarios.removeIf(u -> u.getIdUsuario().equals(usuarioAtualizado.getIdUsuario()))) {
@@ -32,7 +27,7 @@ public class UsuarioRepository implements IUsuarioRepository {
     }
 
     @Override
-    public void deletar(UUID id) throws PersistenciaException {
+    public void deletar(UUID id) {
         usuarios.stream()
                 .filter(usuario -> usuario.getIdUsuario().equals(id))
                 .findFirst()
@@ -75,7 +70,7 @@ public class UsuarioRepository implements IUsuarioRepository {
 
     // Refatorado com Optional e Stream para ser mais direto
     @Override
-    public void adicionarPetAoUsuario(UUID idUsuario, UUID idPet) throws PersistenciaException {
+    public void adicionarPetAoUsuario(UUID idUsuario, UUID idPet) {
         buscarPorId(idUsuario)
                 .ifPresent(usuario -> {
                     usuario.adicionarPet(idPet);
@@ -86,19 +81,6 @@ public class UsuarioRepository implements IUsuarioRepository {
                         throw new RuntimeException("Erro ao salvar após adicionar pet", e);
                     }
                 });
-    }
-
-    public void removerPetDoUsuario(UUID idUsuario, UUID idPet) throws PersistenciaException {
-        // buscarPorId já retorna um Optional, não use Optional.ofNullable nele
-        buscarPorId(idUsuario).ifPresent(usuario -> {
-            usuario.removerPet(idPet);
-            try {
-                salvarUsuarios();
-            } catch (PersistenciaException e) {
-                // Transformando a checked exception em Runtime para usar dentro do lambda
-                throw new RuntimeException("Erro ao salvar após remover pet", e);
-            }
-        });
     }
 
     private void salvarUsuarios() throws PersistenciaException {

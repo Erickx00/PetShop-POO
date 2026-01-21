@@ -41,11 +41,7 @@ public class LoginController {
         }
 
         try {
-            try {
-                Thread.sleep(300); // Espera 0.3 segundos
-            } catch (InterruptedException e) {
-                // Ignora
-            }
+
             // Autentica e seta o usuário na sessão
             authService.login(email, senha);
             // Isso vai chamar a tela de menu com o tamanho automático

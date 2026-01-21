@@ -18,7 +18,7 @@ public class SessionManager {
         return instance;
     }
 
-    public static void limparSessao() {
+    public static void logout() {
         // Pega a instância e zera o usuário logado
         getInstance().usuarioLogado = null;
     }
@@ -40,7 +40,4 @@ public class SessionManager {
         return usuarioLogado != null;
     }
 
-    public void logout() {
-        usuarioLogado = null;
-    }
 }

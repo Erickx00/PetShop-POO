@@ -12,7 +12,7 @@ public class ServiceFactory {
     private static IServicoService servicoService;
     private static IAgendamentoService agendamentoService;
 
-    public static synchronized IPetService getPetService() throws PersistenciaException {
+    public static IPetService getPetService() throws PersistenciaException {
         if (petService == null) {
             petService = new PetService(RepositoryFactory.getPetRepository());
         }

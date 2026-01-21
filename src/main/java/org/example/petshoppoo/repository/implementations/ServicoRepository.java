@@ -85,10 +85,4 @@ public class ServicoRepository implements IServicoRepository {
 
     }
 
-    public Servico buscarPorTipo(TipoServico tipo) {
-        return servicos.stream()
-                .filter(s -> s.getTipo() == tipo && s.isAtivo())
-                .findFirst()
-                .orElse(null);
-    }
 }

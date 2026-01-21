@@ -5,6 +5,7 @@ import org.example.petshoppoo.model.Servico.Agendamento;
 import org.example.petshoppoo.repository.interfaces.IAgendamentoRepository;
 import org.example.petshoppoo.utils.FilePaths;
 import org.example.petshoppoo.utils.JsonFileManager;
+import org.example.petshoppoo.model.Servico.Agendamento.StatusAgendamento;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -87,29 +88,14 @@ public class AgendamentoRepository implements IAgendamentoRepository {
 
     @Override
     public Optional<Agendamento> buscarPorId(UUID id) {
-        return Optional.ofNullable(agendamentos.stream()
+        return agendamentos.stream()
                 .filter(a -> a.getId().equals(id))
-                .findFirst()
-                .orElse(null));
+                .findFirst();
     }
 
     public List<Agendamento> buscarPorUsuario(UUID idUsuario) {
         return agendamentos.stream()
                 .filter(a -> a.getIdUsuario().equals(idUsuario))
-                .collect(Collectors.toList());
-    }
-
-    public List<Agendamento> buscarPorPet(UUID idPet) {
-        return agendamentos.stream()
-                .filter(a -> a.getIdPet().equals(idPet))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Agendamento> buscarPorServico(UUID idServico) {
-        return agendamentos.stream()
-                .filter(a -> a.getIdServico().equals(idServico))
-                .sorted((a1, a2) -> a2.getDataHora().compareTo(a1.getDataHora()))
                 .collect(Collectors.toList());
     }
 
@@ -123,29 +109,12 @@ public class AgendamentoRepository implements IAgendamentoRepository {
 
 
     @Override
-    public List<Agendamento> buscarPorStatus(Agendamento.StatusAgendamento status) {
-        return agendamentos.stream()
-                .filter(a -> a.getStatus() == status)
-                .sorted((a1, a2) -> a1.getDataHora().compareTo(a2.getDataHora()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public List<Agendamento> buscarAtivos() {
         return agendamentos.stream()
                 .filter(Agendamento::isAtivo)
                 .sorted((a1, a2) -> a1.getDataHora().compareTo(a2.getDataHora()))
                 .collect(Collectors.toList());
     }
-
-    @Override
-    public List<Agendamento> buscarConcluidos() {
-        return agendamentos.stream()
-                .filter(Agendamento::isConcluido)
-                .sorted((a1, a2) -> a2.getDataHora().compareTo(a1.getDataHora()))
-                .collect(Collectors.toList());
-    }
-
 
 
     @Override
@@ -154,8 +123,8 @@ public class AgendamentoRepository implements IAgendamentoRepository {
         LocalDateTime fim = dataHora.plusMinutes(duracaoMinutos);
 
         return agendamentos.stream()
-                .filter(a -> a.isAtivo())
-                .filter(a -> ignorarAgendamentoId == null || !a.getId().equals(ignorarAgendamentoId))
+                .filter(Agendamento::isAtivo)
+                .filter(a -> !a.getId().equals(ignorarAgendamentoId))
                 .anyMatch(a -> {
                     LocalDateTime inicioExistente = a.getDataHora();
                     LocalDateTime fimExistente = a.getDataHoraFim();
@@ -168,6 +137,13 @@ public class AgendamentoRepository implements IAgendamentoRepository {
         return existeConflitoHorario(dataHora, duracaoMinutos, null);
     }
 
+    public List<Agendamento> getCancelados(){
+        return agendamentos.stream()
+                .filter(agendamento -> agendamento.getStatus()==StatusAgendamento.CANCELADO)
+                .toList();
+    }
+
+
     @Override
     public List<LocalDateTime> getHorariosDisponiveis(LocalDate data, int duracaoMinutos) {
         List<LocalDateTime> horariosDisponiveis = new ArrayList<>();
@@ -178,8 +154,8 @@ public class AgendamentoRepository implements IAgendamentoRepository {
 
         // Agendamentos do dia
         List<Agendamento> agendamentosDoDia = buscarPorData(data).stream()
-                .filter(a -> a.isAtivo())
-                .collect(Collectors.toList());
+                .filter(Agendamento::isAtivo)
+                .toList();
 
         LocalTime horaAtual = horaInicial;
         while (horaAtual.plusMinutes(duracaoMinutos).isBefore(horaFinal) ||
@@ -206,29 +182,6 @@ public class AgendamentoRepository implements IAgendamentoRepository {
     }
 
 
-
-    @Override
-    public double calcularReceitaTotal() {
-        return agendamentos.stream()
-                .filter(a -> a.isConcluido())
-                .mapToDouble(Agendamento::getValorCobrado)
-                .sum();
-    }
-
-
-    @Override
-    public void concluirAgendamento(UUID idAgendamento) throws PersistenciaException {
-        Agendamento agendamento = buscarPorId(idAgendamento).orElse(null);
-        if (agendamento != null) {
-            agendamento.setStatus(Agendamento.StatusAgendamento.CONCLUIDO);
-            agendamento.setDataConclusao(LocalDateTime.now());
-            atualizar(agendamento);
-        } else {
-            throw new PersistenciaException("Agendamento não encontrado: " + idAgendamento);
-        }
-        salvarAgendamentos();
-    }
-
     @Override
     public void cancelarAgendamento(Agendamento agendamento) throws PersistenciaException {
         if (agendamento != null) {
@@ -236,18 +189,6 @@ public class AgendamentoRepository implements IAgendamentoRepository {
             atualizar(agendamento);
         } else {
             throw new PersistenciaException("Agendamento não encontrado: " + agendamento);
-        }
-        salvarAgendamentos();
-    }
-
-    @Override
-    public void confirmarAgendamento(UUID idAgendamento) throws PersistenciaException {
-        Agendamento agendamento = buscarPorId(idAgendamento).orElse(null);
-        if (agendamento != null) {
-            agendamento.setStatus(Agendamento.StatusAgendamento.AGENDADO);
-            atualizar(agendamento);
-        } else {
-            throw new PersistenciaException("Agendamento não encontrado: " + idAgendamento);
         }
         salvarAgendamentos();
     }

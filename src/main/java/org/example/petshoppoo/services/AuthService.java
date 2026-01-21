@@ -25,7 +25,8 @@ public class AuthService implements IAuthService {
     }
 
     public void logout() {
-        SessionManager.getInstance().logout();
+        SessionManager.getInstance();
+        SessionManager.logout();
     }
 
     /**

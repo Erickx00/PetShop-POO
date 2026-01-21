@@ -15,7 +15,6 @@ import org.example.petshoppoo.services.interfaces.IAgendamentoService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class AgendamentoService implements IAgendamentoService {
@@ -81,17 +80,15 @@ public class AgendamentoService implements IAgendamentoService {
     }
 
 
+    public List<Agendamento> getCancelados(){
+        return agendamentoRepository.getCancelados();
+    }
 
     @Override
     public List<Agendamento> listarAgendamentosAtivos() throws PersistenciaException {
        return agendamentoRepository.buscarAtivos();
     }
 
-
-    @Override
-    public List<Agendamento> listarAgendamentosPorData(LocalDate data) throws PersistenciaException {
-        return agendamentoRepository.buscarPorData(data);
-    }
 
     @Override
     public List<LocalDateTime> listarHorariosDisponiveis(LocalDate data, int duracaoMinutos) throws PersistenciaException {
@@ -103,67 +100,13 @@ public class AgendamentoService implements IAgendamentoService {
         return agendamentoRepository.existeConflitoHorario(dataHora,duracaoMinutos);
     }
 
-    @Override
-    public Optional<Agendamento> buscarAgendamentoPorId(UUID id) throws PersistenciaException {
-        return agendamentoRepository.buscarPorId(id);
-    }
 
-
-    @Override
-    public void concluirAgendamento(UUID idAgendamento) throws PersistenciaException {
-        agendamentoRepository.concluirAgendamento(idAgendamento);
-    }
-
-
-    @Override
-    public void confirmarAgendamento(UUID idAgendamento) throws PersistenciaException {
-        agendamentoRepository.confirmarAgendamento(idAgendamento);
-    }
     /*
     @Override
     public void iniciarAgendamento(UUID idAgendamento) throws PersistenciaException {
         //Parte Funcionario se for botar
     }*/
 
-
-    @Override
-    public List<Agendamento> buscarAgendamentosPorPet(UUID idPet) throws PersistenciaException {
-        return List.of();
-    }
-
-    @Override
-    public List<Agendamento> buscarAgendamentosPorServico(UUID idServico) throws PersistenciaException {
-        return List.of();
-    }
-
-    @Override
-    public List<Agendamento> buscarAgendamentosPorStatus(Agendamento.StatusAgendamento status) throws PersistenciaException {
-        return agendamentoRepository.buscarPorStatus(status);
-    }
-
-
-    @Override
-    public double calcularReceitaTotal() throws PersistenciaException {
-        return agendamentoRepository.calcularReceitaTotal();
-    }
-
-
-
-    @Override
-    public long contarAgendamentosUsuario(UUID idUsuario) throws PersistenciaException {
-        return 0;
-    }
-
-
-    @Override
-    public void removerAgendamento(UUID idAgendamento) throws PersistenciaException {
-        agendamentoRepository.deletar(idAgendamento);
-    }
-
-    @Override
-    public List<Agendamento> listarTodosAgendamentos() throws PersistenciaException {
-        return agendamentoRepository.listarTodos();
-    }
 
     public void cancelarAgendamento(Agendamento idAgendamento) throws PersistenciaException {
         agendamentoRepository.cancelarAgendamento(idAgendamento);

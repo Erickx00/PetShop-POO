@@ -20,25 +20,20 @@ Agendamento {
     private int duracaoMinutos;
 
     public enum StatusAgendamento {
-        AGENDADO("Agendado", "⏰", "#FFE0B2"),
-        CANCELADO("Cancelado", "✖", "#FFCDD2"),
-        CONCLUIDO("Concluído", "✔", "#C8E6C9"),
-        EM_ANDAMENTO("Em Andamento", "▶", "#FFF9C4");
+        AGENDADO("Agendado"),
+        CANCELADO("Cancelado"),
+        CONCLUIDO("Concluído"),
+        EM_ANDAMENTO("Em Andamento");
 
 
         private final String descricao;
-        private final String icone;
-        private final String cor;
 
-        StatusAgendamento(String descricao, String icone, String cor) {
+        StatusAgendamento(String descricao) {
             this.descricao = descricao;
-            this.icone = icone;
-            this.cor = cor;
         }
 
         public String getDescricao() { return descricao; }
-        public String getIcone() { return icone; }
-        public String getCor() { return cor; }
+
     }
 
     public Agendamento() {
