@@ -16,7 +16,7 @@ import org.example.petshoppoo.utils.SessionManager;
 import org.example.petshoppoo.utils.ViewLoader;
 
 
-public class PetCadastroController extends BaseController {
+public class PetCadastroController  {
 
     @FXML private TextField txtNome;
     @FXML private ComboBox<String> cbTipo;
@@ -34,8 +34,6 @@ public class PetCadastroController extends BaseController {
 
     @FXML
     public void initialize() {
-        validarSessao();
-        Usuario u = session.getUsuarioLogado();
 
         cbTipo.getItems().addAll("Cachorro", "Gato");
 

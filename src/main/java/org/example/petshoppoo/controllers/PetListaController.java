@@ -19,7 +19,7 @@ import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.SessionManager;
 import org.example.petshoppoo.utils.ViewLoader;
 
-public class PetListaController extends BaseController {
+public class PetListaController  {
 
     @FXML private TableView<Pet> tabelaPets;
     @FXML private TableColumn<Pet, String> clNome;
@@ -35,11 +35,11 @@ public class PetListaController extends BaseController {
     @FXML private TextField txtRaca;
     @FXML private TextField txtPeso;
 
-    @FXML private Button btnVoltar;
+
     @FXML private Button btnEditar;
     @FXML private Button btnDeletar;
-    @FXML private Button btnSalvar;
-    @FXML private Button btnCancelar;
+
+
 
     private final ObservableList<Pet> pets = FXCollections.observableArrayList();
     private IPetService petService;
@@ -52,8 +52,6 @@ public class PetListaController extends BaseController {
     @FXML
     public void initialize() {
         try {
-            validarSessao();
-            Usuario u = session.getUsuarioLogado();
 
             configurarTabela();
             carregarPets();

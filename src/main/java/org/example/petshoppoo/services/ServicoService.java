@@ -24,7 +24,7 @@ public class ServicoService implements IServicoService {
 
     @Override
     public Optional<Servico> buscarPorId(UUID id) throws PersistenciaException {
-        return Optional.empty();
+        return servicoRepository.buscarPorId(id);
     }
 
     public double calcularPreco(TipoServico tipo, double pesoPet) {

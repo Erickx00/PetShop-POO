@@ -21,7 +21,7 @@ import org.example.petshoppoo.utils.SessionManager;
 
 import java.io.IOException;
 
-public class PerfilController extends BaseController {
+public class PerfilController  {
 
     @FXML private TextField nome;
     @FXML private TextField email;
@@ -39,8 +39,6 @@ public class PerfilController extends BaseController {
     @FXML
     public void initialize() {
         try {
-            validarSessao();
-            Usuario u = session.getUsuarioLogado();
 
             carregarDadosPerfil();
         } catch (Exception e) {

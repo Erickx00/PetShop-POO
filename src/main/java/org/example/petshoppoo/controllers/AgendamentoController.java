@@ -86,7 +86,7 @@ public class AgendamentoController  {
         colServico.setCellValueFactory(cell -> {
             try {
                 var serv = servicoService.buscarPorId(cell.getValue().getIdServico());
-                return new SimpleStringProperty(serv != null ? serv.get().getDescricao() : "Desconhecido");
+                return new SimpleStringProperty(serv.isPresent() ? serv.get().getDescricao() : "Desconhecido");
             } catch (Exception e) { return new SimpleStringProperty("-"); }
         });
 
@@ -95,7 +95,7 @@ public class AgendamentoController  {
             try {
                 var serv = servicoService.buscarPorId(cell.getValue().getIdServico());
                 // Exemplo: pega o preço ou um texto fixo, já que duração não tem no model padrão
-                return new SimpleStringProperty(serv != null ? "R$ " + serv.get().getPreco() : "-");
+                return new SimpleStringProperty(serv.map(servico -> "R$ " + servico.getPreco()).orElse("-"));
             } catch (Exception e) { return new SimpleStringProperty("-"); }
         });
     }
