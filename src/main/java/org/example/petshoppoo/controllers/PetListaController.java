@@ -236,7 +236,7 @@ public class PetListaController  {
 
         try {
             double peso = Double.parseDouble(txtPeso.getText().trim());
-            if (peso > 0 && peso <= 30) {
+            if (peso > 0 && peso <= 120) {
                 AlertUtils.showError("Peso inválido", "O peso deve estar entre 1 a 30.");
                 return false;
             }
