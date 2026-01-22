@@ -6,6 +6,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class JsonFileManager {
         return mapper;
     }
 
-    public static <T> List<T> carregar(String caminhoArquivo, Class<T> tipo) throws PersistenciaException {
+    public static <T> List<T> carregar(String caminhoArquivo, Class<T> tipo) {
         File arquivo = new File(caminhoArquivo);
         if (!arquivo.exists()) {
             return new ArrayList<>();
@@ -38,6 +40,12 @@ public class JsonFileManager {
     public static <T> void salvar(String caminhoArquivo, List<T> dados) throws PersistenciaException {
         try {
             File arquivo = new File(caminhoArquivo);
+
+            if (arquivo.getParentFile() != null) {
+                // createDirectories não faz nada se a pasta já existir
+                // e lança IOException se não conseguir criar
+                Files.createDirectories(Paths.get(arquivo.getParentFile().getAbsolutePath()));
+            }
 
             objectMapper.writeValue(arquivo, dados);
             System.out.println("Arquivo salvo com sucesso: " + caminhoArquivo);
