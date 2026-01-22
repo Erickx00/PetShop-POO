@@ -10,7 +10,7 @@ import org.example.petshoppoo.utils.SessionManager;
 public class AuthService implements IAuthService {
     private final IUsuarioRepository usuarioRepository;
 
-    public AuthService(IUsuarioRepository usuarioRepository) throws PersistenciaException {
+    public AuthService(IUsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
 

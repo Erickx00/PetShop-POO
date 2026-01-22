@@ -14,7 +14,7 @@ import java.util.UUID;
 public class UsuarioService implements IUsuarioService {
     private final IUsuarioRepository usuarioRepository;
 
-    public UsuarioService(IUsuarioRepository usuarioRepository) throws PersistenciaException {
+    public UsuarioService(IUsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
 

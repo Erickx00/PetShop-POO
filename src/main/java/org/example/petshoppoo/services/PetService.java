@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.UUID;
 
 public class PetService implements IPetService {
-    private IPetRepository petRepository;
-    private IUsuarioRepository usuarioRepository;
+    private final IPetRepository petRepository;
+    private final IUsuarioRepository usuarioRepository;
 
     public PetService(IPetRepository petRepository) throws PersistenciaException {
-        this.petRepository = new PetRepository();
+        this.petRepository = petRepository;
         this.usuarioRepository = new UsuarioRepository();
     }
 
@@ -53,16 +53,6 @@ public class PetService implements IPetService {
         return petRepository.buscarPetsPorUsuario(usuarioId);
     }
 
-    public List<Pet> listarPetsPorUsuario(UUID usuarioId) throws PersistenciaException {
-        List<Pet> resultado = new ArrayList<>();
-        for (Pet pet : listarPets()) {
-            if (pet.getIdUsuario() != null && pet.getIdUsuario().equals(usuarioId)) {
-                resultado.add(pet);
-            }
-        }
-        return resultado;
-    }
-
     public List<Pet> listarPets() {
         return petRepository.listarTodos();
     }
@@ -71,70 +61,6 @@ public class PetService implements IPetService {
         return petRepository.buscarPorId(id).orElse(null);
     }
 
-
-    // ===== MÉTODOS PARA CONTROLLER BURRO =====
-
-    public List<Object> listarPetsDoUsuarioComoObjetos(UUID usuarioId) throws PersistenciaException {
-        return new ArrayList<>(listarPetsPorUsuario(usuarioId));
-    }
-
-    public String obterDescricaoCompleta(Object pet) {
-        return pet instanceof Pet ? ((Pet) pet).getNome() + " (" + ((Pet) pet).getRaca() + ")" : "";
-    }
-
-    public String obterNome(Object pet) {
-        return pet instanceof Pet ? ((Pet) pet).getNome() : "";
-    }
-
-    public UUID obterId(Object pet) {
-        return pet instanceof Pet ? ((Pet) pet).getIdPet() : null;
-    }
-
-    public double obterPeso(Object pet) {
-        return pet instanceof Pet ? ((Pet) pet).getPeso() : 0.0;
-    }
-
-    // ===== MÉTODOS PARA TABELA (PetListaController) =====
-
-    /**
-     * Lista pets para exibição em tabela
-     */
-    public List<Object> listarPetsParaTabela(UUID usuarioId) throws PersistenciaException {
-        return new ArrayList<>(listarPetsPorUsuario(usuarioId));
-    }
-
-    /**
-     * Obtém o tipo/espécie do pet (Cachorro/Gato)
-     */
-    public String obterTipo(Object pet) {
-        if (pet instanceof org.example.petshoppoo.model.Pet.Cachorro) {
-            return "Cachorro";
-        } else if (pet instanceof org.example.petshoppoo.model.Pet.Gato) {
-            return "Gato";
-        }
-        return "";
-    }
-
-    /**
-     * Obtém a raça do pet
-     */
-    public String obterRaca(Object pet) {
-        return pet instanceof Pet ? ((Pet) pet).getRaca() : "";
-    }
-
-    /**
-     * Calcula e retorna a idade em anos baseado na data de nascimento
-     */
-    public String obterIdade(Object pet) {
-        if (pet instanceof Pet) {
-            LocalDate dataNasc = ((Pet) pet).getDataNascimento();
-            if (dataNasc != null) {
-                int anos = Period.between(dataNasc, LocalDate.now()).getYears();
-                return anos + " ano(s)";
-            }
-        }
-        return "N/A";
-    }
 
     public void excluir(UUID idPet) throws PersistenciaException {
         Pet pet = petRepository.buscarPorId(idPet)

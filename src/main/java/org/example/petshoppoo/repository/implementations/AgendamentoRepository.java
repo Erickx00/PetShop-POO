@@ -60,23 +60,6 @@ public class AgendamentoRepository implements IAgendamentoRepository {
         salvarAgendamentos();
     }
 
-    /* --- ESSE ERA O MÉTODO QUE FALTAVA ---
-    public void deletar(Agendamento agendamento) throws PersistenciaException {
-        if (agendamento != null) {
-            // Chama o método remover passando o ID do objeto
-            remover(agendamento.getId());
-        }
-    }
-    // -------------------------------------
-
-    public void remover(UUID id) throws PersistenciaException {
-        boolean removido = agendamentos.removeIf(a -> a.getId().equals(id));
-
-        // Só grava no arquivo se realmente removeu alguém, pra evitar I/O desnecessário
-        if (removido) {
-            salvarAgendamentos();
-        }
-    }*/
 
     public void salvarAgendamentos() throws PersistenciaException {
         JsonFileManager.salvar(FilePaths.AGENDAMENTOS_JSON, agendamentos);
@@ -193,15 +176,5 @@ public class AgendamentoRepository implements IAgendamentoRepository {
         salvarAgendamentos();
     }
 
-    /*
-    @Override
-    public void iniciarAgendamento(UUID idAgendamento) throws PersistenciaException {
-        Agendamento agendamento = buscarPorId(idAgendamento).orElse(null);
-        if (agendamento != null) {
-            agendamento.setStatus(Agendamento.StatusAgendamento.EM_ANDAMENTO);
-            atualizar(agendamento);
-        } else {
-            throw new PersistenciaException("Agendamento não encontrado: " + idAgendamento);
-        }
-    }*/
+
 }

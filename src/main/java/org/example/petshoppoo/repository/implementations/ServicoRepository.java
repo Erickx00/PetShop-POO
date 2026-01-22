@@ -7,6 +7,7 @@ import org.example.petshoppoo.repository.interfaces.IServicoRepository;
 import org.example.petshoppoo.utils.FilePaths;
 import org.example.petshoppoo.utils.JsonFileManager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,7 +21,7 @@ public class ServicoRepository implements IServicoRepository {
         inicializarServicosPadrao();
     }
 
-    private void carregarDados() throws PersistenciaException {
+    private void carregarDados() {
         this.servicos = JsonFileManager.carregar(FilePaths.SERVICOS_JSON, Servico.class);
     }
 
@@ -46,7 +47,7 @@ public class ServicoRepository implements IServicoRepository {
 
     @Override
     public List<Servico> listarTodos() {
-        return List.of();
+        return new ArrayList<>(servicos) ;
     }
 
     public Optional<Servico> buscarPorId(UUID id) {

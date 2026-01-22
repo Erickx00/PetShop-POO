@@ -17,8 +17,13 @@ module org.example.petshoppoo {
     opens org.example.petshoppoo.model.Servico to com.fasterxml.jackson.databind;
 
     exports org.example.petshoppoo.model.Servico;
+    exports  org.example.petshoppoo.model.Login;
     exports org.example.petshoppoo;
     exports org.example.petshoppoo.controllers;
     exports org.example.petshoppoo.services;
+    exports org.example.petshoppoo.services.interfaces;
+    exports org.example.petshoppoo.model.Pet;
     exports org.example.petshoppoo.exceptions;
+    exports org.example.petshoppoo.repository.interfaces;
+    exports org.example.petshoppoo.repository.implementations;
 }

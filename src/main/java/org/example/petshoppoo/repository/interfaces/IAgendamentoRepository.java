@@ -17,5 +17,5 @@ public interface IAgendamentoRepository extends IRepository<Agendamento> {
     List<LocalDateTime> getHorariosDisponiveis(LocalDate data, int duracaoMinutos);
     List<Agendamento> getCancelados();
     void cancelarAgendamento(Agendamento agendamento) throws PersistenciaException;
-    //void confirmarAgendamento(UUID idAgendamento) throws PersistenciaException;
+
 }

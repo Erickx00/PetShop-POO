@@ -4,6 +4,7 @@ import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Pet.Pet;
 import org.example.petshoppoo.model.Servico.Agendamento;
 import org.example.petshoppoo.model.Servico.Servico;
+import org.example.petshoppoo.repository.RepositoryFactory;
 import org.example.petshoppoo.repository.implementations.AgendamentoRepository;
 import org.example.petshoppoo.repository.implementations.PetRepository;
 import org.example.petshoppoo.repository.implementations.ServicoRepository;
@@ -23,9 +24,9 @@ public class AgendamentoService implements IAgendamentoService {
     private final IPetRepository petRepository;
 
     public AgendamentoService(IAgendamentoRepository agendamentoRepository) throws PersistenciaException {
-        this.agendamentoRepository = new AgendamentoRepository();
-        this.servicoRepository = new ServicoRepository();
-        this.petRepository = new PetRepository();
+        this.agendamentoRepository = agendamentoRepository;
+        this.servicoRepository = RepositoryFactory.getServicoRepository();
+        this.petRepository = RepositoryFactory.getPetRepository();
     }
 
     @Override
@@ -99,14 +100,6 @@ public class AgendamentoService implements IAgendamentoService {
     public boolean existeConflitoHorario(LocalDateTime dataHora, int duracaoMinutos) throws PersistenciaException {
         return agendamentoRepository.existeConflitoHorario(dataHora,duracaoMinutos);
     }
-
-
-    /*
-    @Override
-    public void iniciarAgendamento(UUID idAgendamento) throws PersistenciaException {
-        //Parte Funcionario se for botar
-    }*/
-
 
     public void cancelarAgendamento(Agendamento idAgendamento) throws PersistenciaException {
         agendamentoRepository.cancelarAgendamento(idAgendamento);
