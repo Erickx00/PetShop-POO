@@ -224,6 +224,11 @@ public class PetListaController  {
             return false;
         }
 
+        if (txtNome.getText().matches(".*\\d.*")) {
+            AlertUtils.showError("Erro", "Nome não pode conter números.");
+            return false;
+        }
+
         if (txtRaca.getText().trim().isEmpty()) {
             AlertUtils.showError("Campo obrigatório", "Informe a raça do pet.");
             return false;

@@ -51,6 +51,11 @@ public class CadastroController {
             return;
         }
 
+        if (nome.matches(".*\\d.*")) {
+            AlertUtils.showError("Erro", "Nome não pode conter números.");
+            return;
+        }
+
         if (!senha.equals(confirmarSenha)) {
             AlertUtils.showWarning("Aviso", "As senhas não coincidem!");
             return;
