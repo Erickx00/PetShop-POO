@@ -23,8 +23,19 @@ public class CadastroController {
 
     private IUsuarioService usuarioService;
 
-    public CadastroController() throws PersistenciaException {
-        this.usuarioService = ServiceFactory.getUsuarioService();
+
+    public void initialize(){
+        try {
+            this.usuarioService = ServiceFactory.getUsuarioService();
+        }
+
+        catch (PersistenciaException e) {
+            e.printStackTrace();
+            AlertUtils.showError(
+                    "Erro de Persistência",
+                    "Não foi possível carregar os dados do sistema.\n" + e.getMessage()
+            );
+        }
     }
 
     @FXML

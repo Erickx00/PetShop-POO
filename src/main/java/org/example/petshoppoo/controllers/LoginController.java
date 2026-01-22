@@ -23,10 +23,19 @@ public class LoginController {
 
     private IAuthService authService;
 
-    public LoginController() throws PersistenciaException {
-        // Inicializa com a Factory
-        this.authService = ServiceFactory.getAuthService();
 
+    public void initialize(){
+        try{
+            this.authService = ServiceFactory.getAuthService();
+        }
+
+        catch (PersistenciaException e) {
+            e.printStackTrace();
+            AlertUtils.showError(
+                    "Erro de Persistência",
+                    "Não foi possível carregar os dados do sistema.\n" + e.getMessage()
+            );
+        }
     }
 
 

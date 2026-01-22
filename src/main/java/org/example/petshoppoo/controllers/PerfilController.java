@@ -30,18 +30,25 @@ public class PerfilController  {
     private IUsuarioService usuarioService;
     private IAuthService authService;
 
-    public PerfilController() throws PersistenciaException {
-        this.usuarioService = ServiceFactory.getUsuarioService();
-        this.authService = ServiceFactory.getAuthService();
-
-    }
 
     @FXML
     public void initialize() {
         try {
+            this.usuarioService = ServiceFactory.getUsuarioService();
+            this.authService = ServiceFactory.getAuthService();
 
             carregarDadosPerfil();
-        } catch (Exception e) {
+        }
+
+        catch (PersistenciaException e) {
+            e.printStackTrace();
+            AlertUtils.showError(
+                    "Erro de Persistência",
+                    "Não foi possível carregar os dados do sistema.\n" + e.getMessage()
+            );
+        }
+
+        catch (Exception e) {
             AlertUtils.showError("Erro", "Erro ao inicializar: " + e.getMessage());
         }
     }

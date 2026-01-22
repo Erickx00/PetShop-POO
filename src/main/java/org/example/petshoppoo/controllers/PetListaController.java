@@ -45,17 +45,25 @@ public class PetListaController  {
     private IPetService petService;
     private Pet petEmEdicao;
 
-    public PetListaController() throws PersistenciaException {
-        this.petService = ServiceFactory.getPetService();
-    }
 
     @FXML
     public void initialize() {
         try {
+            this.petService = ServiceFactory.getPetService();
 
             configurarTabela();
             carregarPets();
-        } catch (Exception e) {
+        }
+
+        catch (PersistenciaException e) {
+            e.printStackTrace();
+            AlertUtils.showError(
+                    "Erro de Persistência",
+                    "Não foi possível carregar os dados do sistema.\n" + e.getMessage()
+            );
+        }
+
+        catch (Exception e) {
             AlertUtils.showError("Erro ao inicializar", e.getMessage());
         }
     }

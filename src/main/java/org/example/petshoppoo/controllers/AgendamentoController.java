@@ -41,25 +41,38 @@ public class AgendamentoController  {
     @FXML private TableColumn<Agendamento, String> colStatus;
 
     // Services
-    private final IAgendamentoService agendamentoService;
-    private final IPetService petService;
-    private final IServicoService servicoService;
+    private IAgendamentoService agendamentoService;
+    private IPetService petService;
+    private IServicoService servicoService;
 
-    public AgendamentoController() throws PersistenciaException {
-        this.agendamentoService = ServiceFactory.getAgendamentoService();
-        this.petService = ServiceFactory.getPetService();
-        this.servicoService = ServiceFactory.getServicoService();
-    }
+
 
     @FXML
-    public void initialize() { //Aqui ta inicializando os servicos
+    public void initialize() {
         try {
+            this.agendamentoService = ServiceFactory.getAgendamentoService();
+            this.petService = ServiceFactory.getPetService();
+            this.servicoService = ServiceFactory.getServicoService();
+
             configurarColunas();
             carregarTabela();
 
-        } catch (Exception e) {
+        }
+
+        catch (PersistenciaException e) {
             e.printStackTrace();
-            AlertUtils.showError("Erro", "Erro ao inicializar tela: " + e.getMessage());
+            AlertUtils.showError(
+                    "Erro de Persistência",
+                    "Não foi possível carregar os dados do sistema.\n" + e.getMessage()
+            );
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+            AlertUtils.showError(
+                    "Erro",
+                    "Erro inesperado ao inicializar a tela."
+            );
         }
     }
 

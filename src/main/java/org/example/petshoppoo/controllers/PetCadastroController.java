@@ -28,12 +28,21 @@ public class PetCadastroController  {
 
     private IPetService petService;
 
-    public PetCadastroController() throws PersistenciaException {
-        this.petService = ServiceFactory.getPetService();
-    }
 
     @FXML
     public void initialize() {
+
+        try {
+            this.petService = ServiceFactory.getPetService();
+        }
+
+        catch (PersistenciaException e) {
+            e.printStackTrace();
+            AlertUtils.showError(
+                    "Erro de Persistência",
+                    "Não foi possível carregar os dados do sistema.\n" + e.getMessage()
+            );
+        }
 
         cbTipo.getItems().addAll("Cachorro", "Gato");
 

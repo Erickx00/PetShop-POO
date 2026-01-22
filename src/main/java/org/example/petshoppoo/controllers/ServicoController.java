@@ -41,14 +41,24 @@ public class ServicoController {
     private Servico servicoSelecionado;
     private Pet petSelecionado;
 
-    public ServicoController() throws PersistenciaException {
-        this.agendamentoService = ServiceFactory.getAgendamentoService();
-        this.petService = ServiceFactory.getPetService();
-        this.servicoService = ServiceFactory.getServicoService();
-    }
 
     @FXML
     public void initialize() {
+        try {
+            this.agendamentoService = ServiceFactory.getAgendamentoService();
+            this.petService = ServiceFactory.getPetService();
+            this.servicoService = ServiceFactory.getServicoService();
+
+        }
+
+        catch (PersistenciaException e) {
+            e.printStackTrace();
+            AlertUtils.showError(
+                    "Erro de Persistência",
+                    "Não foi possível carregar os dados do sistema.\n" + e.getMessage()
+            );
+        }
+
         configurarCalendario();
         carregarCombos();
         configurarListeners();
