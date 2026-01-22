@@ -75,17 +75,63 @@ public class PetCadastroController  {
 
         } catch (NumberFormatException e) {
             AlertUtils.showError("Erro", "Idade e peso devem ser valores numéricos.");
-            return;
         } catch (PersistenciaException e) {
             AlertUtils.showError("Erro", "Falha ao salvar: " + e.getMessage());
         }
     }
 
     private boolean validarCampos() {
-        if (txtNome.getText().isEmpty() || cbTipo.getValue() == null) {
-            AlertUtils.showError("Erro", "Campos obrigatórios vazios.");
+        // Validação do nome
+        String nome = txtNome.getText().trim();
+        if (nome.isEmpty()) {
+            AlertUtils.showError("Erro", "Nome é obrigatório.");
             return false;
         }
+        if (nome.matches(".*\\d.*")) {
+            AlertUtils.showError("Erro", "Nome não pode conter números.");
+            return false;
+        }
+
+        // Validação do tipo
+        if (cbTipo.getValue() == null) {
+            AlertUtils.showError("Erro", "Selecione o tipo do animal.");
+            return false;
+        }
+
+        // Validação de idade (0 a 25)
+        try {
+            String idadeTexto = txtIdade.getText().trim();
+            if (idadeTexto.isEmpty()) {
+                AlertUtils.showError("Erro", "Idade é obrigatória.");
+                return false;
+            }
+            int idade = Integer.parseInt(idadeTexto);
+            if (idade < 0 || idade > 25) {
+                AlertUtils.showError("Erro", "Idade deve estar entre 0 e 25 anos.");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            AlertUtils.showError("Erro", "Idade deve conter apenas números.");
+            return false;
+        }
+
+        // Validação de peso (0 a 120) - CORREÇÃO
+        try {
+            String pesoTexto = txtPeso.getText().replace(",", ".").trim();
+            if (pesoTexto.isEmpty()) {
+                AlertUtils.showError("Erro", "Peso é obrigatório.");
+                return false;
+            }
+            double peso = Double.parseDouble(pesoTexto);
+            if (peso <= 0 || peso > 120) {  // Corrigido a lógica
+                AlertUtils.showError("Erro", "Peso deve estar entre 0 e 120 kg (excluindo 0).");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            AlertUtils.showError("Erro", "Digite um peso válido (ex: 10.5 ou 10,5)");
+            return false;
+        }
+
         return true;
     }
 

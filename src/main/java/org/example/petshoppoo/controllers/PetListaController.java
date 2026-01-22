@@ -74,7 +74,7 @@ public class PetListaController  {
                 new SimpleStringProperty(data.getValue().getNome()));
 
         clEspecie.setCellValueFactory(data ->
-                new SimpleStringProperty((String) petService.obterTipo(data.getValue())));
+                new SimpleStringProperty((String) data.getValue().getTipo()));
 
         clRaca.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getRaca()));
@@ -187,7 +187,7 @@ public class PetListaController  {
         confirmacao.setContentText(String.format(
                 "Pet: %s\nTipo: %s\nRaça: %s\n\n⚠️ Esta ação não pode ser desfeita!",
                 pet.getNome(),
-                petService.obterTipo(pet),
+                pet.getTipo(),
                 pet.getRaca()
         ));
 
@@ -236,8 +236,8 @@ public class PetListaController  {
 
         try {
             double peso = Double.parseDouble(txtPeso.getText().trim());
-            if (peso <= 0) {
-                AlertUtils.showError("Peso inválido", "O peso deve ser maior que zero.");
+            if (peso > 0 && peso <= 30) {
+                AlertUtils.showError("Peso inválido", "O peso deve estar entre 1 a 30.");
                 return false;
             }
         } catch (NumberFormatException e) {

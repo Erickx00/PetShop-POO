@@ -7,6 +7,7 @@ import org.example.petshoppoo.repository.implementations.UsuarioRepository;
 import org.example.petshoppoo.repository.interfaces.IPetRepository;
 import org.example.petshoppoo.repository.interfaces.IUsuarioRepository;
 import org.example.petshoppoo.services.interfaces.IPetService;
+import org.example.petshoppoo.utils.SessionManager;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -109,8 +110,4 @@ public class PetService implements IPetService {
         return anos + (anos == 1 ? " ano" : " anos");
     }
 
-    @Override
-    public Object obterTipo(Pet pet) {
-        return null;
-    }
 }
