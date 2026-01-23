@@ -145,15 +145,13 @@ public class AgendamentoController  {
             // Executa o cancelamento
             agendamentoService.cancelarAgendamento(selecionado);
 
-            // Atualiza a tabela imediatamente
-            javafx.application.Platform.runLater(() -> {
-                carregarTabela(); // Atualiza a lista
-                AlertUtils.showInfo("Sucesso", "Serviço cancelado com sucesso.");
-            });
 
         } catch (Exception e) {
             AlertUtils.showError("Erro", "Não foi possível cancelar: " + e.getMessage());
         }
+
+        carregarTabela(); // Atualiza a lista
+        AlertUtils.showInfo("Sucesso", "Serviço cancelado com sucesso.");
     }
 
     @FXML
