@@ -1,6 +1,8 @@
 package org.example.petshoppoo.services;
 
 import org.example.petshoppoo.exceptions.PersistenciaException;
+import org.example.petshoppoo.model.Pet.Cachorro;
+import org.example.petshoppoo.model.Pet.Gato;
 import org.example.petshoppoo.model.Pet.Pet;
 import org.example.petshoppoo.repository.implementations.PetRepository;
 import org.example.petshoppoo.repository.implementations.UsuarioRepository;
@@ -30,16 +32,15 @@ public class PetService implements IPetService {
             throw new PersistenciaException("O nome do pet é obrigatório.");
         }
 
-        LocalDate dataNasc = LocalDate.now().minusYears(idadeAnos);
 
         Pet novoPet;
         if ("Cachorro".equalsIgnoreCase(tipo)) {
-            novoPet = new org.example.petshoppoo.model.Pet.Cachorro(
-                    null, nome, dataNasc, raca, peso, idUsuario, adestrado,castrado
+            novoPet = new Cachorro(
+                    null, nome, idadeAnos, raca, peso, idUsuario, adestrado,castrado
             );
         } else if ("Gato".equalsIgnoreCase(tipo)) {
-            novoPet = new org.example.petshoppoo.model.Pet.Gato(
-                    null, nome, dataNasc, raca, peso, idUsuario, castrado,adestrado
+            novoPet = new Gato(
+                    null, nome, idadeAnos, raca, peso, idUsuario, castrado,adestrado
             );
         } else {
             throw new PersistenciaException("Tipo de pet inválido: " + tipo);
@@ -91,23 +92,15 @@ public class PetService implements IPetService {
             throw new PersistenciaException("O peso deve ser maior que zero.");
         }
 
-        if (pet.getDataNascimento() == null) {
+        if (pet.idadeFormatada() == null) {
             throw new PersistenciaException("A data de nascimento é obrigatória.");
         }
 
-        if (pet.getDataNascimento().isAfter(LocalDate.now())) {
-            throw new PersistenciaException("A data de nascimento não pode ser futura.");
-        }
 
         if (pet.getIdUsuario() == null) {
             throw new PersistenciaException("O pet deve estar associado a um usuário.");
         }
     }
 
-    public String formatarIdade(Pet pet) {
-        if (pet == null) return "N/A";
-        int anos = pet.calcularIdade();
-        return anos + (anos == 1 ? " ano" : " anos");
-    }
 
 }

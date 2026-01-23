@@ -15,7 +15,7 @@ public class Gato extends Pet {
         this.tipo = "Gato";
     }
 
-    public Gato(UUID id, String nome, LocalDate dataNascimento, String raca,
+    public Gato(UUID id, String nome, int dataNascimento, String raca,
                 double peso, UUID idUsuario, boolean castrado, boolean adestrado) {
         super(id, nome, dataNascimento, raca, peso, idUsuario, "Gato");
         this.castrado = castrado;

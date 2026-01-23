@@ -80,7 +80,7 @@ public class PetListaController  {
                 new SimpleStringProperty(data.getValue().getRaca()));
 
         clIdade.setCellValueFactory(data ->
-                new SimpleStringProperty(petService.formatarIdade(data.getValue())));
+                new SimpleStringProperty(data.getValue().idadeFormatada()));
 
         clPeso.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleDoubleProperty(data.getValue().getPeso()).asObject());

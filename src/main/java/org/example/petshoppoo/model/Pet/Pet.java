@@ -2,8 +2,7 @@ package org.example.petshoppoo.model.Pet;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import java.time.LocalDate;
-import java.time.Period;
+
 import java.util.UUID;
 
 @JsonTypeInfo(
@@ -19,7 +18,7 @@ public abstract class Pet {
     protected UUID idPet;
     protected String nome;
     protected String raca;
-    protected LocalDate dataNascimento;
+    protected int idadePet;
     protected double peso;
     protected UUID idUsuario;
     protected String tipo;
@@ -28,20 +27,19 @@ public abstract class Pet {
         this.idPet = UUID.randomUUID();
     }
 
-    public Pet(UUID idPet, String nome, LocalDate dataNascimento, String raca,
+    public Pet(UUID idPet, String nome, int idadePet, String raca,
                double peso, UUID idUsuario, String tipo) {
         this.idPet = idPet == null ? UUID.randomUUID() : idPet;
         this.nome = nome;
-        this.dataNascimento = dataNascimento;
+        this.idadePet = idadePet;
         this.raca = raca;
         this.peso = peso;
         this.idUsuario = idUsuario;
         this.tipo = tipo;
     }
 
-    public int calcularIdade() {
-        if (dataNascimento == null) return 0;
-        return Period.between(dataNascimento, LocalDate.now()).getYears();
+    public String idadeFormatada() {
+        return idadePet + " Anos";
     }
 
     public UUID getIdPet() { return idPet; }
@@ -53,8 +51,7 @@ public abstract class Pet {
     public String getRaca() { return raca; }
     public void setRaca(String raca) { this.raca = raca; }
 
-    public LocalDate getDataNascimento() { return dataNascimento; }
-    public void setDataNascimento(LocalDate dataNascimento) { this.dataNascimento = dataNascimento; }
+    public void setIdadePet(int idadePet) { this.idadePet = idadePet; }
 
     public double getPeso() { return peso; }
     public void setPeso(double peso) { this.peso = peso; }
@@ -64,4 +61,5 @@ public abstract class Pet {
 
     public String getTipo() { return tipo; }
     public void setTipo(String tipo) { this.tipo = tipo; }
+
 }

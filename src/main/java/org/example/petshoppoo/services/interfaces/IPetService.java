@@ -14,5 +14,5 @@ public interface IPetService {
     Pet buscarPorId(UUID id);
     void excluir(UUID idPet) throws PersistenciaException;
     void atualizar(Pet pet) throws PersistenciaException;
-    String formatarIdade(Pet pet);
+
 }
