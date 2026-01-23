@@ -6,14 +6,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.petshoppoo.exceptions.PersistenciaException;
-import org.example.petshoppoo.model.Login.Usuario;
-import org.example.petshoppoo.repository.RepositoryFactory;
-import org.example.petshoppoo.services.AuthService;
 import org.example.petshoppoo.services.ServiceFactory;
-import org.example.petshoppoo.services.UsuarioService;
 import org.example.petshoppoo.services.interfaces.IAuthService;
 import org.example.petshoppoo.services.interfaces.IUsuarioService;
 import org.example.petshoppoo.utils.AlertUtils;
@@ -26,10 +23,12 @@ public class PerfilController  {
     @FXML private TextField nome;
     @FXML private TextField email;
     @FXML private TextField telefone;
+    @FXML private PasswordField senhaAtual;
+    @FXML private PasswordField novaSenha;
+    @FXML private PasswordField confirmarSenha;
 
     private IUsuarioService usuarioService;
     private IAuthService authService;
-
 
     @FXML
     public void initialize() {
@@ -39,7 +38,6 @@ public class PerfilController  {
 
             carregarDadosPerfil();
         }
-
         catch (PersistenciaException e) {
             e.printStackTrace();
             AlertUtils.showError(
@@ -47,7 +45,6 @@ public class PerfilController  {
                     "Não foi possível carregar os dados do sistema.\n" + e.getMessage()
             );
         }
-
         catch (Exception e) {
             AlertUtils.showError("Erro", "Erro ao inicializar: " + e.getMessage());
         }
@@ -59,20 +56,30 @@ public class PerfilController  {
             return;
         }
 
-        nome.setText(usuarioService.obterNomeUsuarioLogado());
-        email.setText(usuarioService.obterEmailUsuarioLogado());
-        telefone.setText(usuarioService.obterTelefoneUsuarioLogado());
+        nome.setText(SessionManager.getInstance().getUsuarioLogado().getNome());
+        email.setText(SessionManager.getInstance().getUsuarioLogado().getEmail());
+        telefone.setText(SessionManager.getInstance().getUsuarioLogado().getTelefone());
+
+        // Limpar campos de senha
+        limparCamposSenha();
+    }
+
+    private void limparCamposSenha() {
+        senhaAtual.clear();
+        novaSenha.clear();
+        confirmarSenha.clear();
     }
 
     @FXML
     private void handleSalvar() {
         try {
+            // Salvar dados do perfil
             String novoNome = nome.getText().trim();
             String novoEmail = email.getText().trim();
             String novoTelefone = telefone.getText().trim();
 
             if (novoNome.isEmpty() || novoEmail.isEmpty() || novoTelefone.isEmpty()) {
-                AlertUtils.showError("Campos vazios", "Preencha todos os campos!");
+                AlertUtils.showError("Campos vazios", "Preencha todos os campos obrigatórios!");
                 return;
             }
 
@@ -83,11 +90,51 @@ public class PerfilController  {
                     novoTelefone
             );
 
+            // Verificar se o usuário quer alterar a senha
+            if (!senhaAtual.getText().isEmpty() || !novaSenha.getText().isEmpty() || !confirmarSenha.getText().isEmpty()) {
+                // Se algum campo de senha foi preenchido, tentar alterar a senha
+                alterarSenha();
+            }
+
             AlertUtils.showInfo("Sucesso", "Perfil atualizado com sucesso!");
+            limparCamposSenha();
 
         } catch (Exception e) {
             AlertUtils.showError("Erro ao salvar", e.getMessage());
         }
+    }
+
+    private void alterarSenha() throws Exception {
+        String senhaAtualText = senhaAtual.getText().trim();
+        String novaSenhaText = novaSenha.getText().trim();
+        String confirmarSenhaText = confirmarSenha.getText().trim();
+
+        // Verificar se todos os campos de senha estão preenchidos
+        if (senhaAtualText.isEmpty() || novaSenhaText.isEmpty() || confirmarSenhaText.isEmpty()) {
+            throw new Exception("Para alterar a senha, preencha todos os campos de senha!");
+        }
+
+        // Verificar se as novas senhas coincidem
+        if (!novaSenhaText.equals(confirmarSenhaText)) {
+            throw new Exception("As novas senhas não coincidem!");
+        }
+
+        // Verificar se a nova senha é diferente da atual
+        if (senhaAtualText.equals(novaSenhaText)) {
+            throw new Exception("A nova senha deve ser diferente da senha atual!");
+        }
+
+        // Verificar tamanho da nova senha
+        if (novaSenhaText.length() < 6) {
+            throw new Exception("A nova senha deve ter pelo menos 6 caracteres!");
+        }
+
+        // Chamar o serviço para alterar a senha
+        usuarioService.alterarSenha(
+                SessionManager.getUsuarioId(),
+                senhaAtualText,
+                novaSenhaText
+        );
     }
 
     @FXML

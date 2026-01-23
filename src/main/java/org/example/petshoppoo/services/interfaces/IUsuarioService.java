@@ -7,9 +7,9 @@ import java.util.UUID;
 
 public interface IUsuarioService {
     void registrar(String nome, String email, String telefone, String senha) throws Exception;
+
     void atualizarPerfil(UUID usuarioId, String nome, String email, String telefone) throws Exception;
-    String obterNomeUsuarioLogado();
-    String obterEmailUsuarioLogado();
-    String obterTelefoneUsuarioLogado();
-    List<Usuario> listarTodosUsuarios();
+
+    void alterarSenha(UUID usuarioId, String senhaAtual, String novaSenha) throws Exception;
+
 }

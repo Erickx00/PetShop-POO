@@ -70,6 +70,52 @@
                                         <TextField fx:id="telefone" prefHeight="40.0" style="-fx-background-color: #F8F9FA; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-radius: 10;" />
                                     </children>
                                 </VBox>
+
+                                <!-- SEÇÃO PARA ALTERAR SENHA -->
+                                <Separator prefWidth="200.0" />
+
+                                <VBox spacing="5.0">
+                                    <children>
+                                        <Label style="-fx-font-weight: bold;" text="🔒 Alterar Senha" textFill="#fbb300" />
+
+                                        <VBox spacing="8.0" style="-fx-background-color: #F8F9FA; -fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-padding: 15;">
+                                            <children>
+                                                <VBox spacing="5.0">
+                                                    <children>
+                                                        <Label text="Senha Atual" textFill="#666666">
+                                                            <font>
+                                                                <Font size="12.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <PasswordField fx:id="senhaAtual" prefHeight="35.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #DDDDDD; -fx-border-radius: 8; -fx-background-radius: 8;" />
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox spacing="5.0">
+                                                    <children>
+                                                        <Label text="Nova Senha" textFill="#666666">
+                                                            <font>
+                                                                <Font size="12.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <PasswordField fx:id="novaSenha" prefHeight="35.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #DDDDDD; -fx-border-radius: 8; -fx-background-radius: 8;" />
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox spacing="5.0">
+                                                    <children>
+                                                        <Label text="Confirmar Nova Senha" textFill="#666666">
+                                                            <font>
+                                                                <Font size="12.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <PasswordField fx:id="confirmarSenha" prefHeight="35.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #DDDDDD; -fx-border-radius: 8; -fx-background-radius: 8;" />
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
                             </children>
                         </VBox>
 

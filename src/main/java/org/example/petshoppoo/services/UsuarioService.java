@@ -2,7 +2,6 @@ package org.example.petshoppoo.services;
 
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Login.Usuario;
-import org.example.petshoppoo.repository.RepositoryFactory;
 import org.example.petshoppoo.repository.interfaces.IUsuarioRepository;
 import org.example.petshoppoo.services.interfaces.IUsuarioService;
 import org.example.petshoppoo.utils.SessionManager;
@@ -43,37 +42,28 @@ public class UsuarioService implements IUsuarioService {
     }
 
     public void atualizarPerfil(UUID usuarioId, String nome, String email, String telefone) throws Exception {
-
-        // 1. Buscar o Optional
         Optional<Usuario> usuarioOptional = usuarioRepository.buscarPorId(usuarioId);
 
-        // 2. Verificar se o Optional está vazio
         if (usuarioOptional.isEmpty()) {
             throw new PersistenciaException("Usuário não encontrado!");
         }
 
-        // 3. Obter o usuário real do Optional
         Usuario usuario = usuarioOptional.get();
 
-        // Validação básica do telefone (null check)
         if (telefone == null) {
             throw new Exception("Telefone não pode ser nulo!");
         }
 
-        // Limpeza do telefone (mantém apenas números)
         String telLimpo = telefone.replaceAll("\\D", "");
 
-        // Remove o '0' inicial se houver (DDD + 9 dígitos)
         if (telLimpo.startsWith("0")) {
             telLimpo = telLimpo.substring(1);
         }
 
-        // Validação de tamanho (11 dígitos: DDD + 9 números)
         if (telLimpo.length() != 11) {
             throw new Exception("Telefone inválido! Use DDD(2) + Número(9). Ex: 83912345678");
         }
 
-        // 4. Validações de duplicidade (apenas se o valor mudou)
         if (!usuario.getEmail().equals(email) && usuarioRepository.emailExiste(email)) {
             throw new PersistenciaException("Email já cadastrado para outro usuário!");
         }
@@ -82,45 +72,40 @@ public class UsuarioService implements IUsuarioService {
             throw new PersistenciaException("Telefone já cadastrado para outro usuário!");
         }
 
-        // 5. Atualizar os dados
         usuario.setNome(nome);
         usuario.setEmail(email);
         usuario.setTelefone(telLimpo);
 
-        // 6. Persistir
         usuarioRepository.atualizar(usuario);
-
-        // 7. Atualizar sessão
         SessionManager.getInstance().setUsuarioLogado(usuario);
     }
 
-    /**
-     * Retorna o nome do usuário logado
-     */
-    public String obterNomeUsuarioLogado() {
-        Usuario usuario = SessionManager.getInstance().getUsuarioLogado();
-        return usuario != null ? usuario.getNome() : "";
+    @Override
+    public void alterarSenha(UUID usuarioId, String senhaAtual, String novaSenha) throws Exception {
+        Optional<Usuario> usuarioOptional = usuarioRepository.buscarPorId(usuarioId);
+
+        if (usuarioOptional.isEmpty()) {
+            throw new PersistenciaException("Usuário não encontrado!");
+        }
+
+        Usuario usuario = usuarioOptional.get();
+
+        // Verificar se a senha atual está correta
+        if (!usuario.getSenha().equals(senhaAtual)) {
+            throw new Exception("Senha atual incorreta!");
+        }
+
+        // Verificar se a nova senha é igual à atual
+        if (usuario.getSenha().equals(novaSenha)) {
+            throw new Exception("A nova senha deve ser diferente da senha atual!");
+        }
+
+        // Atualizar a senha
+        usuario.setSenha(novaSenha);
+        usuarioRepository.atualizar(usuario);
+
+        // Atualizar a sessão com o usuário atualizado
+        SessionManager.getInstance().setUsuarioLogado(usuario);
     }
 
-    /**
-     * Retorna o email do usuário logado
-     */
-    public String obterEmailUsuarioLogado() {
-        Usuario usuario = SessionManager.getInstance().getUsuarioLogado();
-        return usuario != null ? usuario.getEmail() : "";
-    }
-
-    /**
-     * Retorna o telefone do usuário logado
-     */
-    public String obterTelefoneUsuarioLogado() {
-        Usuario usuario = SessionManager.getInstance().getUsuarioLogado();
-        return usuario != null ? usuario.getTelefone() : "";
-    }
-
-
-
-    public List<Usuario> listarTodosUsuarios() {
-        return usuarioRepository.listarTodos();
-    }
 }
