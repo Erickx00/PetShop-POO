@@ -48,11 +48,11 @@ public class PetCadastroController  {
 
         cbTipo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             // Verifica se o que foi selecionado é Gato ou Cachorro
-            boolean animalSelecionado = "Cachorro".equals(newVal) || "Gato".equals(newVal);
+            boolean animalTreinavel = "Cachorro".equals(newVal) || "Gato".equals(newVal);
 
             // Agora os dois checkboxes aparecem se for qualquer um dos dois
-            chkAdestrado.setVisible(animalSelecionado);
-            chkCastrado.setVisible(animalSelecionado);
+            chkAdestrado.setVisible(animalTreinavel);
+            chkCastrado.setVisible(animalTreinavel);
         });
     }
 
