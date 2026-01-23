@@ -16,7 +16,7 @@ public class PetRepository implements IPetRepository {
     private List<Pet> pets;
 
     public PetRepository() {
-        //  CORRETO: Carrega dados do arquivo
+        //  Carrega dados do arquivo
         this.pets = carregarDoArquivo();
     }
 
@@ -32,7 +32,7 @@ public class PetRepository implements IPetRepository {
 
     @Override
     public List<Pet> listarTodos() {
-        // ✅ SEGURO: Nunca retorna null
+
         if (pets == null) {
             pets = new ArrayList<>();
         }
@@ -43,7 +43,7 @@ public class PetRepository implements IPetRepository {
     public void salvar(Pet pet) throws PersistenciaException {
         List<Pet> listaAtual = listarTodos();
 
-        // Remove se já existir (para atualização)
+        // Remove se já existir
         listaAtual.removeIf(p -> p.getIdPet() != null && p.getIdPet().equals(pet.getIdPet()));
 
         // Adiciona novo
@@ -95,7 +95,6 @@ public class PetRepository implements IPetRepository {
     }
 
     private void salvarNoArquivo() throws PersistenciaException {
-        // ✅ CORRETO: Usa o campo 'pets' que sempre existe
         if (pets == null) {
             pets = new ArrayList<>();
         }

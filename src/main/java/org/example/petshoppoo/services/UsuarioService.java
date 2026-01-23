@@ -95,21 +95,21 @@ public class UsuarioService implements IUsuarioService {
 
         Usuario usuario = usuarioOptional.get();
 
-        // Verificar se a senha atual está correta
+        // Verifica se a senha atual ta correta
         if (!usuario.getSenha().equals(senhaAtual)) {
             throw new Exception("Senha atual incorreta!");
         }
 
-        // Verificar se a nova senha é igual à atual
+        // Verifica se a nova senha é igual à atual
         if (usuario.getSenha().equals(novaSenha)) {
             throw new Exception("A nova senha deve ser diferente da senha atual!");
         }
 
-        // Atualizar a senha
+        // Atualiza a senha
         usuario.setSenha(novaSenha);
         usuarioRepository.atualizar(usuario);
 
-        // Atualizar a sessão com o usuário atualizado
+        // Atualiza a sessão com o usuário atualizado
         SessionManager.getInstance().setUsuarioLogado(usuario);
     }
 

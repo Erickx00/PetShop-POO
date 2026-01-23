@@ -5,10 +5,7 @@ public enum TipoServico {
     TOSA("Tosa", 80.0, 60, "Tosa higiênica ou completa"),
     BANHO_TOSA("Banho e Tosa", 90.0, 60, "Banho completo + tosa"),
     VACINACAO("Vacinação", 80.0, 60, "Aplicação de vacina"),
-
-    //Aqui usara parte da IA
     CONSULTA("Consulta Veterinária", 150.0, 60, "Consulta com veterinário"),
-
     ADESTRAMENTO("Adestramento", 200.0, 60, "Sessão de adestramento"),
     HIDRATACAO("Hidratação", 70.0, 60, "Hidratação profunda do pelo");
 

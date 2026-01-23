@@ -41,13 +41,6 @@ public class Servico {
     public void setDescricaoAdicional(String descricaoAdicional) { this.descricaoAdicional = descricaoAdicional; }
 
     public boolean isAtivo() { return ativo; }
-    public void setAtivo(boolean ativo) { this.ativo = ativo; }
-
-    // Helpers para exibição
-    @JsonIgnore
-    public String getDescricaoCompleta() {
-        return tipo.getDescricao() + " - R$ " + String.format("%.2f", preco);
-    }
 
     @JsonIgnore
     public String getDescricao() {

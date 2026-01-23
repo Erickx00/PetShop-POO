@@ -29,7 +29,7 @@
             </padding>
 
             <children>
-                <!-- Título -->
+
                 <Label text="🐾" textFill="#fbb300">
                     <font>
                         <Font size="40.0" />
@@ -41,25 +41,25 @@
                     </font>
                 </Label>
 
-                <!-- Pet -->
+
                 <VBox alignment="CENTER_LEFT" spacing="5.0">
                     <Label text="Selecione o Pet:" />
                     <ComboBox fx:id="comboPet" prefWidth="368.0"
                               promptText="Escolha seu animalzinho..." />
                 </VBox>
 
-                <!-- Serviço -->
+
                 <VBox alignment="CENTER_LEFT" spacing="5.0">
                     <Label text="Tipo de Serviço:" />
                     <ComboBox fx:id="comboServico" prefWidth="368.0"
                               promptText="Banho, Tosa, Consulta..." />
                 </VBox>
 
-                <!-- Valor -->
+
                 <Label fx:id="lblValor" text="Valor: --"
                        style="-fx-font-size: 14px; -fx-text-fill: #fbb300;" />
 
-                <!-- Data e Horário -->
+
                 <HBox spacing="10.0">
                     <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                         <Label text="Data:" />
@@ -73,7 +73,7 @@
                     </VBox>
                 </HBox>
 
-                <!-- Observações -->
+
                 <VBox alignment="CENTER_LEFT" spacing="5.0">
                     <Label text="Observações:" />
                     <TextArea fx:id="txtObservacoes" prefHeight="80.0"
@@ -82,7 +82,7 @@
                               wrapText="true" />
                 </VBox>
 
-                <!-- Resumo -->
+
                 <VBox alignment="CENTER_LEFT" spacing="5.0"
                       style="-fx-background-color: #f5f5f5; -fx-background-radius: 10; -fx-padding: 10;">
                     <Label text="Resumo do Agendamento:"
@@ -97,7 +97,7 @@
                     </Label>
                 </VBox>
 
-                <!-- Botão Confirmar -->
+
                 <Button mnemonicParsing="false" onAction="#handleConfirmar"
                         prefHeight="41.0" prefWidth="180.0"
                         style="-fx-background-color: #fbb300; -fx-background-radius: 20; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"
@@ -109,7 +109,7 @@
             </children>
         </VBox>
 
-        <!-- Botão Voltar -->
+
         <Button mnemonicParsing="false" onAction="#voltarMenu"
                 prefHeight="38.0" prefWidth="40.0"
                 style="-fx-background-color: #FB3000; -fx-background-radius: 50; -fx-font-weight: bold; -fx-cursor: hand;"

@@ -22,8 +22,7 @@ Agendamento {
     public enum StatusAgendamento {
         AGENDADO("Agendado"),
         CANCELADO("Cancelado"),
-        CONCLUIDO("Concluído"),
-        EM_ANDAMENTO("Em Andamento");
+        CONCLUIDO("Concluído");
 
 
         private final String descricao;

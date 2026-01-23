@@ -71,7 +71,6 @@
                                     </children>
                                 </VBox>
 
-                                <!-- SEÇÃO PARA ALTERAR SENHA -->
                                 <Separator prefWidth="200.0" />
 
                                 <VBox spacing="5.0">
@@ -119,7 +118,7 @@
                             </children>
                         </VBox>
 
-                        <!-- BOTÃO SALVAR ADICIONADO -->
+
                         <Button fx:id="btnSalvar" mnemonicParsing="false" onAction="#handleSalvar" prefHeight="45.0" prefWidth="390.0" style="-fx-background-color: #FFB300; -fx-background-radius: 20; -fx-cursor: hand;" text="💾 SALVAR ALTERAÇÕES" textFill="WHITE">
                             <font>
                                 <Font name="System Bold" size="14.0" />

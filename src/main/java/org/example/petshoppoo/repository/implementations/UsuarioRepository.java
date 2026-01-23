@@ -18,7 +18,7 @@ public class UsuarioRepository implements IUsuarioRepository {
         this.usuarios = JsonFileManager.carregar(FilePaths.USUARIOS_JSON, Usuario.class);
     }
 
-    // Refatorado: Substitui o loop for por removeIf + add (mais limpo para listas)
+
     public void atualizar(Usuario usuarioAtualizado) throws PersistenciaException {
         if (usuarios.removeIf(u -> u.getIdUsuario().equals(usuarioAtualizado.getIdUsuario()))) {
             usuarios.add(usuarioAtualizado);

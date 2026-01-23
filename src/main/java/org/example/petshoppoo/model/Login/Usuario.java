@@ -61,9 +61,6 @@ public class Usuario {
     public void setTelefone(String telefone) { this.telefone = telefone; }
     public Perfil getPerfil() { return perfil; }
     public void setPerfil(Perfil perfil) { this.perfil = perfil; }
-    public List<UUID> getIdsPets() { return idsPets; }
-    public void setIdsPets(List<UUID> idsPets) { this.idsPets = idsPets; }
-
     public boolean verificarSenha(String senha) {
         return Objects.equals(this.senha, senha);
     }
