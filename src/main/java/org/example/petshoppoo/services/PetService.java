@@ -35,11 +35,11 @@ public class PetService implements IPetService {
         Pet novoPet;
         if ("Cachorro".equalsIgnoreCase(tipo)) {
             novoPet = new org.example.petshoppoo.model.Pet.Cachorro(
-                    null, nome, dataNasc, raca, peso, idUsuario, adestrado
+                    null, nome, dataNasc, raca, peso, idUsuario, adestrado,castrado
             );
         } else if ("Gato".equalsIgnoreCase(tipo)) {
             novoPet = new org.example.petshoppoo.model.Pet.Gato(
-                    null, nome, dataNasc, raca, peso, idUsuario, castrado
+                    null, nome, dataNasc, raca, peso, idUsuario, castrado,adestrado
             );
         } else {
             throw new PersistenciaException("Tipo de pet inválido: " + tipo);
