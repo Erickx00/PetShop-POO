@@ -4,6 +4,7 @@ import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Login.Usuario;
 import org.example.petshoppoo.repository.interfaces.IUsuarioRepository;
 import org.example.petshoppoo.services.interfaces.IUsuarioService;
+import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.SessionManager;
 
 import java.util.List;
@@ -20,6 +21,10 @@ public class UsuarioService implements IUsuarioService {
     public void registrar(String nome, String email, String telefone, String senha) throws Exception {
         if (senha == null || senha.length() < 6) {
             throw new Exception("A senha deve ter pelo menos 6 caracteres!");
+        }
+
+        if (nome.matches(".*\\d.*")) {
+            throw new Exception("Nome nao pode conter numeros");
         }
 
         String telLimpo = telefone.replaceAll("\\D", "");
@@ -107,5 +112,12 @@ public class UsuarioService implements IUsuarioService {
         // Atualizar a sessão com o usuário atualizado
         SessionManager.getInstance().setUsuarioLogado(usuario);
     }
+
+    @Override
+    public void excluirPetPorId(UUID idUsuario, UUID idPet) throws PersistenciaException {
+        usuarioRepository.excluirPetPorId(idUsuario,idPet);
+    }
+
+
 
 }

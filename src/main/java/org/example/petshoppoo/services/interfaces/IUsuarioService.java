@@ -1,5 +1,6 @@
 package org.example.petshoppoo.services.interfaces;
 
+import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Login.Usuario;
 
 import java.util.List;
@@ -11,5 +12,6 @@ public interface IUsuarioService {
     void atualizarPerfil(UUID usuarioId, String nome, String email, String telefone) throws Exception;
 
     void alterarSenha(UUID usuarioId, String senhaAtual, String novaSenha) throws Exception;
+    void excluirPetPorId(UUID idUsuario, UUID idPet) throws PersistenciaException;
 
 }

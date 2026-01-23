@@ -22,20 +22,23 @@ public abstract class Pet {
     protected double peso;
     protected UUID idUsuario;
     protected String tipo;
+    private boolean castrado;
+    private boolean adestrado;
 
     public Pet() {
         this.idPet = UUID.randomUUID();
     }
 
-    public Pet(UUID idPet, String nome, int idadePet, String raca,
-               double peso, UUID idUsuario, String tipo) {
-        this.idPet = idPet == null ? UUID.randomUUID() : idPet;
+    public Pet(UUID idPet, String nome, int idadeAnos, String raca, double peso,
+               UUID idUsuario, boolean adestrado, boolean castrado) {
+        this.idPet = (idPet != null) ? idPet : UUID.randomUUID();
         this.nome = nome;
-        this.idadePet = idadePet;
+        this.idadePet = idadeAnos;
         this.raca = raca;
         this.peso = peso;
         this.idUsuario = idUsuario;
-        this.tipo = tipo;
+        this.adestrado = adestrado;
+        this.castrado = castrado;
     }
 
     public String idadeFormatada() {
@@ -51,6 +54,7 @@ public abstract class Pet {
     public String getRaca() { return raca; }
     public void setRaca(String raca) { this.raca = raca; }
 
+    public int getIdadePet(){ return idadePet;}
     public void setIdadePet(int idadePet) { this.idadePet = idadePet; }
 
     public double getPeso() { return peso; }
@@ -62,4 +66,20 @@ public abstract class Pet {
     public String getTipo() { return tipo; }
     public void setTipo(String tipo) { this.tipo = tipo; }
 
+
+    public boolean isCastrado() {
+        return castrado;
+    }
+
+    public void setCastrado(boolean castrado) {
+        this.castrado = castrado;
+    }
+
+    public boolean isAdestrado() {
+        return adestrado;
+    }
+
+    public void setAdestrado(boolean adestrado) {
+        this.adestrado = adestrado;
+    }
 }

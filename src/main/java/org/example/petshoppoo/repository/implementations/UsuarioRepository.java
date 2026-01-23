@@ -83,6 +83,21 @@ public class UsuarioRepository implements IUsuarioRepository {
                 });
     }
 
+    @Override
+    public void excluirPetPorId(UUID idUsuario, UUID idPet) throws PersistenciaException {
+        buscarPorId(idUsuario)
+                .ifPresent(usuario -> {
+                    usuario.removerPet(idPet);
+                    // Como o objeto foi alterado na lista, basta salvar
+                    try {
+                        salvarUsuarios();
+                    } catch (PersistenciaException e) {
+                        throw new RuntimeException("Erro ao apagar Pet", e);
+                    }
+                });
+    }
+
+
     private void salvarUsuarios() throws PersistenciaException {
         JsonFileManager.salvar(FilePaths.USUARIOS_JSON, usuarios);
     }

@@ -10,4 +10,5 @@ public interface IUsuarioRepository extends IRepository<Usuario> {
     boolean emailExiste(String email);
     boolean telefoneExiste(String telefone);
     void adicionarPetAoUsuario(UUID idUsuario, UUID idPet) throws PersistenciaException;
+    void excluirPetPorId(UUID idUsuario, UUID idPet) throws PersistenciaException;
 }

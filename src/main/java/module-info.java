@@ -13,6 +13,7 @@ module org.example.petshoppoo {
     // Outros
     requires java.desktop;
 
+
     // Permite que o JavaFX acesse as classes principais (como MainApp)
     opens org.example.petshoppoo to javafx.fxml;
 

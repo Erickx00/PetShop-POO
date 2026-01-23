@@ -40,12 +40,13 @@ public class PetService implements IPetService {
             );
         } else if ("Gato".equalsIgnoreCase(tipo)) {
             novoPet = new Gato(
-                    null, nome, idadeAnos, raca, peso, idUsuario, castrado,adestrado
+                    null, nome, idadeAnos, raca, peso, idUsuario, adestrado,castrado
             );
         } else {
             throw new PersistenciaException("Tipo de pet inválido: " + tipo);
         }
 
+        validarPet(novoPet);
         petRepository.salvar(novoPet);
         usuarioRepository.adicionarPetAoUsuario(idUsuario, novoPet.getIdPet());
     }
@@ -67,6 +68,7 @@ public class PetService implements IPetService {
     public void excluir(UUID idPet) throws PersistenciaException {
         Pet pet = petRepository.buscarPorId(idPet)
                 .orElseThrow(() -> new PersistenciaException("Pet não encontrado."));
+
         petRepository.deletar(pet.getIdPet());
     }
 
@@ -84,18 +86,30 @@ public class PetService implements IPetService {
             throw new PersistenciaException("O nome do pet é obrigatório.");
         }
 
-        if (pet.getRaca() == null || pet.getRaca().trim().isEmpty()) {
-            throw new PersistenciaException("A raça do pet é obrigatória.");
+        if(pet.getNome().matches(".*\\d.*")){
+            throw new PersistenciaException("Nome nao pode conter numeros");
+        }
+
+        if (pet.getIdadePet() < 1 || pet.getIdadePet() > 25) {
+            throw new PersistenciaException("Idade tem que estar entre 1 a 25");
+        }
+
+
+        if(pet.getRaca().matches(".*\\d.*")){
+            throw new PersistenciaException("Raca nao pode conter numeros");
         }
 
         if (pet.getPeso() <= 0) {
             throw new PersistenciaException("O peso deve ser maior que zero.");
         }
 
+        if(pet.getPeso()>250){
+            throw new PersistenciaException("Peso nao pode passar de 250");
+        }
+
         if (pet.idadeFormatada() == null) {
             throw new PersistenciaException("A data de nascimento é obrigatória.");
         }
-
 
         if (pet.getIdUsuario() == null) {
             throw new PersistenciaException("O pet deve estar associado a um usuário.");

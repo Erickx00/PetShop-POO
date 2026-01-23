@@ -7,19 +7,17 @@ import java.util.UUID;
 
 @JsonTypeName("Cachorro")
 public class Cachorro extends Pet {
-    private boolean adestrado;
-    private boolean castrado;
 
     public Cachorro() {
         super();
-        this.tipo = "Cachorro";
+        this.tipo = "Cachorro"; // Correto
     }
 
-    public Cachorro(UUID id, String nome, int dataNascimento, String raca,
-                    double peso, UUID idUsuario, boolean adestrado,boolean castrado) {
-        super(id, nome, dataNascimento, raca, peso, idUsuario, "Cachorro");
-        this.adestrado = adestrado;
-        this.castrado = castrado;
+
+    public Cachorro(UUID idPet, String nome, int idadeAnos, String raca, double peso,
+                    UUID idUsuario, boolean adestrado, boolean castrado) {
+        super(idPet, nome, idadeAnos, raca, peso, idUsuario, adestrado, castrado);
+        this.tipo = "Cachorro";
     }
 
     @Override
@@ -27,19 +25,4 @@ public class Cachorro extends Pet {
         return "Cachorro";
     }
 
-    public boolean isAdestrado() {
-        return adestrado;
-    }
-
-    public void setAdestrado(boolean adestrado) {
-        this.adestrado = adestrado;
-    }
-
-    public boolean isCastrado() {
-        return castrado;
-    }
-
-    public void setCastrado(boolean castrado) {
-        this.castrado = castrado;
-    }
 }
