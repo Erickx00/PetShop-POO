@@ -81,10 +81,10 @@ java -jar PetShop-POO-1.0.jar
 
 Padrões Utilizados
 
--MVC - Separação Controller/Model/View
--Repository Pattern - Abstração de persistência
--Service Layer - Separação de lógica de negócio
--Factory Pattern - Criação de objetos
+* *MVC - Separação Controller/Model/View
+* *Repository Pattern - Abstração de persistência
+* *Service Layer - Separação de lógica de negócio
+* *Factory Pattern - Criação de objetos
 
 ## 🧑‍💻 Equipe
 
