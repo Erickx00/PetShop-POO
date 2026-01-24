@@ -32,7 +32,6 @@ public class ServicoController {
     @FXML private DatePicker datePicker;
     @FXML private ComboBox<String> comboHorario;
     @FXML private TextArea txtObservacoes;
-    @FXML private Label lblResumo;
     @FXML private Label lblValor;
 
     private IAgendamentoService agendamentoService;
@@ -41,7 +40,6 @@ public class ServicoController {
     private Servico servicoSelecionado;
     private Pet petSelecionado;
 
-
     @FXML
     public void initialize() {
         try {
@@ -49,9 +47,7 @@ public class ServicoController {
             this.petService = ServiceFactory.getPetService();
             this.servicoService = ServiceFactory.getServicoService();
 
-        }
-
-        catch (PersistenciaException e) {
+        } catch (PersistenciaException e) {
             e.printStackTrace();
             AlertUtils.showError(
                     "Erro de Persistência",
@@ -110,7 +106,6 @@ public class ServicoController {
     private void configurarListeners() {
         comboPet.valueProperty().addListener((obs, old, novo) -> {
             petSelecionado = novo;
-            atualizarResumo();
         });
 
         comboServico.valueProperty().addListener((obs, old, novo) -> {
@@ -119,18 +114,13 @@ public class ServicoController {
                 lblValor.setText(String.format("R$ %.2f", novo.getPreco()));
                 atualizarHorarios();
             }
-            atualizarResumo();
         });
 
         datePicker.valueProperty().addListener((obs, old, novo) -> {
-            atualizarResumo();
             if (servicoSelecionado != null) {
                 atualizarHorarios();
             }
         });
-
-        comboHorario.valueProperty().addListener((obs, old, novo) -> atualizarResumo());
-        txtObservacoes.textProperty().addListener((obs, old, novo) -> atualizarResumo());
     }
 
     private void atualizarHorarios() {
@@ -157,25 +147,6 @@ public class ServicoController {
         } catch (Exception e) {
             AlertUtils.showError("Erro", "Não foi possível buscar os horários");
         }
-    }
-
-    private void atualizarResumo() {
-        StringBuilder sb = new StringBuilder();
-
-        if (petSelecionado != null) {
-            sb.append("Pet: ").append(petSelecionado.getNome()).append("\n");
-        }
-
-        if (servicoSelecionado != null) {
-            sb.append("Serviço: ").append(servicoSelecionado.getTipo().getDescricao()).append("\n");
-        }
-
-        if (datePicker.getValue() != null && comboHorario.getValue() != null) {
-            sb.append("Data: ").append(datePicker.getValue())
-                    .append(" às ").append(comboHorario.getValue());
-        }
-
-        lblResumo.setText(sb.toString());
     }
 
     @FXML

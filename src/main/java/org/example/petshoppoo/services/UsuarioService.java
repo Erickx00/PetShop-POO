@@ -114,7 +114,7 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public void excluirPetPorId(UUID idUsuario, UUID idPet) throws PersistenciaException {
+    public void excluirPetDoUsuario(UUID idUsuario, UUID idPet) throws PersistenciaException {
         usuarioRepository.excluirPetPorId(idUsuario,idPet);
     }
 

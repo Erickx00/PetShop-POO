@@ -200,7 +200,7 @@ public class PetListaController {
         if (confirmacao.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             try {
                 petService.excluir(pet.getIdPet());
-                usuarioService.excluirPetPorId(SessionManager.getUsuarioId(),pet.getIdPet());
+                usuarioService.excluirPetDoUsuario(SessionManager.getUsuarioId(),pet.getIdPet());
 
                 AlertUtils.showInfo("Sucesso", "Pet deletado com sucesso!");
                 carregarPets();
