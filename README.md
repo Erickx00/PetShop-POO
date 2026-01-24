@@ -81,10 +81,7 @@ java -jar PetShop-POO-1.0.jar
 
 | **Tela de Login** | **Tela de Cadastro** | **Menu Principal** |
 | :---: | :---: | :---: |
-| <img src=<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/8440fde6-1c78-4c97-95df-baf3c72b9efc" />
- width="300"> | <img src=<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/364e1fed-2d07-4915-908b-b4451212fbbc" />
- width="300"> | <img src=<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/9e9febc0-356f-4dd6-8113-0bdd489e4925" />
- width="300"> |
+| <img src="https://github.com/user-attachments/assets/8440fde6-1c78-4c97-95df-baf3c72b9efc" width="300"> | <img src="https://github.com/user-attachments/assets/364e1fed-2d07-4915-908b-b4451212fbbc" width="300"> | <img src="https://github.com/user-attachments/assets/9e9febc0-356f-4dd6-8113-0bdd489e4925" width="300"> |
 
 
 ## 🔧 Desenvolvimento
