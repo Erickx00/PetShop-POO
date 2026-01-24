@@ -7,9 +7,9 @@
 ## 🌟 Recursos Principais
 
   * *Interface Gráfica Intuitiva (JavaFX):* Telas amigáveis para cadastro e busca de informações.
-  * *Gerenciamento de Clientes e Pets:* Cadastro detalhado de proprietários e seus animais (raça, espécie, idade).
+  * *Gerenciamento de Clientes e Pets:* Cadastro de proprietários e seus animais (raça, espécie, idade).
   * *Agendamento de Serviços:* Módulo para marcar banho, tosa e consultas veterinárias.
-  * *Controle de Estoque (Simples):* Gerenciamento de produtos com persistência em arquivo.
+  
 
 -----
 
@@ -49,24 +49,45 @@ Após a instalação do código, use o Maven para compilar e executar o sistema:
 
 1.  Compile as dependências e o código:
 ```
-     bash
     mvn clean install
 ```
     
 3.  Execute a aplicação JavaFX:
 ```
-    bash
     mvn javafx:run
 ```
     
 
 -----
 
+## Gerando o JAR
+```
+# Limpa e gera o JAR com todas as dependências
+mvn clean package
+
+# O JAR será gerado em:
+# target/PetShop-POO-1.0.jar
+```
+
+##Executando JAR
+```
+# Navegue até a pasta target
+cd target
+
+# Execute o JAR
+java -jar PetShop-POO-1.0.jar
+```
+##🔧 Desenvolvimento
+
+Padrões Utilizados
+
+-MVC - Separação Controller/Model/View
+-Repository Pattern - Abstração de persistência
+-Service Layer - Separação de lógica de negócio
+-Factory Pattern - Criação de objetos
+
 ## 🧑‍💻 Equipe
 
-Lista dos membros da equipe envolvidos e seus respectivos perfis no GitHub.
-| Nome | GitHub |
-| :--- | :--- |
-|José| [@joseaugusto302](https://github.com/joseaugusto302) |
-|Erick| [@Erickx00](https://github.com/Erickx00) |
-|Leandro| [@LeandroS4nt](https://github.com/LeandroS4nt) |
+| [<img src="https://github.com/joseaugusto302.png" width=115><br><sub>José</sub>](https://github.com/joseaugusto302) | [<img src="https://github.com/Erickx00.png" width=115><br><sub>Erick</sub>](https://github.com/Erickx00) | [<img src="https://github.com/LeandroS4nt.png" width=115><br><sub>Leandro</sub>](https://github.com/LeandroS4nt) |
+| :---: | :---: | :---: |
+| **José Augusto** | **Erick** | **Leandro** |
