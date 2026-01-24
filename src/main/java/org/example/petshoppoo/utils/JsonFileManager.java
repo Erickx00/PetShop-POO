@@ -14,6 +14,8 @@ import java.util.List;
 public class JsonFileManager {
     private static final ObjectMapper objectMapper = createObjectMapper();
 
+    // ele vai gerar um JSON e lidar corretamente com datas
+
     private static ObjectMapper createObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
@@ -21,6 +23,8 @@ public class JsonFileManager {
         mapper.registerModule(new JavaTimeModule());
         return mapper;
     }
+
+    // vai ler um arquivo Json transforma em uma lista
 
     public static <T> List<T> carregar(String caminhoArquivo, Class<T> tipo) {
         File arquivo = new File(caminhoArquivo);

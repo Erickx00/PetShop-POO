@@ -6,6 +6,8 @@ import java.util.UUID;
 
 public class SessionManager {
 
+    // usado padrao sigleton de projeto para controlar qual usuario esta logado
+
     private static SessionManager instance;
     private Usuario usuarioLogado;
 

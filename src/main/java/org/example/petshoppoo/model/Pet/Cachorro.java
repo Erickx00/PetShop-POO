@@ -10,7 +10,7 @@ public class Cachorro extends Pet {
 
     public Cachorro() {
         super();
-        this.tipo = "Cachorro"; // Correto
+        this.tipo = "Cachorro";
     }
 
 
