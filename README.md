@@ -77,7 +77,7 @@ cd target
 # Execute o JAR
 java -jar PetShop-POO-1.0.jar
 ```
-##🔧 Desenvolvimento
+## 🔧 Desenvolvimento
 
 Padrões Utilizados
 
