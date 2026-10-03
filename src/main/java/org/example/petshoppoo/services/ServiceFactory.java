@@ -14,7 +14,10 @@ public class ServiceFactory {
 
     public static IPetService getPetService() throws PersistenciaException {
         if (petService == null) {
-            petService = new PetService(RepositoryFactory.getPetRepository());
+            petService = new PetService(
+                    RepositoryFactory.getPetRepository(),
+                    RepositoryFactory.getUsuarioRepository()
+            );
         }
         return petService;
     }
@@ -42,7 +45,11 @@ public class ServiceFactory {
 
     public static IAgendamentoService getAgendamentoService() throws PersistenciaException {
         if(agendamentoService == null){
-            agendamentoService = new AgendamentoService(RepositoryFactory.getAgendamentoRepository());
+            agendamentoService = new AgendamentoService(
+                    RepositoryFactory.getAgendamentoRepository(),
+                    RepositoryFactory.getServicoRepository(),
+                    RepositoryFactory.getPetRepository()
+            );
         }
         return agendamentoService;
     }

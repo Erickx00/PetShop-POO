@@ -7,8 +7,6 @@ import org.example.petshoppoo.exceptions.ValidacaoException;
 import org.example.petshoppoo.model.Pet.Cachorro;
 import org.example.petshoppoo.model.Pet.Gato;
 import org.example.petshoppoo.model.Pet.Pet;
-import org.example.petshoppoo.repository.implementations.PetRepository;
-import org.example.petshoppoo.repository.implementations.UsuarioRepository;
 import org.example.petshoppoo.repository.interfaces.IPetRepository;
 import org.example.petshoppoo.repository.interfaces.IUsuarioRepository;
 import org.example.petshoppoo.services.interfaces.IPetService;
@@ -24,9 +22,9 @@ public class PetService implements IPetService {
     private final IPetRepository petRepository;
     private final IUsuarioRepository usuarioRepository;
 
-    public PetService(IPetRepository petRepository) throws PersistenciaException {
+    public PetService(IPetRepository petRepository, IUsuarioRepository usuarioRepository) {
         this.petRepository = petRepository;
-        this.usuarioRepository = new UsuarioRepository();
+        this.usuarioRepository = usuarioRepository;
     }
 
     public void cadastrarPet(String nome, String tipo, String raca, int idadeAnos, double peso,

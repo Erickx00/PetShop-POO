@@ -6,10 +6,6 @@ import org.example.petshoppoo.exceptions.ValidacaoException;
 import org.example.petshoppoo.model.Pet.Pet;
 import org.example.petshoppoo.model.Servico.Agendamento;
 import org.example.petshoppoo.model.Servico.Servico;
-import org.example.petshoppoo.repository.RepositoryFactory;
-import org.example.petshoppoo.repository.implementations.AgendamentoRepository;
-import org.example.petshoppoo.repository.implementations.PetRepository;
-import org.example.petshoppoo.repository.implementations.ServicoRepository;
 import org.example.petshoppoo.repository.interfaces.IAgendamentoRepository;
 import org.example.petshoppoo.repository.interfaces.IPetRepository;
 import org.example.petshoppoo.repository.interfaces.IServicoRepository;
@@ -25,10 +21,12 @@ public class AgendamentoService implements IAgendamentoService {
     private final IServicoRepository servicoRepository;
     private final IPetRepository petRepository;
 
-    public AgendamentoService(IAgendamentoRepository agendamentoRepository) throws PersistenciaException {
+    public AgendamentoService(IAgendamentoRepository agendamentoRepository,
+                              IServicoRepository servicoRepository,
+                              IPetRepository petRepository) {
         this.agendamentoRepository = agendamentoRepository;
-        this.servicoRepository = RepositoryFactory.getServicoRepository();
-        this.petRepository = RepositoryFactory.getPetRepository();
+        this.servicoRepository = servicoRepository;
+        this.petRepository = petRepository;
     }
 
     @Override
