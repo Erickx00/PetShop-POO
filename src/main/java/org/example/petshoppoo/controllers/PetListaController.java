@@ -9,6 +9,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.example.petshoppoo.exceptions.PersistenciaException;
+import org.example.petshoppoo.exceptions.PetNaoEncontradoException;
+import org.example.petshoppoo.exceptions.ValidacaoException;
 import org.example.petshoppoo.model.Pet.Pet;
 import org.example.petshoppoo.services.ServiceFactory;
 import org.example.petshoppoo.services.interfaces.IPetService;
@@ -162,6 +164,10 @@ public class PetListaController {
 
         } catch (NumberFormatException e) {
             AlertUtils.showError("Peso inválido", "Digite um peso válido (ex: 10.5)");
+        } catch (ValidacaoException | PetNaoEncontradoException e) {
+            AlertUtils.showError("Erro ao salvar", e.getMessage());
+        } catch (PersistenciaException e) {
+            AlertUtils.showError("Erro de persistência", e.getMessage());
         } catch (Exception e) {
             AlertUtils.showError("Erro ao salvar", e.getMessage());
         }
