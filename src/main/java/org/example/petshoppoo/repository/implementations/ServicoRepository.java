@@ -21,7 +21,7 @@ public class ServicoRepository implements IServicoRepository {
         inicializarServicosPadrao();
     }
 
-    private void carregarDados() {
+    private void carregarDados() throws PersistenciaException {
         this.servicos = JsonFileManager.carregar(FilePaths.SERVICOS_JSON, Servico.class);
     }
 

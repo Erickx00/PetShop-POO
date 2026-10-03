@@ -15,19 +15,9 @@ import java.util.stream.Collectors;
 public class PetRepository implements IPetRepository {
     private List<Pet> pets;
 
-    public PetRepository() {
+    public PetRepository() throws PersistenciaException {
         //  Carrega dados do arquivo
-        this.pets = carregarDoArquivo();
-    }
-
-    private List<Pet> carregarDoArquivo() {
-        try {
-            List<Pet> carregados = JsonFileManager.carregar(FilePaths.PETS_JSON, Pet.class);
-            return carregados != null ? carregados : new ArrayList<>();
-        } catch (Exception e) {
-            System.err.println("Erro ao carregar pets (inicializando lista vazia): " + e.getMessage());
-            return new ArrayList<>();
-        }
+        this.pets = JsonFileManager.carregar(FilePaths.PETS_JSON, Pet.class);
     }
 
     @Override

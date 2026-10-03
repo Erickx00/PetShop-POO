@@ -16,21 +16,12 @@ import java.util.stream.Collectors;
 public class AgendamentoRepository implements IAgendamentoRepository {
     private List<Agendamento> agendamentos;
 
-    public AgendamentoRepository() {
+    public AgendamentoRepository() throws PersistenciaException {
         carregarDados();
     }
 
-    private void carregarDados() {
-        try {
-            agendamentos = JsonFileManager.carregar(FilePaths.AGENDAMENTOS_JSON, Agendamento.class);
-            if (agendamentos == null) {
-                agendamentos = new ArrayList<>();
-            }
-        } catch (Exception e) {
-            agendamentos = new ArrayList<>();
-            // Se o arquivo não existir ou der erro, inicia lista vazia para não travar o sistema
-            System.out.println("Aviso: Iniciando lista de agendamentos vazia.");
-        }
+    private void carregarDados() throws PersistenciaException {
+        agendamentos = JsonFileManager.carregar(FilePaths.AGENDAMENTOS_JSON, Agendamento.class);
     }
 
     public void salvar(Agendamento agendamento) throws PersistenciaException {
