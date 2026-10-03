@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.exceptions.ValidacaoException;
+import org.example.petshoppoo.exceptions.UsuarioNaoEncontradoException;
 import org.example.petshoppoo.model.Login.Usuario;
 import org.example.petshoppoo.repository.RepositoryFactory;
 import org.example.petshoppoo.services.PetService;
@@ -81,6 +82,8 @@ public class PetCadastroController  {
             AlertUtils.showError("Erro", "Idade e peso devem ser valores numéricos.");
         } catch (ValidacaoException e) {
             AlertUtils.showError("Erro de validação", e.getMessage());
+        } catch (UsuarioNaoEncontradoException e) {
+            AlertUtils.showError("Usuário não encontrado", e.getMessage());
         } catch (PersistenciaException e) {
             AlertUtils.showError("Erro", "Falha ao salvar: " + e.getMessage());
         }

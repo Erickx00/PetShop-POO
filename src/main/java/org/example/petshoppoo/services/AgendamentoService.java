@@ -38,6 +38,7 @@ public class AgendamentoService implements IAgendamentoService {
 
         if (idPet == null) throw new ValidacaoException("Selecione um Pet!");
         if (idServico == null) throw new ValidacaoException("Selecione um Serviço!");
+        if (idUsuario == null) throw new ValidacaoException("É necessário estar autenticado para agendar.");
         if (dataHora == null) throw new ValidacaoException("Selecione data e hora!");
         if (dataHora.isBefore(LocalDateTime.now())) throw new ValidacaoException("A data deve ser futura!");
 
@@ -47,19 +48,12 @@ public class AgendamentoService implements IAgendamentoService {
 
         Pet pet = petRepository.buscarPorId(idPet).orElse(null);
         if (pet == null) throw new PetNaoEncontradoException("Pet não encontrado!");
+        if (!idUsuario.equals(pet.getIdUsuario())) {
+            throw new ValidacaoException("O pet selecionado não pertence ao usuário logado.");
+        }
 
-
-        List<Agendamento> agendamentosExistentes = agendamentoRepository.listarTodos();
-
-        for (Agendamento ag : agendamentosExistentes) {// Verifica se é EXATAMENTE o mesmo horário
-
-            if (ag.getDataHora().equals(dataHora)) {
-                // Se o agendamento existente NÃO estiver CANCELADO, então o horário está ocupado
-                if (ag.getStatus() != Agendamento.StatusAgendamento.CANCELADO) {
-                    throw new ValidacaoException("Horário indisponível! Já existe um agendamento para " +
-                            dataHora.getHour() + ":" + String.format("%02d", dataHora.getMinute()));
-                }
-            }
+        if (agendamentoRepository.existeConflitoHorario(dataHora, servico.getDuracaoMinutos())) {
+            throw new ValidacaoException("Horário indisponível. O intervalo escolhido se sobrepõe a outro agendamento ativo.");
         }
 
         Agendamento novoAgendamento = new Agendamento(

@@ -2,6 +2,7 @@ package org.example.petshoppoo.services;
 
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.exceptions.PetNaoEncontradoException;
+import org.example.petshoppoo.exceptions.UsuarioNaoEncontradoException;
 import org.example.petshoppoo.exceptions.ValidacaoException;
 import org.example.petshoppoo.model.Pet.Cachorro;
 import org.example.petshoppoo.model.Pet.Gato;
@@ -29,7 +30,7 @@ public class PetService implements IPetService {
     }
 
     public void cadastrarPet(String nome, String tipo, String raca, int idadeAnos, double peso,
-                             boolean adestrado, boolean castrado, UUID idUsuario) throws PersistenciaException, ValidacaoException {
+                             boolean adestrado, boolean castrado, UUID idUsuario) throws PersistenciaException, ValidacaoException, UsuarioNaoEncontradoException {
         if (nome == null || nome.trim().isEmpty()) {
             throw new ValidacaoException("O nome do pet é obrigatório.");
         }
@@ -49,6 +50,11 @@ public class PetService implements IPetService {
         }
 
         validarPet(novoPet);
+
+        if (usuarioRepository.buscarPorId(idUsuario).isEmpty()) {
+            throw new UsuarioNaoEncontradoException("Usuário não encontrado para associar ao pet.");
+        }
+
         petRepository.salvar(novoPet);
         usuarioRepository.adicionarPetAoUsuario(idUsuario, novoPet.getIdPet());
     }
