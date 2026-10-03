@@ -3,6 +3,7 @@ package org.example.petshoppoo.services.interfaces;
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.exceptions.PetNaoEncontradoException;
 import org.example.petshoppoo.exceptions.ValidacaoException;
+import org.example.petshoppoo.exceptions.UsuarioNaoEncontradoException;
 import org.example.petshoppoo.model.Pet.Pet;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 public interface IPetService {
     void cadastrarPet(String nome, String tipo, String raca, int idadeAnos, double peso,
-                      boolean adestrado, boolean castrado, UUID idUsuario) throws PersistenciaException, ValidacaoException;
+                      boolean adestrado, boolean castrado, UUID idUsuario) throws PersistenciaException, ValidacaoException, UsuarioNaoEncontradoException;
     List<Pet> listarPetsDoUsuario(UUID usuarioId) throws PersistenciaException;
     List<Pet> listarPets();
     Pet buscarPorId(UUID id);
