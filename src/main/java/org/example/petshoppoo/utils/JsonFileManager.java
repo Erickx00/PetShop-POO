@@ -26,7 +26,7 @@ public class JsonFileManager {
 
     // vai ler um arquivo Json transforma em uma lista
 
-    public static <T> List<T> carregar(String caminhoArquivo, Class<T> tipo) {
+    public static <T> List<T> carregar(String caminhoArquivo, Class<T> tipo) throws PersistenciaException {
         File arquivo = new File(caminhoArquivo);
         if (!arquivo.exists()) {
             return new ArrayList<>();
@@ -36,8 +36,7 @@ public class JsonFileManager {
             return objectMapper.readValue(arquivo,
                     objectMapper.getTypeFactory().constructCollectionType(List.class, tipo));
         } catch (IOException e) {
-            System.err.println("Erro ao carregar arquivo " + caminhoArquivo + ": " + e.getMessage());
-            return new ArrayList<>();
+            throw new PersistenciaException("Erro ao carregar arquivo " + caminhoArquivo + ": " + e.getMessage(), e);
         }
     }
 
