@@ -1,6 +1,8 @@
 package org.example.petshoppoo.services;
 
 import org.example.petshoppoo.exceptions.PersistenciaException;
+import org.example.petshoppoo.exceptions.PetNaoEncontradoException;
+import org.example.petshoppoo.exceptions.ValidacaoException;
 import org.example.petshoppoo.model.Pet.Cachorro;
 import org.example.petshoppoo.model.Pet.Gato;
 import org.example.petshoppoo.model.Pet.Pet;
@@ -27,9 +29,9 @@ public class PetService implements IPetService {
     }
 
     public void cadastrarPet(String nome, String tipo, String raca, int idadeAnos, double peso,
-                             boolean adestrado, boolean castrado, UUID idUsuario) throws PersistenciaException {
+                             boolean adestrado, boolean castrado, UUID idUsuario) throws PersistenciaException, ValidacaoException {
         if (nome == null || nome.trim().isEmpty()) {
-            throw new PersistenciaException("O nome do pet é obrigatório.");
+            throw new ValidacaoException("O nome do pet é obrigatório.");
         }
 
 
@@ -43,7 +45,7 @@ public class PetService implements IPetService {
                     null, nome, idadeAnos, raca, peso, idUsuario, adestrado,castrado
             );
         } else {
-            throw new PersistenciaException("Tipo de pet inválido: " + tipo);
+            throw new ValidacaoException("Tipo de pet inválido: " + tipo);
         }
 
         validarPet(novoPet);
@@ -65,54 +67,54 @@ public class PetService implements IPetService {
     }
 
 
-    public void excluir(UUID idPet) throws PersistenciaException {
+    public void excluir(UUID idPet) throws PersistenciaException, PetNaoEncontradoException {
         Pet pet = petRepository.buscarPorId(idPet)
-                .orElseThrow(() -> new PersistenciaException("Pet não encontrado."));
+                .orElseThrow(() -> new PetNaoEncontradoException("Pet não encontrado."));
 
         petRepository.deletar(pet.getIdPet());
     }
 
-    public void atualizar(Pet pet) throws PersistenciaException {
+    public void atualizar(Pet pet) throws PersistenciaException, ValidacaoException {
         validarPet(pet);
         petRepository.atualizar(pet);
     }
 
-    private void validarPet(Pet pet) throws PersistenciaException {
+    private void validarPet(Pet pet) throws ValidacaoException {
         if (pet == null) {
-            throw new PersistenciaException("Pet não pode ser nulo.");
+            throw new ValidacaoException("Pet não pode ser nulo.");
         }
 
         if (pet.getNome() == null || pet.getNome().trim().isEmpty()) {
-            throw new PersistenciaException("O nome do pet é obrigatório.");
+            throw new ValidacaoException("O nome do pet é obrigatório.");
         }
 
         if(pet.getNome().matches(".*\\d.*")){
-            throw new PersistenciaException("Nome nao pode conter numeros");
+            throw new ValidacaoException("Nome não pode conter números.");
         }
 
         if (pet.getIdadePet() < 1 || pet.getIdadePet() > 25) {
-            throw new PersistenciaException("Idade tem que estar entre 1 a 25");
+            throw new ValidacaoException("Idade deve estar entre 1 e 25 anos.");
         }
 
 
         if(pet.getRaca().matches(".*\\d.*")){
-            throw new PersistenciaException("Raca nao pode conter numeros");
+            throw new ValidacaoException("Raça não pode conter números.");
         }
 
         if (pet.getPeso() <= 0) {
-            throw new PersistenciaException("O peso deve ser maior que zero.");
+            throw new ValidacaoException("O peso deve ser maior que zero.");
         }
 
         if(pet.getPeso()>250){
-            throw new PersistenciaException("Peso nao pode passar de 250");
+            throw new ValidacaoException("O peso não pode ultrapassar 250 kg.");
         }
 
         if (pet.idadeFormatada() == null) {
-            throw new PersistenciaException("A data de nascimento é obrigatória.");
+            throw new ValidacaoException("A data de nascimento é obrigatória.");
         }
 
         if (pet.getIdUsuario() == null) {
-            throw new PersistenciaException("O pet deve estar associado a um usuário.");
+            throw new ValidacaoException("O pet deve estar associado a um usuário.");
         }
     }
 

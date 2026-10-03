@@ -1,6 +1,8 @@
 package org.example.petshoppoo.services.interfaces;
 
 import org.example.petshoppoo.exceptions.PersistenciaException;
+import org.example.petshoppoo.exceptions.PetNaoEncontradoException;
+import org.example.petshoppoo.exceptions.ValidacaoException;
 import org.example.petshoppoo.model.Servico.Agendamento;
 
 import java.time.LocalDate;
@@ -10,7 +12,7 @@ import java.util.UUID;
 
 public interface IAgendamentoService {
     void criarAgendamento(UUID idUsuario, UUID idPet, UUID idServico,
-                          LocalDateTime dataHora, String observacoes) throws Exception;
+                          LocalDateTime dataHora, String observacoes) throws PersistenciaException, PetNaoEncontradoException, ValidacaoException;
     List<Agendamento> listarAgendamentosPorUsuario(UUID idUsuario) throws PersistenciaException;
     List<Agendamento> listarAgendamentosAtivos() throws PersistenciaException;
     List<Agendamento> getCancelados();

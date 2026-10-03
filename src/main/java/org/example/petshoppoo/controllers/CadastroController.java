@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.example.petshoppoo.exceptions.PersistenciaException;
+import org.example.petshoppoo.exceptions.ValidacaoException;
 import org.example.petshoppoo.repository.RepositoryFactory;
 import org.example.petshoppoo.services.ServiceFactory;
 import org.example.petshoppoo.services.UsuarioService;
@@ -61,8 +62,10 @@ public class CadastroController {
             usuarioService.registrar(nome, email, telefone, senha);
             AlertUtils.showInfo("Sucesso", "Cadastro realizado!");
             ViewLoader.changeScene(btnFinalizar, "/views/LoginView.fxml", "Login");
-        } catch (Exception e) {
+        } catch (ValidacaoException | PersistenciaException e) {
             AlertUtils.showError("Erro", e.getMessage());
+        } catch (IOException e) {
+            AlertUtils.showError("Erro", "Cadastro realizado, mas não foi possível abrir a tela de login.");
         }
     }
 

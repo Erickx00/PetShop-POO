@@ -6,6 +6,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.example.petshoppoo.exceptions.PersistenciaException;
+import org.example.petshoppoo.exceptions.AutenticacaoException;
 import org.example.petshoppoo.repository.RepositoryFactory;
 import org.example.petshoppoo.services.AuthService;
 import org.example.petshoppoo.services.ServiceFactory;
@@ -55,8 +56,10 @@ public class LoginController {
             authService.login(email, senha);
             // Isso vai chamar a tela de menu com o tamanho automático
             ViewLoader.changeScene(btnEntrar, "/views/MenuView.fxml", "Menu Principal");
-        } catch (Exception e) {
+        } catch (AutenticacaoException e) {
             AlertUtils.showError("Erro", e.getMessage());
+        } catch (IOException e) {
+            AlertUtils.showError("Erro", "Login realizado, mas não foi possível abrir o menu.");
         }
     }
 

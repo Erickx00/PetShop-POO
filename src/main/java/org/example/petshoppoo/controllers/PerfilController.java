@@ -10,6 +10,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.petshoppoo.exceptions.PersistenciaException;
+import org.example.petshoppoo.exceptions.AutenticacaoException;
+import org.example.petshoppoo.exceptions.ValidacaoException;
+import org.example.petshoppoo.exceptions.UsuarioNaoEncontradoException;
 import org.example.petshoppoo.services.ServiceFactory;
 import org.example.petshoppoo.services.interfaces.IAuthService;
 import org.example.petshoppoo.services.interfaces.IUsuarioService;
@@ -99,34 +102,24 @@ public class PerfilController  {
             AlertUtils.showInfo("Sucesso", "Perfil atualizado com sucesso!");
             limparCamposSenha();
 
-        } catch (Exception e) {
+        } catch (ValidacaoException | AutenticacaoException | UsuarioNaoEncontradoException | PersistenciaException e) {
             AlertUtils.showError("Erro ao salvar", e.getMessage());
         }
     }
 
-    private void alterarSenha() throws Exception {
+    private void alterarSenha() throws ValidacaoException, AutenticacaoException, PersistenciaException {
         String senhaAtualText = senhaAtual.getText().trim();
         String novaSenhaText = novaSenha.getText().trim();
         String confirmarSenhaText = confirmarSenha.getText().trim();
 
         // Verificar se todos os campos de senha estão preenchidos
         if (senhaAtualText.isEmpty() || novaSenhaText.isEmpty() || confirmarSenhaText.isEmpty()) {
-            throw new Exception("Para alterar a senha, preencha todos os campos de senha!");
+            throw new ValidacaoException("Para alterar a senha, preencha todos os campos de senha!");
         }
 
         // Verificar se as novas senhas coincidem
         if (!novaSenhaText.equals(confirmarSenhaText)) {
-            throw new Exception("As novas senhas não coincidem!");
-        }
-
-        // Verificar se a nova senha é diferente da atual
-        if (senhaAtualText.equals(novaSenhaText)) {
-            throw new Exception("A nova senha deve ser diferente da senha atual!");
-        }
-
-        // Verificar tamanho da nova senha
-        if (novaSenhaText.length() < 6) {
-            throw new Exception("A nova senha deve ter pelo menos 6 caracteres!");
+            throw new ValidacaoException("As novas senhas não coincidem!");
         }
 
         // Chamar o serviço para alterar a senha
