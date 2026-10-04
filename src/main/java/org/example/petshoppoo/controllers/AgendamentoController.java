@@ -13,15 +13,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Servico.Agendamento;
-import org.example.petshoppoo.repository.RepositoryFactory;
-import org.example.petshoppoo.services.AgendamentoService;
-import org.example.petshoppoo.services.PetService;
 import org.example.petshoppoo.services.ServiceFactory;
-import org.example.petshoppoo.services.ServicoService;
 import org.example.petshoppoo.services.interfaces.IAgendamentoService;
 import org.example.petshoppoo.services.interfaces.IPetService;
 import org.example.petshoppoo.services.interfaces.IServicoService;
@@ -100,7 +95,7 @@ public class AgendamentoController  {
             try {
                 var serv = servicoService.buscarPorId(cell.getValue().getIdServico());
                 return new SimpleStringProperty(serv.isPresent() ? serv.get().getDescricao() : "Desconhecido");
-            } catch (RuntimeException e) { return new SimpleStringProperty("-"); }
+            } catch (PersistenciaException e) { return new SimpleStringProperty("-"); }
         });
 
         // Valor
@@ -109,7 +104,7 @@ public class AgendamentoController  {
                 var serv = servicoService.buscarPorId(cell.getValue().getIdServico());
                 // Exemplo: pega o preço ou um texto fixo, já que duração não tem no model padrão
                 return new SimpleStringProperty(serv.map(servico -> "R$ " + servico.getPreco()).orElse("-"));
-            } catch (RuntimeException e) { return new SimpleStringProperty("-"); }
+            } catch (PersistenciaException e) { return new SimpleStringProperty("-"); }
         });
     }
 
@@ -122,7 +117,7 @@ public class AgendamentoController  {
         try {
             List<Agendamento> lista = agendamentoService.listarAgendamentosPorUsuario(SessionManager.getUsuarioId());
             tabelaAgendamentos.setItems(FXCollections.observableArrayList(lista));
-        } catch (RuntimeException e) {
+        } catch (PersistenciaException e) {
             AlertUtils.showError("Erro", "Não foi possível carregar os agendamentos.");
         }
     }

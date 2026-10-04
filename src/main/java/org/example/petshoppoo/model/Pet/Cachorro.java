@@ -2,7 +2,6 @@ package org.example.petshoppoo.model.Pet;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @JsonTypeName("Cachorro")

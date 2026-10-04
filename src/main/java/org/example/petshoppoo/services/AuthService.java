@@ -2,7 +2,6 @@ package org.example.petshoppoo.services;
 
 import org.example.petshoppoo.exceptions.AutenticacaoException;
 import org.example.petshoppoo.model.Login.Usuario;
-import org.example.petshoppoo.repository.implementations.UsuarioRepository;
 import org.example.petshoppoo.repository.interfaces.IUsuarioRepository;
 import org.example.petshoppoo.services.interfaces.IAuthService;
 import org.example.petshoppoo.utils.SessionManager;
