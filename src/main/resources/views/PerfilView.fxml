@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="547.0" prefWidth="570.0" style="-fx-background-color: #FDF8E1;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.PerfilController">
-    <children>
-        <VBox alignment="CENTER" layoutX="-34.0" layoutY="3.0" prefHeight="529.0" prefWidth="641.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="-34.0" AnchorPane.rightAnchor="-37.0" AnchorPane.topAnchor="3.0">
+<ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="547.0" prefWidth="570.0" style="-fx-background-color: #FDF8E1; -fx-background: #FDF8E1; -fx-border-color: transparent;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.PerfilController">
+    <content>
+        <VBox alignment="CENTER" style="-fx-background-color: #FDF8E1;" spacing="15.0">
+        <padding><Insets bottom="15.0" left="15.0" right="15.0" top="15.0" /></padding>
             <children>
 
-                <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="509.0" prefWidth="478.0" spacing="20.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 30; -fx-padding: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+                <VBox alignment="TOP_CENTER" maxWidth="520.0" prefHeight="509.0" prefWidth="478.0" spacing="20.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 30; -fx-padding: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
 
                     <children>
                         <HBox alignment="CENTER_LEFT" prefWidth="390.0">
@@ -129,5 +131,5 @@
 
             </children>
         </VBox>
-    </children>
-</AnchorPane>
+    </content>
+</ScrollPane>

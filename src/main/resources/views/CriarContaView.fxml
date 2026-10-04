@@ -13,7 +13,11 @@
             </font>
         </Button>
 
-        <VBox alignment="TOP_CENTER" layoutX="40.0" layoutY="60.0" prefWidth="370.0" spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 25; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 5);">
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutY="60.0" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0" AnchorPane.bottomAnchor="15.0">
+            <content>
+                <StackPane alignment="TOP_CENTER">
+                    <children>
+        <VBox alignment="TOP_CENTER" maxWidth="420.0" prefWidth="370.0" spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 25; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 5);">
             <children>
                 <VBox alignment="CENTER" spacing="5.0">
                     <children>
@@ -97,5 +101,9 @@
                 </Button>
             </children>
         </VBox>
+                    </children>
+                </StackPane>
+            </content>
+        </ScrollPane>
     </children>
 </AnchorPane>

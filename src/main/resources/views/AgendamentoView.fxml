@@ -43,12 +43,12 @@
 
                 <HBox alignment="CENTER" prefHeight="60.0">
                     <children>
-                        <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#handleCancelar" prefHeight="38.0" prefWidth="179.0" style="-fx-background-color: #2ECC71; -fx-background-radius: 20; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="Cancelar Serviço">
+                        <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#handleCancelar" maxWidth="Infinity" HBox.hgrow="ALWAYS" prefHeight="38.0" style="-fx-background-color: #2ECC71; -fx-background-radius: 20; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="Cancelar Serviço">
                             <font>
                                 <Font size="17.0" />
                             </font>
                         </Button>
-                        <Button fx:id="btnLimpar" mnemonicParsing="false" onAction="#handleLimpar" prefHeight="38.0" prefWidth="180.0" style="-fx-background-color: #Fb3000; -fx-background-radius: 20; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="Limpar">
+                        <Button fx:id="btnLimpar" mnemonicParsing="false" onAction="#handleLimpar" maxWidth="Infinity" HBox.hgrow="ALWAYS" prefHeight="38.0" style="-fx-background-color: #Fb3000; -fx-background-radius: 20; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" text="Limpar">
                      <font>
                         <Font size="17.0" />
                      </font></Button>
