@@ -1,10 +1,12 @@
 package org.example.petshoppoo.services;
 
 import org.example.petshoppoo.exceptions.AutenticacaoException;
+import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.model.Login.Usuario;
 import org.example.petshoppoo.repository.interfaces.IUsuarioRepository;
 import org.example.petshoppoo.services.interfaces.IAuthService;
 import org.example.petshoppoo.utils.SessionManager;
+import org.example.petshoppoo.utils.PasswordHasher;
 
 public class AuthService implements IAuthService {
     private final IUsuarioRepository usuarioRepository;
@@ -15,10 +17,14 @@ public class AuthService implements IAuthService {
 
 
 
-    public void login(String email, String senha) throws AutenticacaoException {
+    public void login(String email, String senha) throws AutenticacaoException, PersistenciaException {
         Usuario usuario = usuarioRepository.buscarPorEmail(email);
         if (usuario == null || !usuario.verificarSenha(senha)) {
             throw new AutenticacaoException("Email ou senha inválidos!");
+        }
+        if (usuario.precisaMigrarSenha()) {
+            usuario.setSenha(PasswordHasher.hash(senha));
+            usuarioRepository.atualizar(usuario);
         }
         SessionManager.getInstance().setUsuarioLogado(usuario);
     }

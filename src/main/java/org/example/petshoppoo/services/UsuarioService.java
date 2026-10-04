@@ -8,6 +8,7 @@ import org.example.petshoppoo.model.Login.Usuario;
 import org.example.petshoppoo.repository.interfaces.IUsuarioRepository;
 import org.example.petshoppoo.services.interfaces.IUsuarioService;
 import org.example.petshoppoo.utils.SessionManager;
+import org.example.petshoppoo.utils.PasswordHasher;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -49,7 +50,7 @@ public class UsuarioService implements IUsuarioService {
             throw new ValidacaoException("Telefone já cadastrado.");
         }
 
-        Usuario novoUsuario = new Usuario(nome, email, telLimpo, senha);
+        Usuario novoUsuario = new Usuario(nome, email, telLimpo, PasswordHasher.hash(senha));
         usuarioRepository.salvar(novoUsuario);
     }
 
@@ -103,12 +104,12 @@ public class UsuarioService implements IUsuarioService {
         Usuario usuario = usuarioOptional.get();
 
         // Verifica se a senha atual ta correta
-        if (!usuario.getSenha().equals(senhaAtual)) {
+        if (!usuario.verificarSenha(senhaAtual)) {
             throw new AutenticacaoException("Senha atual incorreta.");
         }
 
         // Verifica se a nova senha é igual à atual
-        if (usuario.getSenha().equals(novaSenha)) {
+        if (usuario.verificarSenha(novaSenha)) {
             throw new ValidacaoException("A nova senha deve ser diferente da senha atual.");
         }
 
@@ -117,7 +118,7 @@ public class UsuarioService implements IUsuarioService {
         }
 
         // Atualiza a senha
-        usuario.setSenha(novaSenha);
+        usuario.setSenha(PasswordHasher.hash(novaSenha));
         usuarioRepository.atualizar(usuario);
 
         // Atualiza a sessão com o usuário atualizado

@@ -1,9 +1,9 @@
 package org.example.petshoppoo.model.Login;
 
 import org.example.petshoppoo.exceptions.EmailInvalidoException;
+import org.example.petshoppoo.utils.PasswordHasher;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 public class Usuario {
@@ -62,6 +62,10 @@ public class Usuario {
     public Perfil getPerfil() { return perfil; }
     public void setPerfil(Perfil perfil) { this.perfil = perfil; }
     public boolean verificarSenha(String senha) {
-        return Objects.equals(this.senha, senha);
+        return PasswordHasher.matches(senha, this.senha);
+    }
+
+    public boolean precisaMigrarSenha() {
+        return !PasswordHasher.isHashed(this.senha);
     }
 }
