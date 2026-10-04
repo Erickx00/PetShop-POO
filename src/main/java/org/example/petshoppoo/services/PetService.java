@@ -10,11 +10,7 @@ import org.example.petshoppoo.model.Pet.Pet;
 import org.example.petshoppoo.repository.interfaces.IPetRepository;
 import org.example.petshoppoo.repository.interfaces.IUsuarioRepository;
 import org.example.petshoppoo.services.interfaces.IPetService;
-import org.example.petshoppoo.utils.SessionManager;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

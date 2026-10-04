@@ -15,10 +15,10 @@
 
 ## 🛠️ Tecnologias Utilizadas
 
-  * *Linguagem:* *Java* (21 ou supeior)
+  * *Linguagem:* *Java* (21 ou superior)
   * *Framework de UI:* *JavaFX* (21 ou superior)
   * *Sistema de Build:* *Apache Maven*
-  * *Persistência de Dados:* Persistência em memória ou em arquivos simples JSON.
+  * *Persistência de Dados:* Arquivos JSON na pasta `data/`.
 
 -----
 
@@ -29,7 +29,7 @@
 Para rodar o projeto, certifique-se de que possui:
 
 1.  *Java Development Kit (JDK):* 21
-2.  *Apache Maven:* Versão 3.6 ou superior.
+2.  *Apache Maven:* Versão 3.6 ou superior (ou use o Maven Wrapper incluído).
 
 ### ⬇️ Instalação (Como Baixar)
 
@@ -37,8 +37,7 @@ Para baixar e preparar o código-fonte do *Petshop IFPB* em sua máquina, siga e
 
 Clone o repositório:
 
-```
-bash
+```bash
 git clone https://github.com/Erickx00/PetShop-POO
 cd PetShop-POO
 ```
@@ -47,35 +46,35 @@ cd PetShop-POO
 
 Após a instalação do código, use o Maven para compilar e executar o sistema:
 
-1.  Compile as dependências e o código:
+1. Compile as dependências e o código:
+```bash
+./mvnw clean install
 ```
-    mvn clean install
+
+2. Execute a aplicação JavaFX:
+```bash
+./mvnw javafx:run
 ```
-    
-3.  Execute a aplicação JavaFX:
-```
-    mvn javafx:run
-```
-    
+
+No Windows, use `mvnw.cmd` no lugar de `./mvnw`.
 
 -----
 
 ## Gerando o JAR
-```
+```bash
 # Limpa e gera o JAR com todas as dependências
-mvn clean package
+./mvnw clean package
 
-# O JAR será gerado em:
-# target/PetShop-POO-1.0.jar
+# O JAR executável será gerado na pasta target/.
 ```
 
 ## Executando JAR
-```
+```bash
 # Navegue até a pasta target
 cd target
 
-# Execute o JAR
-java -jar PetShop-POO-1.0.jar
+# Execute o JAR sombreado gerado pelo Maven
+java -jar PetShop-POO-1.0-SNAPSHOT.jar
 ```
 ## 📸 Telas do Sistema
 

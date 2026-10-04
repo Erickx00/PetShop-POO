@@ -7,8 +7,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.exceptions.AutenticacaoException;
-import org.example.petshoppoo.repository.RepositoryFactory;
-import org.example.petshoppoo.services.AuthService;
 import org.example.petshoppoo.services.ServiceFactory;
 import org.example.petshoppoo.services.interfaces.IAuthService;
 import org.example.petshoppoo.utils.AlertUtils;

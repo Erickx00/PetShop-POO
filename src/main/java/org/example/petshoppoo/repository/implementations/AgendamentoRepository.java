@@ -149,7 +149,7 @@ public class AgendamentoRepository implements IAgendamentoRepository {
                 horariosDisponiveis.add(horarioCandidato);
             }
 
-            horaAtual = horaAtual.plusMinutes(60); // Intervalo de 30 minutos
+            horaAtual = horaAtual.plusMinutes(60); // Avança para o próximo horário disponível da grade.
         }
 
         return horariosDisponiveis;

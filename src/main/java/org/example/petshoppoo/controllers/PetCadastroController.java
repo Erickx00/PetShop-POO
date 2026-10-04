@@ -9,9 +9,6 @@ import java.io.IOException;
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.exceptions.ValidacaoException;
 import org.example.petshoppoo.exceptions.UsuarioNaoEncontradoException;
-import org.example.petshoppoo.model.Login.Usuario;
-import org.example.petshoppoo.repository.RepositoryFactory;
-import org.example.petshoppoo.services.PetService;
 import org.example.petshoppoo.services.ServiceFactory;
 import org.example.petshoppoo.services.interfaces.IPetService;
 import org.example.petshoppoo.utils.AlertUtils;
@@ -104,8 +101,6 @@ public class PetCadastroController  {
             AlertUtils.showError("Erro", "Selecione o tipo do animal.");
             return false;
         }
-        // Validação de peso (0 a 120) - CORREÇ
-
         return true;
     }
 
