@@ -5,6 +5,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import java.io.IOException;
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.exceptions.ValidacaoException;
 import org.example.petshoppoo.exceptions.UsuarioNaoEncontradoException;
@@ -117,7 +118,7 @@ public class PetCadastroController  {
         try {
             Stage stage = (Stage) txtNome.getScene().getWindow();
             ViewLoader.loadView(stage, "/views/MenuView.fxml", "Meus Pets");
-        } catch (Exception e) {
+        } catch (IOException | RuntimeException e) {
             AlertUtils.showError("Erro", "Não foi possível carregar a lista.");
         }
     }

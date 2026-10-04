@@ -67,7 +67,7 @@ public class AgendamentoController  {
             );
         }
 
-        catch (Exception e) {
+        catch (RuntimeException e) {
             e.printStackTrace();
             AlertUtils.showError(
                     "Erro",
@@ -92,7 +92,7 @@ public class AgendamentoController  {
             try {
                 var pet = petService.buscarPorId(cell.getValue().getIdPet());
                 return new SimpleStringProperty(pet != null ? pet.getNome() : "Desconhecido");
-            } catch (Exception e) { return new SimpleStringProperty("-"); }
+            } catch (RuntimeException e) { return new SimpleStringProperty("-"); }
         });
 
         // Nome do Serviço
@@ -100,7 +100,7 @@ public class AgendamentoController  {
             try {
                 var serv = servicoService.buscarPorId(cell.getValue().getIdServico());
                 return new SimpleStringProperty(serv.isPresent() ? serv.get().getDescricao() : "Desconhecido");
-            } catch (Exception e) { return new SimpleStringProperty("-"); }
+            } catch (RuntimeException e) { return new SimpleStringProperty("-"); }
         });
 
         // Valor
@@ -109,7 +109,7 @@ public class AgendamentoController  {
                 var serv = servicoService.buscarPorId(cell.getValue().getIdServico());
                 // Exemplo: pega o preço ou um texto fixo, já que duração não tem no model padrão
                 return new SimpleStringProperty(serv.map(servico -> "R$ " + servico.getPreco()).orElse("-"));
-            } catch (Exception e) { return new SimpleStringProperty("-"); }
+            } catch (RuntimeException e) { return new SimpleStringProperty("-"); }
         });
     }
 
@@ -122,8 +122,8 @@ public class AgendamentoController  {
         try {
             List<Agendamento> lista = agendamentoService.listarAgendamentosPorUsuario(SessionManager.getUsuarioId());
             tabelaAgendamentos.setItems(FXCollections.observableArrayList(lista));
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (RuntimeException e) {
+            AlertUtils.showError("Erro", "Não foi possível carregar os agendamentos.");
         }
     }
 
@@ -144,10 +144,12 @@ public class AgendamentoController  {
         try {
             // Executa o cancelamento
             agendamentoService.cancelarAgendamento(selecionado);
-
-
-        } catch (Exception e) {
+        } catch (PersistenciaException e) {
             AlertUtils.showError("Erro", "Não foi possível cancelar: " + e.getMessage());
+            return;
+        } catch (RuntimeException e) {
+            AlertUtils.showError("Erro", "Ocorreu uma falha inesperada ao cancelar o agendamento.");
+            return;
         }
 
         carregarTabela(); // Atualiza a lista
@@ -188,21 +190,15 @@ public class AgendamentoController  {
         if (!confirmar) return;
 
         try {
-            cancelados.forEach(ag -> {
-                try {
-                    agendamentoService.excluirAgendamento(ag.getId());
-                } catch (Exception e) {
-                    throw new RuntimeException("Erro ao excluir agendamento " + ag.getId(), e);
-                }
-            });
-
+            for (Agendamento agendamento : cancelados) {
+                agendamentoService.excluirAgendamento(agendamento.getId());
+            }
             carregarTabela();
             AlertUtils.showInfo("Concluído", String.format("%d agendamento%s removido%s.",
                     cancelados.size(),
                     cancelados.size() != 1 ? "s" : "",
                     cancelados.size() != 1 ? "s" : ""));
-
-        } catch (Exception e) {
+        } catch (PersistenciaException e) {
             AlertUtils.showError("Erro", "Falha ao limpar histórico: " + e.getMessage());
         }
     }

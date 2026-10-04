@@ -9,6 +9,8 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.example.petshoppoo.exceptions.PersistenciaException;
+import org.example.petshoppoo.exceptions.PetNaoEncontradoException;
+import org.example.petshoppoo.exceptions.ValidacaoException;
 import org.example.petshoppoo.model.Pet.Pet;
 import org.example.petshoppoo.model.Servico.Servico;
 import org.example.petshoppoo.services.ServiceFactory;
@@ -22,6 +24,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -98,7 +101,7 @@ public class ServicoController {
                 }
             });
 
-        } catch (Exception e) {
+        } catch (PersistenciaException e) {
             AlertUtils.showError("Erro", "Não foi possível carregar os dados");
         }
     }
@@ -144,7 +147,7 @@ public class ServicoController {
 
             comboHorario.setItems(FXCollections.observableArrayList(horariosFormatados));
 
-        } catch (Exception e) {
+        } catch (PersistenciaException e) {
             AlertUtils.showError("Erro", "Não foi possível buscar os horários");
         }
     }
@@ -170,8 +173,10 @@ public class ServicoController {
             AlertUtils.showInfo("Sucesso", "Agendamento realizado!");
             voltarMenu();
 
-        } catch (Exception e) {
+        } catch (PersistenciaException | PetNaoEncontradoException | ValidacaoException e) {
             AlertUtils.showError("Erro", e.getMessage());
+        } catch (DateTimeParseException e) {
+            AlertUtils.showError("Horário inválido", "Selecione um horário válido.");
         }
     }
 
