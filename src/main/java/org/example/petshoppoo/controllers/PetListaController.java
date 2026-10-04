@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import java.io.IOException;
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.exceptions.PetNaoEncontradoException;
 import org.example.petshoppoo.exceptions.ValidacaoException;
@@ -60,7 +61,7 @@ public class PetListaController {
                     "Erro de Persistência",
                     "Não foi possível carregar os dados do sistema.\n" + e.getMessage()
             );
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             AlertUtils.showError("Erro ao inicializar", e.getMessage());
         }
     }
@@ -114,7 +115,7 @@ public class PetListaController {
     private void carregarPets() {
         try {
             pets.setAll(petService.listarPetsDoUsuario(SessionManager.getUsuarioId()));
-        } catch (Exception e) {
+        } catch (PersistenciaException e) {
             AlertUtils.showError("Erro ao carregar", e.getMessage());
         }
     }
@@ -164,11 +165,11 @@ public class PetListaController {
 
         } catch (NumberFormatException e) {
             AlertUtils.showError("Peso inválido", "Digite um peso válido (ex: 10.5)");
-        } catch (ValidacaoException | PetNaoEncontradoException e) {
+        } catch (ValidacaoException e) {
             AlertUtils.showError("Erro ao salvar", e.getMessage());
         } catch (PersistenciaException e) {
             AlertUtils.showError("Erro de persistência", e.getMessage());
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             AlertUtils.showError("Erro ao salvar", e.getMessage());
         }
     }
@@ -210,7 +211,9 @@ public class PetListaController {
 
                 AlertUtils.showInfo("Sucesso", "Pet deletado com sucesso!");
                 carregarPets();
-            } catch (Exception e) {
+            } catch (PersistenciaException | PetNaoEncontradoException e) {
+                AlertUtils.showError("Erro ao deletar", e.getMessage());
+            } catch (RuntimeException e) {
                 AlertUtils.showError("Erro ao deletar", e.getMessage());
             }
         }
@@ -221,7 +224,7 @@ public class PetListaController {
         try {
             Stage stage = (Stage) tabelaPets.getScene().getWindow();
             ViewLoader.loadView(stage, "/views/MenuView.fxml", "Menu");
-        } catch (Exception e) {
+        } catch (IOException | RuntimeException e) {
             AlertUtils.showError("Erro", "Não foi possível voltar ao menu.");
         }
     }

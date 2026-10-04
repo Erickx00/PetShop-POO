@@ -48,7 +48,7 @@ public class PerfilController  {
                     "Não foi possível carregar os dados do sistema.\n" + e.getMessage()
             );
         }
-        catch (Exception e) {
+        catch (RuntimeException e) {
             AlertUtils.showError("Erro", "Erro ao inicializar: " + e.getMessage());
         }
     }
