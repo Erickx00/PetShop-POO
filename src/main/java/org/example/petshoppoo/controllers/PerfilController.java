@@ -107,7 +107,7 @@ public class PerfilController  {
         }
     }
 
-    private void alterarSenha() throws ValidacaoException, AutenticacaoException, PersistenciaException {
+    private void alterarSenha() throws ValidacaoException, AutenticacaoException, PersistenciaException, UsuarioNaoEncontradoException {
         String senhaAtualText = senhaAtual.getText().trim();
         String novaSenhaText = novaSenha.getText().trim();
         String confirmarSenhaText = confirmarSenha.getText().trim();
