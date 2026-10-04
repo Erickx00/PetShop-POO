@@ -56,6 +56,8 @@ public class LoginController {
             ViewLoader.changeScene(btnEntrar, "/views/MenuView.fxml", "Menu Principal");
         } catch (AutenticacaoException e) {
             AlertUtils.showError("Erro", e.getMessage());
+        } catch (PersistenciaException e) {
+            AlertUtils.showError("Erro de Persistência", "Não foi possível atualizar os dados de autenticação.");
         } catch (IOException e) {
             AlertUtils.showError("Erro", "Login realizado, mas não foi possível abrir o menu.");
         }
