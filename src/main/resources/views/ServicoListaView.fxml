@@ -41,13 +41,13 @@
 
                 <VBox alignment="CENTER_LEFT" spacing="5.0">
                     <Label text="Selecione o Pet:" />
-                    <ComboBox fx:id="comboPet" prefWidth="368.0"
+                    <ComboBox fx:id="comboPet" maxWidth="Infinity"
                               promptText="Escolha seu animalzinho..." />
                 </VBox>
 
                 <VBox alignment="CENTER_LEFT" spacing="5.0">
                     <Label text="Tipo de Serviço:" />
-                    <ComboBox fx:id="comboServico" prefWidth="368.0"
+                    <ComboBox fx:id="comboServico" maxWidth="Infinity"
                               promptText="Banho, Tosa, Consulta..." />
                 </VBox>
 
@@ -57,20 +57,19 @@
                 <HBox spacing="10.0">
                     <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                         <Label text="Data:" />
-                        <DatePicker fx:id="datePicker" prefWidth="200.0"
+                        <DatePicker fx:id="datePicker" maxWidth="Infinity"
                                     promptText="Selecione a data" />
                     </VBox>
                     <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                         <Label text="Horário:" />
-                        <ComboBox fx:id="comboHorario" prefWidth="150.0"
+                        <ComboBox fx:id="comboHorario" maxWidth="Infinity"
                                   promptText="Selecione" />
                     </VBox>
                 </HBox>
 
                 <VBox alignment="CENTER_LEFT" spacing="5.0">
                     <Label text="Observações:" />
-                    <TextArea fx:id="txtObservacoes" prefHeight="80.0"
-                              prefWidth="368.0"
+                    <TextArea fx:id="txtObservacoes" maxWidth="Infinity" prefHeight="80.0"
                               promptText="Ex: O cachorro tem alergia a perfume..."
                               wrapText="true" />
                 </VBox>

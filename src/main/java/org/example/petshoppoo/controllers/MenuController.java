@@ -20,7 +20,7 @@ public class MenuController {
 
     @FXML
     public void initialize() {
-        menuLateral.setTranslateX(0);
+        menuLateral.setTranslateX(210);
     }
 
     @FXML
@@ -28,10 +28,10 @@ public class MenuController {
         TranslateTransition slide = new TranslateTransition();
         slide.setDuration(Duration.seconds(0.4));
         slide.setNode(menuLateral);
-        if (menuLateral.getTranslateX() == 0) {
-            slide.setToX(-210);
-        } else {
+        if (menuLateral.getTranslateX() == 210) {
             slide.setToX(0);
+        } else {
+            slide.setToX(210);
         }
         slide.play();
     }
