@@ -14,6 +14,12 @@ public class ViewLoader {
 
 
     public static void loadView(Stage stage, String fxmlPath, String title) throws IOException {
+        boolean wasFullScreen = stage.isFullScreen();
+        boolean wasMaximized = stage.isMaximized();
+        boolean wasShowing = stage.isShowing();
+        double previousCenterX = stage.getX() + stage.getWidth() / 2;
+        double previousCenterY = stage.getY() + stage.getHeight() / 2;
+
         FXMLLoader loader = new FXMLLoader(ViewLoader.class.getResource(fxmlPath));
         Parent root = loader.load();
 
@@ -21,9 +27,23 @@ public class ViewLoader {
         stage.setScene(scene);
         stage.setTitle(title);
 
-        stage.sizeToScene();
-        stage.centerOnScreen();
-        stage.show();
+        if (wasFullScreen) {
+            stage.setFullScreen(true);
+        } else if (wasMaximized) {
+            stage.setMaximized(true);
+        } else {
+            stage.sizeToScene();
+            if (wasShowing) {
+                stage.setX(previousCenterX - stage.getWidth() / 2);
+                stage.setY(previousCenterY - stage.getHeight() / 2);
+            } else {
+                stage.centerOnScreen();
+            }
+        }
+
+        if (!wasShowing) {
+            stage.show();
+        }
     }
 
     public static void changeScene(Node node, String fxmlPath, String title) throws IOException {

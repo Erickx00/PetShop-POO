@@ -4,12 +4,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -22,6 +18,7 @@ import org.example.petshoppoo.services.interfaces.IPetService;
 import org.example.petshoppoo.services.interfaces.IServicoService;
 import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.SessionManager;
+import org.example.petshoppoo.utils.ViewLoader;
 
 
 
@@ -154,13 +151,7 @@ public class AgendamentoController  {
     @FXML
     public void handleVoltar() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MenuView.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) tabelaAgendamentos.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Menu Principal");
-            stage.centerOnScreen();
-
+            ViewLoader.changeScene(tabelaAgendamentos, "/views/MenuView.fxml", "Menu Principal");
         } catch (IOException e) {
             e.printStackTrace();
             AlertUtils.showError("Erro", "Erro ao voltar para o menu.");
