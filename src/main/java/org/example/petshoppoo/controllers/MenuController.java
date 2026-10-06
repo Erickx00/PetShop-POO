@@ -2,14 +2,11 @@ package org.example.petshoppoo.controllers;
 
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.petshoppoo.utils.SessionManager;
+import org.example.petshoppoo.utils.ViewLoader;
 
 import java.io.IOException;
 
@@ -76,16 +73,9 @@ public class MenuController {
     }
     private void abrirTela(String fxmlPath, String titulo) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-            Stage stageAtual = (Stage) btnMenu.getScene().getWindow();
-            stageAtual.setScene(new Scene(root));
-            stageAtual.setTitle(titulo);
-            stageAtual.centerOnScreen();
-            stageAtual.show();
+            ViewLoader.changeScene(btnMenu, fxmlPath, titulo);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Erro ao abrir tela: " + fxmlPath);
         }
     }
 }

@@ -8,6 +8,10 @@ import javafx.scene.Node;
 import java.io.IOException;
 
 public class ViewLoader {
+    private ViewLoader() {
+        /* This utility class should not be instantiated */
+    }
+
 
     public static void loadView(Stage stage, String fxmlPath, String title) throws IOException {
         FXMLLoader loader = new FXMLLoader(ViewLoader.class.getResource(fxmlPath));

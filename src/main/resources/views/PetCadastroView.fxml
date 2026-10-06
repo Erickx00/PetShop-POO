@@ -5,22 +5,22 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="550.0" prefWidth="400.0" style="-fx-background-color: #FFF8E1;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.PetCadastroController">
+<AnchorPane prefHeight="550.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.PetCadastroController" stylesheets="@../styles/petshop.css">
     <children>
 
-        <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleCancelar" prefHeight="45.0" prefWidth="42.0" style="-fx-background-color: #Fb3000; -fx-background-radius: 50; -fx-cursor: hand;" text="🔙" textFill="WHITE">
+        <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleCancelar" prefHeight="45.0" prefWidth="42.0" text="🔙">
             <font>
                 <Font size="18.0" />
             </font>
         </Button>
 
-        <Label alignment="CENTER" layoutY="42.0" text="NOVO PET" textFill="#ffb300" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <Label styleClass="page-title" alignment="CENTER" layoutY="42.0" text="NOVO PET" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <font>
                 <Font name="System Bold" size="24.0" />
             </font>
         </Label>
 
-        <AnchorPane layoutY="100.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20;" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="100.0" AnchorPane.bottomAnchor="31.0">
+        <AnchorPane layoutY="100.0" styleClass="surface-card" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="100.0" AnchorPane.bottomAnchor="31.0">
             <effect>
                 <DropShadow color="#0000001a" radius="10" spread="0.1" />
             </effect>
@@ -29,41 +29,41 @@
                 <VBox spacing="12.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0" AnchorPane.bottomAnchor="25.0">
                     <children>
                         <VBox spacing="5">
-                            <Label style="-fx-font-weight: bold;" text="Nome do Pet" textFill="#555555" />
-                            <TextField fx:id="txtNome" prefHeight="35.0" maxWidth="Infinity" promptText="Ex: Totó" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
+                            <Label text="Nome do Pet" />
+                            <TextField fx:id="txtNome" prefHeight="35.0" maxWidth="Infinity" promptText="Ex: Totó" />
                         </VBox>
 
                         <VBox spacing="5">
-                            <Label style="-fx-font-weight: bold;" text="Espécie" textFill="#555555" />
-                            <ComboBox fx:id="cbTipo" prefHeight="35.0" maxWidth="Infinity" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
+                            <Label text="Espécie" />
+                            <ComboBox fx:id="cbTipo" prefHeight="35.0" maxWidth="Infinity" />
                         </VBox>
 
                         <VBox spacing="5">
-                            <Label style="-fx-font-weight: bold;" text="Raça" textFill="#555555" />
-                            <TextField fx:id="txtRaca" prefHeight="35.0" maxWidth="Infinity" promptText="Ex: Golden Retriever" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
+                            <Label text="Raça" />
+                            <TextField fx:id="txtRaca" prefHeight="35.0" maxWidth="Infinity" promptText="Ex: Golden Retriever" />
                         </VBox>
 
                         <HBox spacing="10.0">
                             <children>
                                 <VBox spacing="5" HBox.hgrow="ALWAYS">
-                                    <Label style="-fx-font-weight: bold;" text="Idade (anos)" textFill="#555555" />
-                                    <TextField fx:id="txtIdade" prefHeight="35.0" promptText="Ex: 3" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
+                                    <Label text="Idade (anos)" />
+                                    <TextField fx:id="txtIdade" prefHeight="35.0" promptText="Ex: 3" />
                                 </VBox>
                                 <VBox spacing="5" HBox.hgrow="ALWAYS">
-                                    <Label style="-fx-font-weight: bold;" text="Peso (kg)" textFill="#555555" />
-                                    <TextField fx:id="txtPeso" prefHeight="35.0" promptText="Ex: 10.5" style="-fx-background-radius: 10; -fx-border-color: #E0E0E0; -fx-border-radius: 10; -fx-background-color: #F8F9FA;" />
+                                    <Label text="Peso (kg)" />
+                                    <TextField fx:id="txtPeso" prefHeight="35.0" promptText="Ex: 10.5" />
                                 </VBox>
                             </children>
                         </HBox>
 
-                        <HBox spacing="20.0" style="-fx-padding: 5 0 0 0;">
+                        <HBox spacing="20.0">
                             <children>
-                                <CheckBox fx:id="chkAdestrado" style="-fx-text-fill: #555555;" text="Adestrado" />
-                                <CheckBox fx:id="chkCastrado" style="-fx-text-fill: #555555;" text="Castrado" />
+                                <CheckBox fx:id="chkAdestrado" text="Adestrado" />
+                                <CheckBox fx:id="chkCastrado" text="Castrado" />
                             </children>
                         </HBox>
 
-                        <Button fx:id="btnSalvar" mnemonicParsing="false" onAction="#handleSalvar" prefHeight="45.0" maxWidth="Infinity" style="-fx-background-color: #FFB300; -fx-background-radius: 10; -fx-font-weight: bold; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);" text="SALVAR" textFill="WHITE">
+                        <Button fx:id="btnSalvar" mnemonicParsing="false" onAction="#handleSalvar" prefHeight="45.0" maxWidth="Infinity" text="SALVAR">
                             <font>
                                 <Font size="14.0" />
                             </font>

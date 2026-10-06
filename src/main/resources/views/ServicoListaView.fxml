@@ -11,15 +11,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: #FDF8E1;"
+<AnchorPane prefHeight="600.0" prefWidth="500.0"
             xmlns="http://javafx.com/javafx/17.0.12"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.petshoppoo.controllers.ServicoController">
+            fx:controller="org.example.petshoppoo.controllers.ServicoController" stylesheets="@../styles/petshop.css">
 
     <children>
         <VBox alignment="TOP_CENTER" layoutX="46.0" layoutY="14.0" prefHeight="572.0"
-              prefWidth="408.0" spacing="15.0"
-              style="-fx-background-color: white; -fx-background-radius: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);"
+              prefWidth="408.0" spacing="15.0" styleClass="surface-card"
+
               AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="46.0"
               AnchorPane.rightAnchor="46.0" AnchorPane.topAnchor="14.0">
 
@@ -28,12 +28,12 @@
             </padding>
 
             <children>
-                <Label text="🐾" textFill="#fbb300">
+                <Label text="🐾">
                     <font>
                         <Font size="40.0" />
                     </font>
                 </Label>
-                <Label text="AGENDAR SERVIÇO" textFill="#fbb300">
+                <Label styleClass="page-title" text="AGENDAR SERVIÇO">
                     <font>
                         <Font name="System Bold" size="19.0" />
                     </font>
@@ -52,7 +52,7 @@
                 </VBox>
 
                 <Label fx:id="lblValor" text="Valor: --"
-                       style="-fx-font-size: 14px; -fx-text-fill: #fbb300;" />
+                       />
 
                 <HBox spacing="10.0">
                     <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
@@ -76,7 +76,7 @@
 
                 <Button mnemonicParsing="false" onAction="#handleConfirmar"
                         prefHeight="41.0" prefWidth="180.0"
-                        style="-fx-background-color: #fbb300; -fx-background-radius: 20; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"
+
                         text="Confirmar Agendamento">
                     <font>
                         <Font size="14.0" />
@@ -87,8 +87,8 @@
 
         <Button mnemonicParsing="false" onAction="#voltarMenu"
                 prefHeight="38.0" prefWidth="40.0"
-                style="-fx-background-color: #FB3000; -fx-background-radius: 50; -fx-font-weight: bold; -fx-cursor: hand;"
-                text="🔙" textFill="WHITE"
+
+                text="🔙"
                 AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="15.0">
             <font>
                 <Font name="System Bold" size="12.0" />
