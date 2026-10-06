@@ -2,11 +2,7 @@ package org.example.petshoppoo.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.example.petshoppoo.exceptions.PersistenciaException;
 import org.example.petshoppoo.exceptions.PetNaoEncontradoException;
@@ -19,6 +15,7 @@ import org.example.petshoppoo.services.interfaces.IPetService;
 import org.example.petshoppoo.services.interfaces.IServicoService;
 import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.SessionManager;
+import org.example.petshoppoo.utils.ViewLoader;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -206,11 +203,7 @@ public class ServicoController {
     @FXML
     private void voltarMenu() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MenuView.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) comboPet.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Menu");
+            ViewLoader.changeScene(comboPet, "/views/MenuView.fxml", "Menu");
         } catch (IOException e) {
             AlertUtils.showError("Erro", "Não foi possível voltar");
         }

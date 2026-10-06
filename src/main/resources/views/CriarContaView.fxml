@@ -5,28 +5,28 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="550.0" prefWidth="450.0" style="-fx-background-color: #FFF8E1;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.CadastroController">
+<AnchorPane prefHeight="550.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.petshoppoo.controllers.CadastroController" stylesheets="@../styles/petshop.css">
     <children>
-        <Button fx:id="btnCancelar" layoutX="380.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleCancelar" prefHeight="35.0" prefWidth="45.0" style="-fx-background-color: #e63946; -fx-background-radius: 10; -fx-text-fill: white; -fx-cursor: hand;" text="🔙" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+        <Button fx:id="btnCancelar" layoutX="380.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleCancelar" prefHeight="35.0" prefWidth="45.0" text="🔙" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
             <font>
                 <Font name="System Bold" size="14.0" />
             </font>
         </Button>
 
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutY="60.0" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0" AnchorPane.bottomAnchor="15.0">
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutY="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0" AnchorPane.bottomAnchor="15.0">
             <content>
                 <StackPane alignment="TOP_CENTER">
                     <children>
-        <VBox alignment="TOP_CENTER" maxWidth="420.0" prefWidth="370.0" spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 25; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 5);">
+        <VBox alignment="TOP_CENTER" maxWidth="420.0" styleClass="auth-card" prefWidth="370.0" spacing="12.0">
             <children>
                 <VBox alignment="CENTER" spacing="5.0">
                     <children>
-                        <Label text="🐾" textFill="#ffb300">
+                        <Label text="🐾">
                             <font>
                                 <Font size="40.0" />
                             </font>
                         </Label>
-                        <Label text="CRIE SUA CONTA" textFill="#ffb300">
+                        <Label styleClass="page-title" text="CRIE SUA CONTA">
                             <font>
                                 <Font name="System Bold" size="18.0" />
                             </font>
@@ -39,14 +39,14 @@
 
                 <VBox spacing="5.0">
                     <children>
-                        <Label text="Nome e Sobrenome" textFill="#666666">
+                        <Label text="Nome e Sobrenome">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="txtNome" prefHeight="35.0" promptText="Digite seu nome" style="-fx-background-radius: 10; -fx-background-color: #F8F9FA; -fx-border-color: #E0E0E0; -fx-border-radius: 10;" />
+                        <TextField fx:id="txtNome" prefHeight="35.0" promptText="Digite seu nome" />
 
-                        <Label text="E-mail" textFill="#666666">
+                        <Label text="E-mail">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>
@@ -54,9 +54,9 @@
                                 <Insets top="5.0" />
                             </VBox.margin>
                         </Label>
-                        <TextField fx:id="txtEmail" prefHeight="35.0" promptText="exemplo@gmail.com" style="-fx-background-radius: 10; -fx-background-color: #F8F9FA; -fx-border-color: #E0E0E0; -fx-border-radius: 10;" />
+                        <TextField fx:id="txtEmail" prefHeight="35.0" promptText="exemplo@gmail.com" />
 
-                        <Label text="Telefone" textFill="#666666">
+                        <Label text="Telefone">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>
@@ -64,9 +64,9 @@
                                 <Insets top="5.0" />
                             </VBox.margin>
                         </Label>
-                        <TextField fx:id="txtTelefone" prefHeight="35.0" promptText="(00) 00000-0000" style="-fx-background-radius: 10; -fx-background-color: #F8F9FA; -fx-border-color: #E0E0E0; -fx-border-radius: 10;" />
+                        <TextField fx:id="txtTelefone" prefHeight="35.0" promptText="(00) 00000-0000" />
 
-                        <Label text="Senha" textFill="#666666">
+                        <Label text="Senha">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>
@@ -74,9 +74,9 @@
                                 <Insets top="5.0" />
                             </VBox.margin>
                         </Label>
-                        <PasswordField fx:id="txtSenha" prefHeight="35.0" promptText="Mínimo 6 dígitos" style="-fx-background-radius: 10; -fx-background-color: #F8F9FA; -fx-border-color: #E0E0E0; -fx-border-radius: 10;" />
+                        <PasswordField fx:id="txtSenha" prefHeight="35.0" promptText="Mínimo 6 dígitos" />
 
-                        <Label text="Confirmar Senha" textFill="#666666">
+                        <Label text="Confirmar Senha">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>
@@ -84,14 +84,14 @@
                                 <Insets top="5.0" />
                             </VBox.margin>
                         </Label>
-                        <PasswordField fx:id="txtConfirmarSenha" prefHeight="35.0" promptText="Repita sua senha" style="-fx-background-radius: 10; -fx-background-color: #F8F9FA; -fx-border-color: #E0E0E0; -fx-border-radius: 10;" />
+                        <PasswordField fx:id="txtConfirmarSenha" prefHeight="35.0" promptText="Repita sua senha" />
                     </children>
                     <padding>
                         <Insets left="25.0" right="25.0" />
                     </padding>
                 </VBox>
 
-                <Button fx:id="btnFinalizar" mnemonicParsing="false" onAction="#handleCadastrar" prefHeight="45.0" prefWidth="220.0" style="-fx-background-color: #ffb300; -fx-background-radius: 20; -fx-cursor: hand;" text="FINALIZAR" textFill="WHITE">
+                <Button fx:id="btnFinalizar" mnemonicParsing="false" onAction="#handleCadastrar" prefHeight="45.0" prefWidth="220.0" text="FINALIZAR">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>

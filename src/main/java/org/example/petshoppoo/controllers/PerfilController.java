@@ -18,6 +18,7 @@ import org.example.petshoppoo.services.interfaces.IAuthService;
 import org.example.petshoppoo.services.interfaces.IUsuarioService;
 import org.example.petshoppoo.utils.AlertUtils;
 import org.example.petshoppoo.utils.SessionManager;
+import org.example.petshoppoo.utils.ViewLoader;
 
 import java.io.IOException;
 
@@ -133,10 +134,7 @@ public class PerfilController  {
     @FXML
     private void handleVoltar(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/views/MenuView.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            ViewLoader.changeScene((Node) event.getSource(), "/views/MenuView.fxml", "Menu Principal");
         } catch (IOException e) {
             AlertUtils.showError("Erro", "Não foi possível voltar ao menu.");
         }
